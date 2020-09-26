@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import './App.css';
-import Landing from './components/layout/Landing';
-import Navbar from './components/layout/Navbar';
+
 import Login from './components/auth/Login';
+import ChangePassword from './components/auth/ChangePassword';
 import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 import Dashboard from './components/dashboard/Dashboard';
@@ -16,6 +17,7 @@ import PrivateRoute from './components/routes/PrivateRoute';
 // Redux
 import { Provider } from 'react-redux';
 import { store } from './store';
+import Layout from './components/layout/Layout';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -29,7 +31,6 @@ const NoMatch = ({ location }) => (
     </h3>
   </div>
 );
-
 const App = () => {
   useEffect(() => {
     // check for token in LS
@@ -43,23 +44,19 @@ const App = () => {
       if (!localStorage.token) store.dispatch({ type: LOGOUT });
     });
   }, []);
-
   return (
     <Provider store={store}>
       <Router>
-        <Fragment>
-          <Navbar />
-          <Route exact path='/' component={Landing} />
-          <section className='container'>
+        <Switch>
+          <Layout>
             <Alert />
-            <Switch>
-              <Route path='/login' component={Login} />
-              <Route path='/register' component={Register} />
-              <PrivateRoute path='/dashboard' component={Dashboard} />
-              <Route component={NoMatch} />{' '}
-            </Switch>
-          </section>
-        </Fragment>
+            <Route path='/login' component={Login} />
+            <Route path='/register' component={Register} />
+            <PrivateRoute path='/change-password' component={ChangePassword} />
+            <PrivateRoute exact path='/' component={Dashboard} />
+            {/* <Route component={NoMatch} /> */}
+          </Layout>
+        </Switch>
       </Router>
     </Provider>
   );

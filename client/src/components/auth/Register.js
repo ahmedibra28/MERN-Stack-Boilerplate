@@ -5,6 +5,11 @@ import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
+// Material UI Icons
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import EmailIcon from '@material-ui/icons/Email';
+import FaceIcon from '@material-ui/icons/Face';
+
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -33,62 +38,92 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   }
 
   return (
-    <Fragment>
-      <h1 className='large text-primary'>Sign Up</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Create Your Account
-      </p>
-      <form
-        className='form'
-        onSubmit={(e) => onSubmit(e)}
-        action='create-profile.html'
-      >
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Name'
-            name='name'
-            value={name}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='email'
-            placeholder='Email Address'
-            name='email'
-            value={email}
-            onChange={(e) => onChange(e)}
-          />
-          <small className='form-text'>
-            This site uses Gravatar so if you want a profile image, use a
-            Gravatar email
-          </small>
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Password'
-            name='password'
-            value={password}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Confirm Password'
-            name='password2'
-            value={password2}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <input type='submit' className='btn btn-primary' value='Register' />
-      </form>
-      <p className='my-1'>
-        Already have an account? <Link to='/login'>Sign In</Link>
-      </p>
-    </Fragment>
+    <div>
+      <div className='container__body'>
+        <form onSubmit={(e) => onSubmit(e)}>
+          <div className='row'>
+            <h3 className='text-center form-title mb-4'>Signup</h3>
+
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='input-group shadow'>
+                <span className='input-group-text' id='basic-addon1'>
+                  <FaceIcon />
+                </span>
+                <input
+                  name='name'
+                  value={name}
+                  onChange={(e) => onChange(e)}
+                  type='text'
+                  className='form-control py-2'
+                  placeholder='Enter name'
+                />
+              </div>
+            </div>
+
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='input-group shadow'>
+                <span className='input-group-text' id='basic-addon1'>
+                  <EmailIcon />
+                </span>
+                <input
+                  name='email'
+                  value={email}
+                  onChange={(e) => onChange(e)}
+                  type='email'
+                  className='form-control py-2'
+                  placeholder='Enter email'
+                />
+              </div>
+            </div>
+
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='input-group shadow'>
+                <span className='input-group-text' id='basic-addon1'>
+                  <VpnKeyIcon />
+                </span>
+                <input
+                  name='password'
+                  value={password}
+                  onChange={(e) => onChange(e)}
+                  type='password'
+                  className='form-control py-2'
+                  placeholder='Enter password'
+                />
+              </div>
+            </div>
+
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='input-group shadow'>
+                <span className='input-group-text' id='basic-addon1'>
+                  <VpnKeyIcon />
+                </span>
+                <input
+                  name='password2'
+                  value={password2}
+                  onChange={(e) => onChange(e)}
+                  type='password'
+                  className='form-control py-2'
+                  placeholder='Enter confirm password'
+                />
+              </div>
+            </div>
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='form-group light'>
+                Already have an account? <Link to='/login'>login</Link>
+              </div>
+              <div className='input-group mx-auto d-block text-right'>
+                <button
+                  type='submit'
+                  className='btn-submit btn btn-primary shadow p-2 px-4'
+                >
+                  Signup
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
