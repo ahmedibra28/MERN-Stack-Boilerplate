@@ -1,26 +1,19 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { setAlert } from "../../actions/alert";
-import { register } from "../../actions/auth";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert';
+import { register, changePassword } from '../../actions/auth';
+import PropTypes from 'prop-types';
 
 // Material UI Icons
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import EmailIcon from "@material-ui/icons/Email";
-import FaceIcon from "@material-ui/icons/Face";
-import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
-const ChangePassword = ({ setAlert, register, isAuthenticated, history }) => {
+const ChangePassword = ({ setAlert, changePassword, history }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "",
-    password: "",
-    password2: "",
+    password: '',
+    password2: '',
   });
 
-  const { name, email, password, password2, role } = formData;
+  const { password, password2 } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,62 +21,58 @@ const ChangePassword = ({ setAlert, register, isAuthenticated, history }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      setAlert("Passwords do not match", "danger", 5000);
+      setAlert('Password confirmation does not match password', 'danger', 5000);
     } else {
-      register({ name, email, password, role, history });
+      changePassword(formData, history);
+      // console.log(formData);
     }
   };
 
-  // Redirect if logged in
-  // if (isAuthenticated) {
-  //   return <Redirect to="/dashboard" />;
-  // }
-
   return (
     <div>
-      <div className="container__body">
+      <div className='container__body'>
         <form onSubmit={(e) => onSubmit(e)}>
-          <div className="row">
-            <h3 className="text-center form-title mb-4">Change Password</h3>
+          <div className='row'>
+            <h3 className='text-center form-title mb-4'>Change Password</h3>
 
-            <div className="col-lg-7 col-sm-12 mx-auto mb-3">
-              <div className="input-group shadow">
-                <span className="input-group-text" id="basic-addon1">
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='input-group shadow'>
+                <span className='input-group-text' id='basic-addon1'>
                   <VpnKeyIcon />
                 </span>
                 <input
-                  name="password"
+                  name='password'
                   value={password}
                   onChange={(e) => onChange(e)}
-                  type="password"
-                  className="form-control py-2"
-                  placeholder="Enter password"
+                  type='password'
+                  className='form-control py-2'
+                  placeholder='Enter password'
                 />
               </div>
             </div>
 
-            <div className="col-lg-7 col-sm-12 mx-auto mb-3">
-              <div className="input-group shadow">
-                <span className="input-group-text" id="basic-addon1">
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='input-group shadow'>
+                <span className='input-group-text' id='basic-addon1'>
                   <VpnKeyIcon />
                 </span>
                 <input
-                  name="password2"
+                  name='password2'
                   value={password2}
                   onChange={(e) => onChange(e)}
-                  type="password"
-                  className="form-control py-2"
-                  placeholder="Confirm new password"
+                  type='password'
+                  className='form-control py-2'
+                  placeholder='Confirm new password'
                 />
               </div>
             </div>
-            <div className="col-lg-7 col-sm-12 mx-auto mb-3">
-              <div className="input-group mx-auto d-block text-right">
+            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+              <div className='input-group mx-auto d-block text-right'>
                 <button
-                  type="submit"
-                  className="btn-submit btn btn-primary shadow p-2 px-4"
+                  type='submit'
+                  className='btn-submit btn btn-primary shadow p-2 px-4'
                 >
-                  Signup
+                  Change
                 </button>
               </div>
             </div>
@@ -98,9 +87,12 @@ ChangePassword.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  changePassword: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
-export default connect(mapStateToProps, { setAlert, register })(ChangePassword);
+export default connect(mapStateToProps, { setAlert, register, changePassword })(
+  ChangePassword
+);
