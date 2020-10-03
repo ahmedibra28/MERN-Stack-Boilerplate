@@ -1,9 +1,13 @@
-import React from 'react';
+import React from "react";
+import Spinner from "../layout/Spinner";
 
 const Dashboard = () => {
-  return (
+  const loading = true;
+  return loading ? (
+    <Spinner />
+  ) : (
     <div>
-      <h1>her is the dashboard</h1>
+      <code className="text-center">her is the dashboard</code>
     </div>
   );
 };
