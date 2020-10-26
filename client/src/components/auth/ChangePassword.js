@@ -30,13 +30,16 @@ const ChangePassword = ({ setAlert, changePassword, history }) => {
 
   return (
     <div>
-      <div className='container__body'>
+      <div className='container'>
         <form onSubmit={(e) => onSubmit(e)}>
           <div className='row'>
-            <h3 className='text-center form-title mb-4'>Change Password</h3>
+            <p className=' display-6 text-muted my-3 text-center'>
+              CHANGE PASSWORD
+            </p>
+            <hr />
 
             <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
-              <div className='input-group shadow'>
+              <div className='input-group '>
                 <span className='input-group-text' id='basic-addon1'>
                   <VpnKeyIcon />
                 </span>
@@ -45,14 +48,14 @@ const ChangePassword = ({ setAlert, changePassword, history }) => {
                   value={password}
                   onChange={(e) => onChange(e)}
                   type='password'
-                  className='form-control py-2'
+                  className='form-control py-2 shadow-none'
                   placeholder='Enter password'
                 />
               </div>
             </div>
 
             <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
-              <div className='input-group shadow'>
+              <div className='input-group '>
                 <span className='input-group-text' id='basic-addon1'>
                   <VpnKeyIcon />
                 </span>
@@ -61,7 +64,7 @@ const ChangePassword = ({ setAlert, changePassword, history }) => {
                   value={password2}
                   onChange={(e) => onChange(e)}
                   type='password'
-                  className='form-control py-2'
+                  className='form-control py-2 shadow-none'
                   placeholder='Confirm new password'
                 />
               </div>
@@ -70,7 +73,7 @@ const ChangePassword = ({ setAlert, changePassword, history }) => {
               <div className='input-group mx-auto d-block text-right'>
                 <button
                   type='submit'
-                  className='btn-submit btn btn-primary shadow p-2 px-4'
+                  className='btn-submit btn btn-outline-secondary  p-2 px-4'
                 >
                   Change
                 </button>

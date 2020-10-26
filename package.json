@@ -1,13 +1,14 @@
 {
   "name": "mern-stack-boilerplate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Complete MERN-Stack boilerplate",
   "main": "server.js",
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "production-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Ahmed Ibrahim",
   "license": "MIT",
@@ -21,6 +22,7 @@
     "gravatar": "^1.8.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.7",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.4"
   }
 }

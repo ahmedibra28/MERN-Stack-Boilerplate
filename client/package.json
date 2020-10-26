@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.20.0",
+    "bootstrap": "^5.0.0-alpha2",
     "moment": "^2.29.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -42,5 +43,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5030"
 }

@@ -1,47 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Hind:500);
+
 body {
   font-family: 'Hind', sans-serif;
-}
-
-/* navbar */
-
-nav {
-  background-color: #63b3ed;
-  color: #f2f3f4;
-}
-
-nav a {
-  color: #f2f3f4;
-}
-
-nav a:hover {
-  color: #c4e0fc;
-}
-
-nav button {
-  color: transparent;
-}
-
-nav span svg {
-  color: #f2f3f4;
-  width: 30px;
-}
-
-nav img {
-  border-radius: 50%;
-}
-
-.dropdown-item {
-  color: #ffffff;
-}
-
-.dropdown-item:hover {
-  color: #63b3ed;
-}
-
-.dropdown-menu {
-  background: #63b3ed;
-  border: none;
 }
 
 svg {
@@ -49,88 +9,7 @@ svg {
   height: auto;
 }
 
-/* login */
-
-.container__body {
-  height: 80vh;
-  display: grid;
-  place-items: center;
-}
-
-.container__body form {
-  display: flex;
-}
-
-.btn-primary {
-  background-color: #63b3ed;
-  color: #f2f3f4;
-  border: none;
-}
-
-.btn-primary:hover {
-  background-color: #3fa6f0;
-}
-
-.btn-primary:focus {
-  background-color: #3fa6f0;
-}
-
-.input-group-text {
-  border-right: 3px solid #3fa6f0;
-}
-
-.form-control {
-  background-color: #eaf6ff;
-  color: #3fa6f0;
-}
-
-.form-control:focus {
-  box-shadow: none;
-  color: #3fa6f0;
-}
-
-.input-group-text {
-  background-color: #eaf6ff;
-  color: #3fa6f0;
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
-.light {
-  color: #3fa6f0;
-}
-
-.light a {
-  color: #3fa6f0;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.form-title {
-  color: #3fa6f0;
-  text-transform: uppercase;
-  font-size: 26px;
-}
-
-.text-muted,
-a {
-  color: #3fa6f0;
-}
-
-.login-flex-helper {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 7px;
-}
-
-#orange {
-  border-left: solid 5px orange;
-}
-
-#green {
-  border-left: solid 5px rgb(0, 255, 128);
-}
-
-hr {
-  color: #3fa6f0;
+/* Navbar */
+.navbar-brand img {
+  border-radius: 100%;
 }
