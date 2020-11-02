@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import { login } from '../../actions/auth';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { login } from "../../actions/auth";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 // Material UI Icons
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import EmailIcon from '@material-ui/icons/Email';
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import EmailIcon from "@material-ui/icons/Email";
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const { email, password } = formData;
@@ -32,13 +32,13 @@ const Login = ({ login, isAuthenticated }) => {
   return (
     <div className='container'>
       <form onSubmit={(e) => onSubmit(e)}>
-        <div className='row'>
-          <p className=' display-6 text-muted my-3 text-center'>LOGIN</p>
-          <hr />
-          <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+        <div className='row d-block'>
+          <h3 className='text-muted my-3 text-center'>LOGIN</h3>
+
+          <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
             <div className='input-group '>
               <span className='input-group-text' id='basic-addon1'>
-                <EmailIcon />
+                <EmailIcon fontSize='small' />
               </span>
               <input
                 name='email'
@@ -52,10 +52,10 @@ const Login = ({ login, isAuthenticated }) => {
               />
             </div>
           </div>
-          <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+          <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
             <div className='input-group '>
               <span className='input-group-text' id='basic-addon1'>
-                <VpnKeyIcon />
+                <VpnKeyIcon fontSize='small' />
               </span>
               <input
                 name='password'
@@ -69,7 +69,7 @@ const Login = ({ login, isAuthenticated }) => {
               />
             </div>
           </div>
-          <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+          <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
             <div className='login-flex-helper'>
               {/* <div className='form-group light'>
                 Don't you have an account? <Link to='/register'>Sigunp</Link>

@@ -1,15 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { logout } from '../../actions/auth';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import logo from './logo.png';
-import '../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
+import React from "react";
+import { Link } from "react-router-dom";
+import { logout } from "../../actions/auth";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import logo from "./logo.png";
 
 // Material UI Icons
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
 const Navbar = ({
   logout,
@@ -19,9 +18,9 @@ const Navbar = ({
   const authLinks = (
     <ul className='navbar-nav mr-right mb-2 mb-lg-0'>
       <li className='nav-item'>
-        {' '}
+        {" "}
         <a href='/' className='nav-link disabled'>
-          {' '}
+          {" "}
           Welcome {user && user.name}
         </a>
       </li>
@@ -32,7 +31,7 @@ const Navbar = ({
           Change Password
         </Link>
       </li>
-      {user && user.role === 'Admin' && (
+      {user && user.role === "Admin" && (
         <li className='nav-item'>
           <Link to='/register' className='nav-link'>
             <PersonAddIcon fontSize='small' />
@@ -51,59 +50,57 @@ const Navbar = ({
   );
 
   const guestLinks = (
-    <>
-      <ul className='navbar-nav mr-auto mb-2 py-3 mb-lg-0'>
-        <li className='nav-item'>
-          <Link to='/login' className='nav-link'>
-            <ExitToAppIcon fontSize='small' />
-            Login
-          </Link>
-        </li>
-      </ul>
-    </>
+    <ul className='navbar-nav mr-right mb-2 mb-lg-0'>
+      <li className='nav-item'>
+        <Link to='/login' onClick={logout} className='nav-link'>
+          <ExitToAppIcon fontSize='small' />
+          Login
+        </Link>
+      </li>
+    </ul>
   );
-
   return (
     <>
-      <nav className='navbar navbar-expand-md navbar-light bg-light shadow sticky-top'>
+      <nav className='navbar navbar-expand-lg navbar-dark bg-dark sticky-top'>
         <div className='container'>
-          <Link to='/' className='navbar-brand font-weight-bold display-6'>
+          <Link to='/' className='navbar-brand'>
             <img
               src={logo}
-              width='60'
-              height='auto'
-              className='d-inline-block align-top'
-              alt='brand'
+              width='30'
+              height='30'
+              className='d-inline-block align-top mr-2 brand-logo'
+              alt=''
+              loading='lazy'
             />
+            BLOOD BANK
           </Link>
           <button
-            className='navbar-toggler shadow-none'
+            className='navbar-toggler'
             type='button'
             data-toggle='collapse'
-            data-target='#navbarToggler'
-            aria-controls='navbarToggler'
+            data-target='#navbarSupportedContent'
+            aria-controls='navbarSupportedContent'
             aria-expanded='false'
             aria-label='Toggle navigation'
           >
             <span className='navbar-toggler-icon'></span>
           </button>
-          <div className='collapse navbar-collapse' id='navbarToggler'>
-            <ul className='navbar-nav mx-auto mb-2 mb-lg-0'></ul>
-            <ul className='navbar-nav mx-right mb-2 mb-lg-0'>
-              {!loading && <>{isAuthenticated ? authLinks : guestLinks}</>}
-            </ul>
+          <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+            <ul className='navbar-nav mr-auto mb-2 mb-lg-0'></ul>
+            {!loading && <>{isAuthenticated ? authLinks : guestLinks}</>}
           </div>
         </div>
       </nav>
-
       <div className=''>{children}</div>
-
-      <div className='text-muted card-footer my-5  text-center footer'>
-        Developer Contact -{' '}
-        <strong>
-          <a href='mailto:ahmaat19@gmail.com'>ahmaat19@gmail.com</a>
-        </strong>
-      </div>
+      <footer>
+        <div className='text-muted card-footer my-5  text-center footer'>
+          Developer Contact -{" "}
+          <strong>
+            <a href='mailto:ahmaat19@gmail.com'>ahmaat19@gmail.com</a>
+          </strong>
+          <span className='float-right'>v2</span>
+        </div>
+      </footer>
     </>
   );
 };

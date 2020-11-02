@@ -1,9 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Hind:500);
-
-body {
-  font-family: 'Hind', sans-serif;
-}
-
 svg {
   width: 20px;
   height: auto;
@@ -12,4 +6,8 @@ svg {
 /* Navbar */
 .navbar-brand img {
   border-radius: 100%;
+}
+
+main {
+  min-height: 70vh;
 }

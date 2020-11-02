@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { setAlert } from '../../actions/alert';
-import { register } from '../../actions/auth';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { setAlert } from "../../actions/alert";
+import { register } from "../../actions/auth";
+import PropTypes from "prop-types";
 
 // Material UI Icons
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import EmailIcon from '@material-ui/icons/Email';
-import FaceIcon from '@material-ui/icons/Face';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import EmailIcon from "@material-ui/icons/Email";
+import FaceIcon from "@material-ui/icons/Face";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 
 const Register = ({ setAlert, register, isAuthenticated, history }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    role: '',
-    password: '',
-    password2: '',
+    name: "",
+    email: "",
+    role: "",
+    password: "",
+    password2: "",
   });
 
   const { name, email, password, password2, role } = formData;
@@ -27,7 +27,7 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      setAlert('Passwords do not match', 'danger', 5000);
+      setAlert("Passwords do not match", "danger", 5000);
     } else {
       register({ name, email, password, role, history });
     }
@@ -42,13 +42,13 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
     <div>
       <div className='container'>
         <form onSubmit={(e) => onSubmit(e)}>
-          <div className='row'>
-            <p className=' display-6 text-muted my-3 text-center'>SIGNUP</p>
-            <hr />
-            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+          <div className='row d-block'>
+            <h3 className='text-muted my-3 text-center'>SIGNUP</h3>
+
+            <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
                 <span className='input-group-text' id='basic-addon1'>
-                  <FaceIcon />
+                  <FaceIcon fontSize='small' />
                 </span>
                 <input
                   name='name'
@@ -60,10 +60,10 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                 />
               </div>
             </div>
-            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+            <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
                 <span className='input-group-text' id='basic-addon1'>
-                  <EmailIcon />
+                  <EmailIcon fontSize='small' />
                 </span>
                 <input
                   name='email'
@@ -75,10 +75,10 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                 />
               </div>
             </div>
-            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+            <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
                 <span className='input-group-text' id='basic-addon1'>
-                  <SupervisorAccountIcon />
+                  <SupervisorAccountIcon fontSize='small' />
                 </span>
                 <select
                   name='role'
@@ -94,10 +94,10 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                 </select>
               </div>
             </div>
-            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+            <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
                 <span className='input-group-text' id='basic-addon1'>
-                  <VpnKeyIcon />
+                  <VpnKeyIcon fontSize='small' />
                 </span>
                 <input
                   name='password'
@@ -109,10 +109,10 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                 />
               </div>
             </div>
-            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+            <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
                 <span className='input-group-text' id='basic-addon1'>
-                  <VpnKeyIcon />
+                  <VpnKeyIcon fontSize='small' />
                 </span>
                 <input
                   name='password2'
@@ -124,7 +124,7 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                 />
               </div>
             </div>
-            <div className='col-lg-7 col-sm-12 mx-auto mb-3'>
+            <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               {/* <div className="form-group light">
                 Already have an account? <Link to="/login">login</Link>
               </div> */}
