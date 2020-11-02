@@ -11,3 +11,7 @@ svg {
 main {
   min-height: 70vh;
 }
+
+.alert-msg {
+  margin-top: 22px;
+}
