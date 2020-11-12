@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
 import PropTypes from "prop-types";
+import RegisterValidate from "../../validations/RegisterValidate";
 
 // Material UI Icons
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
@@ -11,6 +12,8 @@ import FaceIcon from "@material-ui/icons/Face";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 
 const Register = ({ setAlert, register, isAuthenticated, history }) => {
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,17 +29,24 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      setAlert("Passwords do not match", "danger", 5000);
-    } else {
-      register({ name, email, password, role, history });
-    }
+    setErrors(RegisterValidate(formData));
+    setIsSubmitting(true);
   };
 
-  // Redirect if logged in
-  // if (isAuthenticated) {
-  //   return <Redirect to="/dashboard" />;
-  // }
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      register({ name, email, password, role, history });
+      setFormData({
+        ...formData,
+        name: "",
+        email: "",
+        role: "",
+        password: "",
+        password2: "",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors]);
 
   return (
     <div>
@@ -59,6 +69,9 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                   placeholder='Enter name'
                 />
               </div>
+              {errors.name && (
+                <div className='form-text text-danger'>{errors.name}</div>
+              )}
             </div>
             <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
@@ -74,6 +87,9 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                   placeholder='Enter email'
                 />
               </div>
+              {errors.email && (
+                <div className='form-text text-danger'>{errors.email}</div>
+              )}
             </div>
             <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
@@ -93,6 +109,9 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                   <option value='Admin'>Admin</option>
                 </select>
               </div>
+              {errors.role && (
+                <div className='form-text text-danger'>{errors.role}</div>
+              )}
             </div>
             <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
@@ -108,6 +127,9 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                   placeholder='Enter password'
                 />
               </div>
+              {errors.password && (
+                <div className='form-text text-danger'>{errors.password}</div>
+              )}
             </div>
             <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group '>
@@ -123,6 +145,9 @@ const Register = ({ setAlert, register, isAuthenticated, history }) => {
                   placeholder='Enter confirm password'
                 />
               </div>
+              {errors.password2 && (
+                <div className='form-text text-danger'>{errors.password2}</div>
+              )}
             </div>
             <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               {/* <div className="form-group light">

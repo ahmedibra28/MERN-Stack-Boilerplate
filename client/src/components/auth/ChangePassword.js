@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { setAlert } from "../../actions/alert";
 import { register, changePassword } from "../../actions/auth";
 import PropTypes from "prop-types";
+import ChangePasswordValidate from "../../validations/ChangePasswordValidate";
 
 // Material UI Icons
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
 const ChangePassword = ({ setAlert, changePassword, history }) => {
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     password: "",
     password2: "",
@@ -20,13 +23,21 @@ const ChangePassword = ({ setAlert, changePassword, history }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      setAlert("Password confirmation does not match password", "danger", 5000);
-    } else {
-      changePassword(formData, history);
-      // console.log(formData);
-    }
+    setErrors(ChangePasswordValidate(formData));
+    setIsSubmitting(true);
   };
+
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      changePassword(formData, history);
+      setFormData({
+        ...formData,
+        password: "",
+        password2: "",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors]);
 
   return (
     <div>
@@ -49,6 +60,9 @@ const ChangePassword = ({ setAlert, changePassword, history }) => {
                   placeholder='Enter password'
                 />
               </div>
+              {errors.password && (
+                <div className='form-text text-danger'>{errors.password}</div>
+              )}
             </div>
 
             <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
@@ -65,6 +79,9 @@ const ChangePassword = ({ setAlert, changePassword, history }) => {
                   placeholder='Confirm new password'
                 />
               </div>
+              {errors.password2 && (
+                <div className='form-text text-danger'>{errors.password2}</div>
+              )}
             </div>
             <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
               <div className='input-group mx-auto d-block text-right'>

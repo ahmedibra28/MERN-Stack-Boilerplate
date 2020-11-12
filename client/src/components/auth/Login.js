@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { login } from "../../actions/auth";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import LoginValidate from "../../validations/LoginValidate";
 
 // Material UI Icons
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import EmailIcon from "@material-ui/icons/Email";
 
 const Login = ({ login, isAuthenticated }) => {
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -21,8 +24,21 @@ const Login = ({ login, isAuthenticated }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    login(email, password);
+    setErrors(LoginValidate(formData));
+    setIsSubmitting(true);
   };
+
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      login(email, password);
+      setFormData({
+        ...formData,
+        email: "",
+        password: "",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors]);
 
   // Redirect if logged in
   if (isAuthenticated) {
@@ -51,6 +67,9 @@ const Login = ({ login, isAuthenticated }) => {
                 aria-describedby='basic-addon1'
               />
             </div>
+            {errors.email && (
+              <div className='form-text text-danger'>{errors.email}</div>
+            )}
           </div>
           <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
             <div className='input-group '>
@@ -68,6 +87,9 @@ const Login = ({ login, isAuthenticated }) => {
                 aria-describedby='basic-addon1'
               />
             </div>
+            {errors.password && (
+              <div className='form-text text-danger'>{errors.password}</div>
+            )}
           </div>
           <div className='col-lg-5 col-md-6 col-sm-10 col-12 mx-auto mb-2'>
             <div className='login-flex-helper'>
