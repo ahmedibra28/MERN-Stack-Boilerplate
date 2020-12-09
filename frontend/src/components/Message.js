@@ -1,7 +1,19 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 
 const Message = ({ variant, children }) => {
-  return <div className={`alert alert-${variant}`}>{children}</div>
+  const [alert, setAlert] = useState(true)
+
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      setAlert(false)
+    }, 5000)
+
+    return () => {
+      clearTimeout(timeId)
+    }
+  }, [])
+
+  return alert && <div className={`alert alert-${variant}`}>{children}</div>
 }
 
 Message.defaultPros = {

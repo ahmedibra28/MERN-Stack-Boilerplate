@@ -93,15 +93,27 @@ export const getUsers = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1
 
   const count = await User.countDocuments({})
+
   const users = await User.find({})
     .limit(pageSize)
     .skip(pageSize * (page - 1))
 
-  res.json({ users, page, pages: Math.ceil(count / pageSize) })
+  res.json({
+    users,
+    page,
+    pages: Math.ceil(count / pageSize),
+    lastPage: Math.ceil(count / pageSize),
+  })
 })
 
 export const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
+
+  if (req.params.id == req.user._id) {
+    res.status(400)
+    throw new Error("You can't delete your own user in the admin area.")
+  }
+
   if (user) {
     await user.remove()
     res.json({ message: 'User removed' })
@@ -125,7 +137,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
   if (req.params.id == req.user._id) {
-    res.status(401)
+    res.status(400)
     throw new Error("You can't edit your own user in the admin area.")
   }
 

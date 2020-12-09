@@ -19,10 +19,10 @@ const UserListScreen = ({ match }) => {
   const dispatch = useDispatch()
 
   const userList = useSelector((state) => state.userList)
-  const { loading, error, users, page, pages } = userList
+  const { loading, error, users, page, pages, lastPage } = userList
 
   const userDelete = useSelector((state) => state.userDelete)
-  const { success: successDelete } = userDelete
+  const { success: successDelete, error: errorDelete } = userDelete
 
   const userUpdate = useSelector((state) => state.userUpdate)
   const {
@@ -64,6 +64,7 @@ const UserListScreen = ({ match }) => {
     setPassword('')
     setId(user._id)
   }
+
   return (
     <>
       <div
@@ -182,6 +183,7 @@ const UserListScreen = ({ match }) => {
       {successDelete && (
         <Message variant='success'>User has been deleted successfully.</Message>
       )}
+      {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -242,7 +244,7 @@ const UserListScreen = ({ match }) => {
               </tbody>
             </table>
           </div>
-          <Pagination pages={pages} page={page} />
+          <Pagination pages={pages} page={page} lastPage={lastPage} />
         </>
       )}
     </>
