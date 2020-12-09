@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listUsers, deleteUser, updateUser } from '../actions/userActions'
+import Pagination from '../components/Pagination'
 
-const UserListScreen = () => {
+const UserListScreen = ({ match }) => {
+  const pageNumber = match.params.pageNumber || 1
+
   const [id, setId] = useState(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -16,7 +19,7 @@ const UserListScreen = () => {
   const dispatch = useDispatch()
 
   const userList = useSelector((state) => state.userList)
-  const { loading, error, users } = userList
+  const { loading, error, users, page, pages } = userList
 
   const userDelete = useSelector((state) => state.userDelete)
   const { success: successDelete } = userDelete
@@ -29,14 +32,14 @@ const UserListScreen = () => {
   } = userUpdate
 
   useEffect(() => {
-    dispatch(listUsers())
+    dispatch(listUsers(pageNumber))
     if (successUpdate) {
       setName('')
       setEmail('')
       setPassword('')
       setConfirmPassword('')
     }
-  }, [dispatch, successDelete, successUpdate])
+  }, [dispatch, successDelete, successUpdate, pageNumber])
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you use?')) {
@@ -184,57 +187,63 @@ const UserListScreen = () => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <div className='table-responsive'>
-          <table className='table table-sm hover bordered striped'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>EMAIL</th>
-                <th>ADMIN</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user._id}>
-                  <td>{user._id}</td>
-                  <td>{user.name}</td>
-                  <td>
-                    <a href={`mailto:${user.email}`}>{user.email}</a>
-                  </td>
-                  <td>
-                    {user.isAdmin ? (
-                      <i
-                        className='fas fa-check'
-                        style={{ color: 'green' }}
-                      ></i>
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className='btn btn-light btn-sm'
-                      onClick={(e) => editHandler(user)}
-                      data-bs-toggle='modal'
-                      data-bs-target='#editUserModal'
-                    >
-                      <i className='fas fa-edit'></i>
-                    </button>
-
-                    <button
-                      className='btn btn-danger btn-sm'
-                      onClick={() => deleteHandler(user._id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </button>
-                  </td>
+        <>
+          <div className='table-responsive'>
+            <table className='table table-sm hover bordered striped'>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>NAME</th>
+                  <th>EMAIL</th>
+                  <th>ADMIN</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td>{user._id}</td>
+                    <td>{user.name}</td>
+                    <td>
+                      <a href={`mailto:${user.email}`}>{user.email}</a>
+                    </td>
+                    <td>
+                      {user.isAdmin ? (
+                        <i
+                          className='fas fa-check'
+                          style={{ color: 'green' }}
+                        ></i>
+                      ) : (
+                        <i
+                          className='fas fa-times'
+                          style={{ color: 'red' }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      <button
+                        className='btn btn-light btn-sm'
+                        onClick={(e) => editHandler(user)}
+                        data-bs-toggle='modal'
+                        data-bs-target='#editUserModal'
+                      >
+                        <i className='fas fa-edit'></i>
+                      </button>
+
+                      <button
+                        className='btn btn-danger btn-sm'
+                        onClick={() => deleteHandler(user._id)}
+                      >
+                        <i className='fas fa-trash'></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Pagination pages={pages} page={page} />
+        </>
       )}
     </>
   )

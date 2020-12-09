@@ -18,7 +18,16 @@ const Routes = () => {
         <Route path='/login' component={LoginScreen} />
         <Route path='/register' component={RegisterScreen} />
         <PrivateRoute path='/profile' component={ProfileScreen} />
-        <AdminPrivateRoute path='/admin/users' component={UserListScreen} />
+        <AdminPrivateRoute
+          exact
+          path='/admin/users'
+          component={UserListScreen}
+        />
+        <AdminPrivateRoute
+          path='/admin/users/page/:pageNumber'
+          component={UserListScreen}
+        />
+
         <Route exact path='/' component={HomeScreen} />
         <Route component={NotFound} />
       </Switch>
