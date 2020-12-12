@@ -3,7 +3,8 @@ import User from '../models/userModel.js'
 import { generateToken } from '../utils/generateToken.js'
 
 export const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
+  const email = req.body.email.toLowerCase()
+  const password = req.body.password
   const user = await User.findOne({ email })
   if (user && (await user.matchPassword(password))) {
     return res.json({
@@ -68,7 +69,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
   if (user) {
     user.name = req.body.name || user.name
-    user.email = req.body.email || user.email
+    user.email = req.body.email.toLowerCase() || user.email
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -143,7 +144,7 @@ export const updateUser = asyncHandler(async (req, res) => {
 
   if (user) {
     user.name = req.body.name || user.name
-    user.email = req.body.email || user.email
+    user.email = req.body.email.toLowerCase() || user.email
     user.isAdmin = req.body.isAdmin
     if (req.body.password) {
       user.password = req.body.password

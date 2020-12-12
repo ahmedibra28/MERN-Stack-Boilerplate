@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listUsers, deleteUser, updateUser } from '../actions/userActions'
-import Pagination from '../components/Pagination'
+import {
+  listUsers,
+  deleteUser,
+  updateUser,
+  register,
+} from '../actions/userActions'
+import ReactPaginate from 'react-paginate'
 
 const UserListScreen = ({ match }) => {
-  const pageNumber = match.params.pageNumber || 1
-
   const [id, setId] = useState(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -15,14 +18,22 @@ const UserListScreen = ({ match }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
   const [message, setMessage] = useState('')
+  const [edit, setEdit] = useState(false)
 
   const dispatch = useDispatch()
 
   const userList = useSelector((state) => state.userList)
-  const { loading, error, users, page, pages, lastPage } = userList
+  const { loading, error, users } = userList
 
   const userDelete = useSelector((state) => state.userDelete)
   const { success: successDelete, error: errorDelete } = userDelete
+
+  const userRegister = useSelector((state) => state.userRegister)
+  const {
+    loading: loadingCreateRegister,
+    error: errorCreateRegister,
+    success: successCreateRegister,
+  } = userRegister
 
   const userUpdate = useSelector((state) => state.userUpdate)
   const {
@@ -31,15 +42,20 @@ const UserListScreen = ({ match }) => {
     success: successUpdate,
   } = userUpdate
 
+  const formCleanHandler = () => {
+    setName('')
+    setEmail('')
+    setPassword('')
+    setConfirmPassword('')
+    setEdit(false)
+  }
+
   useEffect(() => {
-    dispatch(listUsers(pageNumber))
-    if (successUpdate) {
-      setName('')
-      setEmail('')
-      setPassword('')
-      setConfirmPassword('')
+    dispatch(listUsers())
+    if (successUpdate || successCreateRegister) {
+      formCleanHandler()
     }
-  }, [dispatch, successDelete, successUpdate, pageNumber])
+  }, [dispatch, successDelete, successUpdate, successCreateRegister])
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you use?')) {
@@ -53,7 +69,9 @@ const UserListScreen = ({ match }) => {
     if (password !== confirmPassword) {
       setMessage('Password do not match')
     } else {
-      dispatch(updateUser({ _id: id, name, email, password, isAdmin }))
+      edit
+        ? dispatch(updateUser({ _id: id, name, email, password, isAdmin }))
+        : dispatch(register(name, email, password))
     }
   }
 
@@ -63,7 +81,16 @@ const UserListScreen = ({ match }) => {
     setIsAdmin(user.isAdmin)
     setPassword('')
     setId(user._id)
+    setEdit(true)
   }
+
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const itemsPerPage = 5
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = users && users.slice(indexOfFirstItem, indexOfLastItem)
+  const totalItems = users && Math.ceil(users.length / itemsPerPage)
 
   return (
     <>
@@ -87,6 +114,7 @@ const UserListScreen = ({ match }) => {
                 className='btn-close'
                 data-bs-dismiss='modal'
                 aria-label='Close'
+                onClick={formCleanHandler}
               ></button>
             </div>
             <div className='modal-body'>
@@ -96,8 +124,18 @@ const UserListScreen = ({ match }) => {
                   User has been updated successfully.
                 </Message>
               )}
-              {loadingUpdate && <Loader />}
               {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+              {loadingUpdate && <Loader />}
+              {successCreateRegister && (
+                <Message variant='success'>
+                  User has been Created successfully.
+                </Message>
+              )}
+              {errorCreateRegister && (
+                <Message variant='danger'>{errorCreateRegister}</Message>
+              )}
+              {loadingCreateRegister && <Loader />}
+
               {loading ? (
                 <Loader />
               ) : error ? (
@@ -165,6 +203,7 @@ const UserListScreen = ({ match }) => {
                       type='button'
                       className='btn btn-secondary'
                       data-bs-dismiss='modal'
+                      onClick={formCleanHandler}
                     >
                       Close
                     </button>
@@ -179,7 +218,18 @@ const UserListScreen = ({ match }) => {
         </div>
       </div>
 
-      <h1>Users</h1>
+      <div className='d-flex justify-content-between'>
+        <h1>Users</h1>
+        <button
+          className='btn btn-light btn-sm'
+          data-bs-toggle='modal'
+          data-bs-target='#editUserModal'
+        >
+          {' '}
+          <i className='fas fa-plus'></i> REGISTER NEW USER
+        </button>
+      </div>
+
       {successDelete && (
         <Message variant='success'>User has been deleted successfully.</Message>
       )}
@@ -202,7 +252,7 @@ const UserListScreen = ({ match }) => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {currentItems.map((user) => (
                   <tr key={user._id}>
                     <td>{user._id}</td>
                     <td>{user.name}</td>
@@ -244,7 +294,28 @@ const UserListScreen = ({ match }) => {
               </tbody>
             </table>
           </div>
-          <Pagination pages={pages} page={page} lastPage={lastPage} />
+          <div className='d-flex justify-content-center'>
+            <ReactPaginate
+              previousLabel='previous'
+              previousClassName='page-item'
+              previousLinkClassName='page-link'
+              nextLabel='next'
+              nextClassName='page-item'
+              nextLinkClassName='page-link'
+              pageClassName='page-item'
+              pageLinkClassName='page-link'
+              activeClassName='page-item active'
+              activeLinkClassName={'page-link'}
+              breakLabel={'...'}
+              breakClassName={'page-item'}
+              breakLinkClassName={'page-link'}
+              pageCount={totalItems && totalItems}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={2}
+              onPageChange={(e) => setCurrentPage(e.selected + 1)}
+              containerClassName={'page pagination'}
+            />
+          </div>
         </>
       )}
     </>
