@@ -10,7 +10,7 @@ import {
 } from '../actions/userActions'
 import ReactPaginate from 'react-paginate'
 
-const UserListScreen = ({ match }) => {
+const UserListScreen = () => {
   const [id, setId] = useState(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -272,7 +272,7 @@ const UserListScreen = ({ match }) => {
                         ></i>
                       )}
                     </td>
-                    <td>
+                    <td className='btn-group'>
                       <button
                         className='btn btn-light btn-sm'
                         onClick={(e) => editHandler(user)}

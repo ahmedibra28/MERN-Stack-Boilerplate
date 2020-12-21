@@ -4,7 +4,7 @@ import Footer from './components/Footer'
 import Header from './components/Header'
 import Routes from './components/routes/Routes'
 
-import { USER_LOGOUT } from './actions/types'
+import { USER_LOGOUT } from './constants/userConstants'
 import store from './store'
 
 const App = () => {

@@ -5,6 +5,7 @@ import { generateToken } from '../utils/generateToken.js'
 export const authUser = asyncHandler(async (req, res) => {
   const email = req.body.email.toLowerCase()
   const password = req.body.password
+
   const user = await User.findOne({ email })
   if (user && (await user.matchPassword(password))) {
     return res.json({
@@ -90,21 +91,9 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 })
 
 export const getUsers = asyncHandler(async (req, res) => {
-  const pageSize = 10
-  const page = Number(req.query.pageNumber) || 1
+  const users = await User.find({}).sort({ createdAt: -1 })
 
-  const count = await User.countDocuments({})
-
-  const users = await User.find({})
-    .limit(pageSize)
-    .skip(pageSize * (page - 1))
-
-  res.json({
-    users,
-    page,
-    pages: Math.ceil(count / pageSize),
-    lastPage: Math.ceil(count / pageSize),
-  })
+  res.json(users)
 })
 
 export const deleteUser = asyncHandler(async (req, res) => {
