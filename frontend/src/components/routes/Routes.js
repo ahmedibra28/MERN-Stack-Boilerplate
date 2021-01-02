@@ -10,12 +10,17 @@ import NotFound from '../NotFound'
 
 import PrivateRoute from '../routes/PrivateRoute'
 import AdminPrivateRoute from '../routes/AdminPrivateRoute'
+import UserLogHistoryScreen from '../../screens/LogHistoryScreen'
 
 const Routes = () => {
   return (
     <section className='container'>
       <Switch>
         <Route path='/login' component={LoginScreen} />
+        <PrivateRoute
+          path='/admin/users/logs'
+          component={UserLogHistoryScreen}
+        />
         <Route path='/register' component={RegisterScreen} />
         <PrivateRoute path='/profile' component={ProfileScreen} />
         <AdminPrivateRoute

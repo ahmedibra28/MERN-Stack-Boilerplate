@@ -24,6 +24,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  USER_LOG_HISTORY_REQUEST,
+  USER_LOG_HISTORY_SUCCESS,
+  USER_LOG_HISTORY_FAIL,
 } from '../constants/userConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -46,6 +49,24 @@ export const login = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getLogHistory = () => async (dispatch) => {
+  try {
+    dispatch({ type: USER_LOG_HISTORY_REQUEST })
+
+    const { data } = await axios.get(`/api/users/log`)
+
+    dispatch({ type: USER_LOG_HISTORY_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({
+      type: USER_LOG_HISTORY_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

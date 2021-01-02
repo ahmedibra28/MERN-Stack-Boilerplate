@@ -1,6 +1,25 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
+import LogonSession from '../models/userLogonSessionModel.js'
 import { generateToken } from '../utils/generateToken.js'
+
+const logSession = asyncHandler(async (id) => {
+  const user = id
+  const date = Date.now()
+  const logDate = new Date(date)
+
+  return await LogonSession.create({
+    user,
+    logDate,
+  })
+})
+
+export const logHistory = asyncHandler(async (req, res) => {
+  const log = await LogonSession.find({})
+    .sort({ logDate: -1 })
+    .populate('user', ['name', 'email'])
+  res.json(log)
+})
 
 export const authUser = asyncHandler(async (req, res) => {
   const email = req.body.email.toLowerCase()
@@ -8,6 +27,8 @@ export const authUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email })
   if (user && (await user.matchPassword(password))) {
+    logSession(user._id)
+
     return res.json({
       _id: user._id,
       name: user.name,
