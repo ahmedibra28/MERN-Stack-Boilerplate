@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { CLEAR_ALERTS } from '../constants/userConstants'
 
 const Message = ({ variant, children }) => {
   const [alert, setAlert] = useState(true)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const timeId = setTimeout(() => {
       setAlert(false)
-    }, 5000)
+      dispatch({ type: CLEAR_ALERTS })
+    }, 4000)
 
     return () => {
       clearTimeout(timeId)

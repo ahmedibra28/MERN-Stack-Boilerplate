@@ -83,9 +83,9 @@ const Header = () => {
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
       <div className='container'>
-        <a className='navbar-brand' href='/'>
+        <Link className='navbar-brand' to='/'>
           Navbar
-        </a>
+        </Link>
         <button
           className='navbar-toggler'
           type='button'

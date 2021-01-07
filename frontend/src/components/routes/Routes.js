@@ -17,7 +17,7 @@ const Routes = () => {
     <section className='container'>
       <Switch>
         <Route path='/login' component={LoginScreen} />
-        <PrivateRoute
+        <AdminPrivateRoute
           path='/admin/users/logs'
           component={UserLogHistoryScreen}
         />

@@ -1,4 +1,5 @@
 import {
+  CLEAR_ALERTS,
   USER_DELETE_FAIL,
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
@@ -89,6 +90,10 @@ export const userRegisterReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       }
+    case CLEAR_ALERTS:
+      return {
+        success: false,
+      }
     default:
       return state
   }
@@ -137,6 +142,10 @@ export const userUpdateProfileReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       }
+    case CLEAR_ALERTS:
+      return {
+        success: false,
+      }
     default:
       return state
   }
@@ -183,6 +192,10 @@ export const userDeleteReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       }
+    case CLEAR_ALERTS:
+      return {
+        success: false,
+      }
 
     default:
       return state
@@ -208,6 +221,10 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
     case USER_UPDATE_RESET:
       return {
         user: {},
+      }
+    case CLEAR_ALERTS:
+      return {
+        success: false,
       }
     default:
       return state

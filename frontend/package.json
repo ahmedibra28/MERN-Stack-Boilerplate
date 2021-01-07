@@ -10,6 +10,7 @@
     "bootstrap": "^5.0.0-beta1",
     "moment": "^2.29.1",
     "react": "^17.0.1",
+    "react-confirm-alert": "^2.6.2",
     "react-dom": "^17.0.1",
     "react-moment": "^1.1.1",
     "react-paginate": "^6.5.0",
