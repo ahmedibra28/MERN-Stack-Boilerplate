@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { FaEdit, FaTrash } from 'react-icons/fa'
 import {
   listUsers,
   deleteUser,
   updateUser,
   register,
 } from '../actions/userActions'
-import ReactPaginate from 'react-paginate'
+import Pagination from '../components/Pagination'
 
 import { confirmAlert } from 'react-confirm-alert'
 import { Confirm } from '../components/Confirm'
@@ -219,14 +220,13 @@ const UserListScreen = () => {
         </div>
       </div>
 
-      <div className='d-flex justify-content-between'>
+      <div className='d-flex justify-content-between align-items-center'>
         <h1>Users</h1>
         <button
           className='btn btn-light btn-sm'
           data-bs-toggle='modal'
           data-bs-target='#editUserModal'
         >
-          {' '}
           <i className='fas fa-plus'></i> REGISTER NEW USER
         </button>
       </div>
@@ -242,7 +242,8 @@ const UserListScreen = () => {
       ) : (
         <>
           <div className='table-responsive'>
-            <table className='table table-sm hover bordered striped'>
+            <table className='table table-sm hover bordered striped caption-top'>
+              <caption>{users && users.length} records were found</caption>
               <thead>
                 <tr>
                   <th>ID</th>
@@ -280,14 +281,14 @@ const UserListScreen = () => {
                         data-bs-toggle='modal'
                         data-bs-target='#editUserModal'
                       >
-                        <i className='fas fa-edit'></i>
+                        <FaEdit /> Edit
                       </button>
 
                       <button
                         className='btn btn-danger btn-sm'
                         onClick={() => deleteHandler(user._id)}
                       >
-                        <i className='fas fa-trash'></i>
+                        <FaTrash /> Delete
                       </button>
                     </td>
                   </tr>
@@ -296,25 +297,11 @@ const UserListScreen = () => {
             </table>
           </div>
           <div className='d-flex justify-content-center'>
-            <ReactPaginate
-              previousLabel='previous'
-              previousClassName='page-item'
-              previousLinkClassName='page-link'
-              nextLabel='next'
-              nextClassName='page-item'
-              nextLinkClassName='page-link'
-              pageClassName='page-item'
-              pageLinkClassName='page-link'
-              activeClassName='page-item active'
-              activeLinkClassName={'page-link'}
-              breakLabel={'...'}
-              breakClassName={'page-item'}
-              breakLinkClassName={'page-link'}
-              pageCount={totalItems && totalItems}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={2}
-              onPageChange={(e) => setCurrentPage(e.selected + 1)}
-              containerClassName={'page pagination'}
+            <Pagination
+              setCurrentPage={setCurrentPage}
+              totalItems={totalItems}
+              arrayLength={users && users.length}
+              itemsPerPage={itemsPerPage}
             />
           </div>
         </>

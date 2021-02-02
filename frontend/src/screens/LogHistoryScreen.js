@@ -37,7 +37,10 @@ const UserLogHistoryScreen = () => {
       ) : (
         <>
           <div className='table-responsive'>
-            <table className='table table-sm hover bordered striped'>
+            <table className='table table-sm hover bordered striped caption-top'>
+              <caption>
+                {logHistory && logHistory.length} records were found
+              </caption>
               <thead>
                 <tr>
                   <th>LOG ID</th>

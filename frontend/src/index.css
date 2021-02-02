@@ -1,22 +1,18 @@
 main {
   min-height: 80vh;
 }
-h3 {
-  padding: 1rem 0;
-}
-h1 {
-  font-size: 1.8rem;
-  padding: 1rem 0;
-}
-h2 {
-  font-size: 1.4rem;
-  padding: 0.5rem 0;
-}
-.rating span {
-  margin: 0.1rem;
-}
 
 body,
 .modal-background {
-  background-color: rgb(209, 208, 208);
+  background-color: #c2d3e4d3 !important;
+}
+
+.bg-dark {
+  background-color: #2d83f4 !important;
+}
+.nav-link {
+  color: #fff !important;
+}
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.692) !important;
 }

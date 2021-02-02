@@ -15,7 +15,7 @@ const Message = ({ variant, children }) => {
     return () => {
       clearTimeout(timeId)
     }
-  }, [])
+  }, [dispatch])
 
   return alert && <div className={`alert alert-${variant}`}>{children}</div>
 }

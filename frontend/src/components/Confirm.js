@@ -1,4 +1,5 @@
 import 'react-confirm-alert/src/react-confirm-alert.css'
+import { FaTrash } from 'react-icons/fa'
 
 export const Confirm = (action) => {
   return {
@@ -18,7 +19,7 @@ export const Confirm = (action) => {
                 onClose()
               }}
             >
-              <i className='fa fa-trash'></i> Yes, Delete it!
+              <FaTrash /> Yes, Delete it!
             </button>
           </div>
         </div>
