@@ -84,7 +84,7 @@ const Header = () => {
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
       <div className='container'>
         <Link className='navbar-brand' to='/'>
-          Navbar
+          Boilerplate
         </Link>
         <button
           className='navbar-toggler'

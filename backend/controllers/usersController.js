@@ -1,7 +1,9 @@
+import crypto from 'crypto'
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import LogonSession from '../models/userLogonSessionModel.js'
 import { generateToken } from '../utils/generateToken.js'
+import { sendEmail } from '../utils/sendEmail.js'
 
 const logSession = asyncHandler(async (id) => {
   const user = id
@@ -171,5 +173,102 @@ export const updateUser = asyncHandler(async (req, res) => {
   } else {
     res.status(404)
     throw new Error('User not found')
+  }
+})
+
+export const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body
+
+  const user = await User.findOne({ email })
+
+  if (!user) {
+    res.status(404)
+    throw new Error('No email could not be sent')
+  }
+
+  const resetToken = user.getResetPasswordToken()
+
+  await user.save()
+
+  const resetUrl = `http://localhost:3000/passwordreset/${resetToken}`
+
+  const message = `
+            <div style="text-align: center">
+              <h1>Reset Your Password</h1>
+              <p style="margin-bottom: 20px">
+                Tap the button below to reset your customer account password. If you didn't
+                request a new password, you can safely delete this email.
+              </p>
+              <a
+                target="blank"
+                href=${resetUrl}
+                style="
+                  background-color: rgb(109, 65, 230);
+                  padding: 15px;
+                  border-radius: 20px;
+                  text-decoration: none;
+                  color: white;
+                "
+                >Reset Password</a
+              >
+              <p style="margin-top: 20px">
+                If that doesn't work, copy and paste the following link in your browser:
+              </p>
+
+              <a target="blank" href=${resetUrl} style="margin-bottom: 50px" 
+                >${resetUrl}</a
+              >
+              <hr />
+              <p>Geel Tech Team</p>
+            </div>
+
+  `
+
+  try {
+    sendEmail({
+      to: user.email,
+      subject: 'GeelTech.com - password reset request',
+      text: message,
+    })
+
+    res
+      .status(200)
+      .json(
+        `An email has been sent to ${user.email} with further instructions.`
+      )
+  } catch (error) {
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpire = undefined
+
+    await user.save()
+    res.status(404)
+    throw new Error('Email could not be sent')
+  }
+})
+
+export const resetPassword = asyncHandler(async (req, res) => {
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.resetToken)
+    .digest('hex')
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  })
+
+  if (!user) {
+    res.status(400)
+    throw new Error('Invalid Token')
+  } else {
+    user.password = req.body.password
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpire = undefined
+
+    await user.save()
+
+    res.status(201).json({
+      message: 'Password Updated Success',
+    })
   }
 })

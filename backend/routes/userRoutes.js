@@ -9,12 +9,17 @@ import {
   getUserById,
   updateUser,
   logHistory,
+  forgotPassword,
+  resetPassword,
 } from '../controllers/usersController.js'
 import { admin, protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
 router.route('/').post(registerUser).get(protect, admin, getUsers)
+router.route('/forget-password').post(forgotPassword)
+router.route('/password-reset/:resetToken').put(resetPassword)
+
 router.route('/login').post(authUser)
 router.route('/log').get(logHistory)
 

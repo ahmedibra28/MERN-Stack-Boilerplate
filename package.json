@@ -13,7 +13,7 @@
   "author": "Ahmed Ibrahim",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "concurrently": "^5.3.0",
@@ -25,8 +25,9 @@
     "gravatar": "^1.8.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
-    "mongoose": "^5.11.14",
+    "mongoose": "^5.11.18",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.4.18",
     "nodemon": "^2.0.7"
   }
 }

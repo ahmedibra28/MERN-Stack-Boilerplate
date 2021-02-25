@@ -1,20 +1,13 @@
 import { useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-
-// import Message from '../components/Message'
-// import Loader from '../components/Loader'
 
 const HomeScreen = ({ match }) => {
-  // const dispatch = useDispatch()
-  // const userLogin = useSelector((state) => state.userLogin)
-  // const { userInfo } = userLogin
-
   useEffect(() => {}, [])
 
   return (
-    <>
-      <h1 className='text-center'>Welcome To MERN Boilerplate Home Screen</h1>
-    </>
+    <div className='text-center'>
+      <h6 className='fs-6 text-info fw-lighter'>Welcome To</h6>
+      <h6 className='fs-1 text-info fw-bold'>MERN Stack BoilerPlate</h6>
+    </div>
   )
 }
 
