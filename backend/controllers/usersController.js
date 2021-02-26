@@ -4,6 +4,7 @@ import User from '../models/userModel.js'
 import LogonSession from '../models/userLogonSessionModel.js'
 import { generateToken } from '../utils/generateToken.js'
 import { sendEmail } from '../utils/sendEmail.js'
+import { forgotMessage } from '../utils/forgotEmailTemplate.js'
 
 const logSession = asyncHandler(async (id) => {
   const user = id
@@ -177,7 +178,7 @@ export const updateUser = asyncHandler(async (req, res) => {
 })
 
 export const forgotPassword = asyncHandler(async (req, res) => {
-  const { email } = req.body
+  const email = req.body.email.toLowerCase()
 
   const user = await User.findOne({ email })
 
@@ -190,44 +191,14 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 
   await user.save()
 
-  const resetUrl = `http://localhost:3000/passwordreset/${resetToken}`
+  const resetUrl = `http://localhost:3000/resetpassword/${resetToken}`
 
-  const message = `
-            <div style="text-align: center">
-              <h1>Reset Your Password</h1>
-              <p style="margin-bottom: 20px">
-                Tap the button below to reset your customer account password. If you didn't
-                request a new password, you can safely delete this email.
-              </p>
-              <a
-                target="blank"
-                href=${resetUrl}
-                style="
-                  background-color: rgb(109, 65, 230);
-                  padding: 15px;
-                  border-radius: 20px;
-                  text-decoration: none;
-                  color: white;
-                "
-                >Reset Password</a
-              >
-              <p style="margin-top: 20px">
-                If that doesn't work, copy and paste the following link in your browser:
-              </p>
-
-              <a target="blank" href=${resetUrl} style="margin-bottom: 50px" 
-                >${resetUrl}</a
-              >
-              <hr />
-              <p>Geel Tech Team</p>
-            </div>
-
-  `
+  const message = forgotMessage(resetUrl, user)
 
   try {
     sendEmail({
       to: user.email,
-      subject: 'GeelTech.com - password reset request',
+      subject: 'Password Reset Request',
       text: message,
     })
 
@@ -267,8 +238,6 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
     await user.save()
 
-    res.status(201).json({
-      message: 'Password Updated Success',
-    })
+    res.status(201).json('Password Updated Successfully')
   }
 })

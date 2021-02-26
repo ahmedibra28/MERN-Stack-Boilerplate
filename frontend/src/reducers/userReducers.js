@@ -7,6 +7,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
   USER_DETAILS_SUCCESS,
+  USER_FORGOT_PASSWORD_FAIL,
+  USER_FORGOT_PASSWORD_REQUEST,
+  USER_FORGOT_PASSWORD_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
   USER_LIST_RESET,
@@ -21,6 +24,9 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  USER_RESET_PASSWORD_FAIL,
+  USER_RESET_PASSWORD_REQUEST,
+  USER_RESET_PASSWORD_SUCCESS,
   USER_UPDATE_FAIL,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
@@ -221,6 +227,58 @@ export const userUpdateReducer = (state = { user: {} }, action) => {
     case USER_UPDATE_RESET:
       return {
         user: {},
+      }
+    case CLEAR_ALERTS:
+      return {
+        success: false,
+      }
+    default:
+      return state
+  }
+}
+
+export const userForgotPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_FORGOT_PASSWORD_REQUEST:
+      return {
+        loading: true,
+      }
+    case USER_FORGOT_PASSWORD_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: action.payload,
+      }
+    case USER_FORGOT_PASSWORD_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      }
+    case CLEAR_ALERTS:
+      return {
+        success: false,
+      }
+    default:
+      return state
+  }
+}
+
+export const userResetPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_RESET_PASSWORD_REQUEST:
+      return {
+        loading: true,
+      }
+    case USER_RESET_PASSWORD_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        message: action.payload,
+      }
+    case USER_RESET_PASSWORD_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       }
     case CLEAR_ALERTS:
       return {

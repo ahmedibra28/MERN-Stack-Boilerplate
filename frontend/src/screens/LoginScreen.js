@@ -50,12 +50,17 @@ const LoginScreen = ({ history }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+
         <button type='submit' className='btn btn-info btn-sm'>
           Sign In
         </button>
       </form>
-
-      <div className='row py-3'>
+      <div className='row pt-3'>
+        <div className='col'>
+          <Link to='/forgotpassword'> Forgot Password</Link>
+        </div>
+      </div>
+      <div className='row '>
         <div className='col'>
           New Customer?
           <Link to='/register'> Register</Link>

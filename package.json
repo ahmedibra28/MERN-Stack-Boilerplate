@@ -28,6 +28,7 @@
     "mongoose": "^5.11.18",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.18",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "npm": "^7.5.6"
   }
 }

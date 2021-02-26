@@ -4,18 +4,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { register } from '../actions/userActions'
+import { resetPassword } from '../actions/userActions'
 
-const RegisterScreen = ({ location, history }) => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+const ResetPasswordScreen = ({ location, history, match }) => {
+  const resetToken = match.params.resetToken
+
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState('')
 
   const dispatch = useDispatch()
-  const userRegister = useSelector((state) => state.userRegister)
-  const { loading, error, success } = userRegister
+  const userResetPassword = useSelector((state) => state.userResetPassword)
+  const { loading, error, success, message: successMessage } = userResetPassword
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -28,10 +28,9 @@ const RegisterScreen = ({ location, history }) => {
 
   useEffect(() => {
     if (success) {
-      setName('')
-      setEmail('')
       setPassword('')
       setConfirmPassword('')
+      history.push('/login')
     }
   }, [success])
 
@@ -40,41 +39,18 @@ const RegisterScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Password do not match')
     } else {
-      dispatch(register(name, email, password))
+      dispatch(resetPassword({ password, resetToken }))
     }
   }
+
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
-      {success && (
-        <Message variant='success'>User has registered successfully</Message>
-      )}
+      <h3>Reset Password</h3>
+      {success && <Message variant='success'>{successMessage}</Message>}
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader></Loader>}
       <form onSubmit={submitHandler}>
-        <div className='form-group'>
-          <label htmlFor='name'>Name</label>
-          <input
-            type='text'
-            placeholder='Enter name'
-            className='form-control'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label htmlFor='email'>Email Address</label>
-          <input
-            type='email'
-            placeholder='Enter email'
-            className='form-control'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
@@ -98,18 +74,11 @@ const RegisterScreen = ({ location, history }) => {
           />
         </div>
         <button type='submit' className='btn btn-info btn-sm'>
-          Sign Up
+          Change
         </button>
       </form>
-
-      <div className='row py-3'>
-        <div className='col'>
-          Have an Account?
-          <Link to='/login'> Login</Link>
-        </div>
-      </div>
     </FormContainer>
   )
 }
 
-export default RegisterScreen
+export default ResetPasswordScreen

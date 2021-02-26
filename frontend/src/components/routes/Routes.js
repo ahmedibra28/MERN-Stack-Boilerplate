@@ -11,12 +11,19 @@ import NotFound from '../NotFound'
 import PrivateRoute from '../routes/PrivateRoute'
 import AdminPrivateRoute from '../routes/AdminPrivateRoute'
 import UserLogHistoryScreen from '../../screens/LogHistoryScreen'
+import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen'
+import ResetPasswordScreen from '../../screens/ResetPasswordScreen'
 
 const Routes = () => {
   return (
     <section className='container'>
       <Switch>
+        <Route path='/forgotpassword' component={ForgotPasswordScreen} />
         <Route path='/login' component={LoginScreen} />
+        <Route
+          path='/resetpassword/:resetToken'
+          component={ResetPasswordScreen}
+        />
         <AdminPrivateRoute
           path='/admin/users/logs'
           component={UserLogHistoryScreen}
