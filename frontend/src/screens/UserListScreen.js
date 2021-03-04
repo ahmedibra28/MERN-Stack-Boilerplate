@@ -9,12 +9,17 @@ import {
   FaTimesCircle,
   FaTrash,
 } from 'react-icons/fa'
+
 import {
   listUsers,
   deleteUser,
   updateUser,
-  register,
-} from '../actions/userActions'
+  registerUser,
+  alertDeleteUserReset,
+  alertListUserReset,
+  alertUpdateUserReset,
+} from '../redux/users/usersSlice'
+
 import Pagination from '../components/Pagination'
 
 import { confirmAlert } from 'react-confirm-alert'
@@ -33,24 +38,16 @@ const UserListScreen = () => {
   const dispatch = useDispatch()
 
   const userList = useSelector((state) => state.userList)
-  const { loading, error, users } = userList
-
-  const userDelete = useSelector((state) => state.userDelete)
-  const { success: successDelete, error: errorDelete } = userDelete
-
-  const userRegister = useSelector((state) => state.userRegister)
-  const {
-    loading: loadingCreateRegister,
-    error: errorCreateRegister,
-    success: successCreateRegister,
-  } = userRegister
+  const { users, loadingUsers, errorUsers } = userList
 
   const userUpdate = useSelector((state) => state.userUpdate)
-  const {
-    loading: loadingUpdate,
-    error: errorUpdate,
-    success: successUpdate,
-  } = userUpdate
+  const { loadingUpdate, errorUpdate, successUpdate } = userUpdate
+
+  const userDelete = useSelector((state) => state.userDelete)
+  const { successDelete, errorDelete } = userDelete
+
+  const userRegister = useSelector((state) => state.userRegister)
+  const { loadingRegister, errorRegister, successRegister } = userRegister
 
   const formCleanHandler = () => {
     setName('')
@@ -61,11 +58,39 @@ const UserListScreen = () => {
   }
 
   useEffect(() => {
+    if (
+      errorDelete ||
+      errorRegister ||
+      errorUsers ||
+      errorUpdate ||
+      successDelete ||
+      successRegister ||
+      successUpdate
+    ) {
+      setTimeout(() => {
+        dispatch(alertDeleteUserReset())
+        dispatch(alertListUserReset())
+        dispatch(alertUpdateUserReset())
+        dispatch(alertListUserReset())
+      }, 5000)
+    }
+  }, [
+    errorDelete,
+    errorRegister,
+    errorUsers,
+    errorUpdate,
+    successDelete,
+    successRegister,
+    successUpdate,
+    dispatch,
+  ])
+
+  useEffect(() => {
     dispatch(listUsers())
-    if (successUpdate || successCreateRegister) {
+    if (successUpdate || successRegister) {
       formCleanHandler()
     }
-  }, [dispatch, successDelete, successUpdate, successCreateRegister])
+  }, [dispatch, successDelete, successUpdate, successRegister])
 
   const deleteHandler = (id) => {
     confirmAlert(Confirm(() => dispatch(deleteUser(id))))
@@ -79,7 +104,7 @@ const UserListScreen = () => {
     } else {
       edit
         ? dispatch(updateUser({ _id: id, name, email, password, isAdmin }))
-        : dispatch(register(name, email, password))
+        : dispatch(registerUser({ name, email, password }))
     }
   }
 
@@ -134,20 +159,20 @@ const UserListScreen = () => {
               )}
               {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
               {loadingUpdate && <Loader />}
-              {successCreateRegister && (
+              {successRegister && (
                 <Message variant='success'>
                   User has been Created successfully.
                 </Message>
               )}
-              {errorCreateRegister && (
-                <Message variant='danger'>{errorCreateRegister}</Message>
+              {errorRegister && (
+                <Message variant='danger'>{errorRegister}</Message>
               )}
-              {loadingCreateRegister && <Loader />}
+              {loadingRegister && <Loader />}
 
-              {loading ? (
+              {loadingUsers ? (
                 <Loader />
-              ) : error ? (
-                <Message variant='danger'>{error}</Message>
+              ) : errorUsers ? (
+                <Message variant='danger'>{errorUsers}</Message>
               ) : (
                 <form onSubmit={submitHandler}>
                   <div className='form-group'>
@@ -241,10 +266,10 @@ const UserListScreen = () => {
         <Message variant='success'>User has been deleted successfully.</Message>
       )}
       {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
-      {loading ? (
+      {loadingUsers ? (
         <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
+      ) : errorUsers ? (
+        <Message variant='danger'>{errorUsers}</Message>
       ) : (
         <>
           <div className='table-responsive'>
@@ -260,39 +285,40 @@ const UserListScreen = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map((user) => (
-                  <tr key={user._id}>
-                    <td>{user._id}</td>
-                    <td>{user.name}</td>
-                    <td>
-                      <a href={`mailto:${user.email}`}>{user.email}</a>
-                    </td>
-                    <td>
-                      {user.isAdmin ? (
-                        <FaCheckCircle className='text-success' />
-                      ) : (
-                        <FaTimesCircle className='text-danger' />
-                      )}
-                    </td>
-                    <td className='btn-group'>
-                      <button
-                        className='btn btn-light btn-sm'
-                        onClick={(e) => editHandler(user)}
-                        data-bs-toggle='modal'
-                        data-bs-target='#editUserModal'
-                      >
-                        <FaEdit /> Edit
-                      </button>
+                {currentItems &&
+                  currentItems.map((user) => (
+                    <tr key={user._id}>
+                      <td>{user._id}</td>
+                      <td>{user.name}</td>
+                      <td>
+                        <a href={`mailto:${user.email}`}>{user.email}</a>
+                      </td>
+                      <td>
+                        {user.isAdmin ? (
+                          <FaCheckCircle className='text-success' />
+                        ) : (
+                          <FaTimesCircle className='text-danger' />
+                        )}
+                      </td>
+                      <td className='btn-group'>
+                        <button
+                          className='btn btn-light btn-sm'
+                          onClick={(e) => editHandler(user)}
+                          data-bs-toggle='modal'
+                          data-bs-target='#editUserModal'
+                        >
+                          <FaEdit /> Edit
+                        </button>
 
-                      <button
-                        className='btn btn-danger btn-sm'
-                        onClick={() => deleteHandler(user._id)}
-                      >
-                        <FaTrash /> Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                        <button
+                          className='btn btn-danger btn-sm'
+                          onClick={() => deleteHandler(user._id)}
+                        >
+                          <FaTrash /> Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

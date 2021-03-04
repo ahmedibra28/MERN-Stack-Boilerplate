@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { register } from '../actions/userActions'
+import { registerUser, alertRegisterUserReset } from '../redux/users/usersSlice'
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('')
@@ -15,43 +15,51 @@ const RegisterScreen = ({ location, history }) => {
 
   const dispatch = useDispatch()
   const userRegister = useSelector((state) => state.userRegister)
-  const { loading, error, success } = userRegister
+  const { loadingRegister, errorRegister, successRegister } = userRegister
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
+    if (successRegister || errorRegister) {
+      setTimeout(() => {
+        dispatch(alertRegisterUserReset())
+      }, 5000)
+    }
+  }, [successRegister, dispatch, errorRegister])
+
+  useEffect(() => {
     if (userInfo) {
       history.push('/')
     }
-  }, [])
+  }, [history, userInfo])
 
   useEffect(() => {
-    if (success) {
+    if (successRegister) {
       setName('')
       setEmail('')
       setPassword('')
       setConfirmPassword('')
     }
-  }, [success])
+  }, [successRegister])
 
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
       setMessage('Password do not match')
     } else {
-      dispatch(register(name, email, password))
+      dispatch(registerUser({ name, email, password }))
     }
   }
   return (
     <FormContainer>
       <h1>Sign Up</h1>
-      {success && (
+      {successRegister && (
         <Message variant='success'>User has registered successfully</Message>
       )}
       {message && <Message variant='danger'>{message}</Message>}
-      {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader></Loader>}
+      {errorRegister && <Message variant='danger'>{errorRegister}</Message>}
+      {loadingRegister && <Loader></Loader>}
       <form onSubmit={submitHandler}>
         <div className='form-group'>
           <label htmlFor='name'>Name</label>

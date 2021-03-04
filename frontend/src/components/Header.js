@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../actions/userActions'
+
+import { logout } from '../redux/users/loginSlice'
+import { userDetailsReset } from '../redux/users/userDetailsSlice'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -9,6 +11,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout())
+    dispatch(userDetailsReset())
   }
 
   const authLinks = (
@@ -81,7 +84,7 @@ const Header = () => {
   )
 
   return (
-    <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
+    <nav className='navbar navbar-expand-sm navbar-dark bg-dark'>
       <div className='container'>
         <Link className='navbar-brand' to='/'>
           Boilerplate

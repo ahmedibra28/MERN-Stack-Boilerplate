@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getLogHistory } from '../actions/userActions'
+import { getUserLogHistory } from '../redux/users/logHistorySlice'
 import ReactPaginate from 'react-paginate'
 import Moment from 'react-moment'
 import moment from 'moment'
@@ -14,7 +14,7 @@ const UserLogHistoryScreen = () => {
   const { loading, error, logHistory } = userLogHistory
 
   useEffect(() => {
-    dispatch(getLogHistory())
+    dispatch(getUserLogHistory())
   }, [dispatch])
 
   const [currentPage, setCurrentPage] = useState(1)

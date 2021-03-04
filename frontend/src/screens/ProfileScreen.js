@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import { updateUserProfile } from '../redux/users/userProfileSlice'
+import { getUserDetails } from '../redux/users/userDetailsSlice'
 import FormContainer from '../components/FormContainer'
+import { alertReset } from '../redux/users/userProfileSlice'
 
-const ProfileScreen = ({ history }) => {
+const ProfileScreen = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,16 +19,24 @@ const ProfileScreen = ({ history }) => {
   const { loading, error, user } = userDetails
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { success } = userUpdateProfile
+  const { success, error: errorUpdateProfile } = userUpdateProfile
 
   useEffect(() => {
-    if (!user.name) {
+    if (success || errorUpdateProfile) {
+      setTimeout(() => {
+        dispatch(alertReset())
+      }, 5000)
+    }
+  }, [success, errorUpdateProfile, dispatch])
+
+  useEffect(() => {
+    if (!user) {
       dispatch(getUserDetails('profile'))
     } else {
       setName(user.name)
       setEmail(user.email)
     }
-  }, [dispatch, history, user])
+  }, [dispatch, user])
 
   const submitHandler = (e) => {
     e.preventDefault()

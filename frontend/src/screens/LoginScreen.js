@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { login } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
+import { alertReset, login } from '../redux/users/loginSlice'
 
 const LoginScreen = ({ history }) => {
   const [email, setEmail] = useState('')
@@ -15,12 +15,20 @@ const LoginScreen = ({ history }) => {
   const { loading, error, userInfo } = userLogin
 
   useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        dispatch(alertReset())
+      }, 5000)
+    }
+  }, [dispatch, error])
+
+  useEffect(() => {
     userInfo && history.push('/')
   }, [history, userInfo])
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(login(email, password))
+    dispatch(login({ email, password }))
   }
   return (
     <FormContainer>

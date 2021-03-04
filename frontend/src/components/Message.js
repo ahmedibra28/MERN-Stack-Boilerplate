@@ -1,27 +1,19 @@
-import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { CLEAR_ALERTS } from '../constants/userConstants'
+import { useEffect, useState } from 'react'
 
 const Message = ({ variant, children }) => {
   const [alert, setAlert] = useState(true)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     const timeId = setTimeout(() => {
       setAlert(false)
-      dispatch({ type: CLEAR_ALERTS })
-    }, 4000)
+    }, 5000)
 
     return () => {
       clearTimeout(timeId)
     }
-  }, [dispatch])
+  }, [alert])
 
   return alert && <div className={`alert alert-${variant}`}>{children}</div>
-}
-
-Message.defaultPros = {
-  variant: 'info',
 }
 
 export default Message
