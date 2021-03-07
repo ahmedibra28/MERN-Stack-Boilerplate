@@ -39,7 +39,7 @@ const ResetPasswordScreen = ({ history, match }) => {
     if (userInfo) {
       history.push('/')
     }
-  }, [])
+  }, [history, userInfo])
 
   useEffect(() => {
     if (successResetPassword) {
@@ -47,7 +47,7 @@ const ResetPasswordScreen = ({ history, match }) => {
       setConfirmPassword('')
       history.push('/login')
     }
-  }, [successResetPassword])
+  }, [successResetPassword, history])
 
   const submitHandler = (e) => {
     e.preventDefault()
