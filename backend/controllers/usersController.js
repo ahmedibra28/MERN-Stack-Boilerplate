@@ -36,7 +36,7 @@ export const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin,
+      roles: user.roles,
       token: generateToken(user._id),
     })
   } else {
@@ -46,7 +46,7 @@ export const authUser = asyncHandler(async (req, res) => {
 })
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, isAdmin } = req.body
+  const { name, email, password, roles } = req.body
   const userExist = await User.findOne({ email })
   if (userExist) {
     res.status(400)
@@ -57,7 +57,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    isAdmin,
+    roles,
   })
 
   if (user) {
@@ -65,7 +65,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin,
+      roles: user.roles,
       token: generateToken(user._id),
     })
   } else {
@@ -81,7 +81,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin,
+      roles: user.roles,
     })
   } else {
     res.status(404)
@@ -105,7 +105,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      roles: updatedUser.roles,
       token: generateToken(updatedUser._id),
     })
   } else {
@@ -149,16 +149,21 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
+  const roles = req.body.roles
 
   if (req.params.id == req.user._id) {
     res.status(400)
     throw new Error("You can't edit your own user in the admin area.")
   }
 
+  const userRoles = []
+  roles.admin && userRoles.push('Admin')
+  roles.user && userRoles.push('User')
+
   if (user) {
     user.name = req.body.name || user.name
     user.email = req.body.email.toLowerCase() || user.email
-    user.isAdmin = req.body.isAdmin
+    user.roles = userRoles || user.roles
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -169,7 +174,7 @@ export const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      roles: updatedUser.roles,
     })
   } else {
     res.status(404)

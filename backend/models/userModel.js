@@ -17,10 +17,9 @@ const userScheme = mongoose.Schema(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
+    roles: {
+      type: [String],
+      default: 'User',
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,

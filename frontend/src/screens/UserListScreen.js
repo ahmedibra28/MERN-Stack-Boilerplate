@@ -31,7 +31,8 @@ const UserListScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [adminRole, setAdminRole] = useState(false)
+  const [userRole, setUserRole] = useState(false)
   const [message, setMessage] = useState('')
   const [edit, setEdit] = useState(false)
 
@@ -53,6 +54,8 @@ const UserListScreen = () => {
     setName('')
     setEmail('')
     setPassword('')
+    setAdminRole(false)
+    setUserRole(false)
     setConfirmPassword('')
     setEdit(false)
   }
@@ -96,6 +99,8 @@ const UserListScreen = () => {
     confirmAlert(Confirm(() => dispatch(deleteUser(id))))
   }
 
+  const roles = { admin: adminRole, user: userRole }
+
   const submitHandler = (e) => {
     e.preventDefault()
 
@@ -103,18 +108,23 @@ const UserListScreen = () => {
       setMessage('Password do not match')
     } else {
       edit
-        ? dispatch(updateUser({ _id: id, name, email, password, isAdmin }))
-        : dispatch(registerUser({ name, email, password }))
+        ? dispatch(updateUser({ _id: id, name, email, password, roles }))
+        : dispatch(registerUser({ name, email, password, roles }))
     }
   }
 
   const editHandler = (user) => {
     setName(user.name)
     setEmail(user.email)
-    setIsAdmin(user.isAdmin)
     setPassword('')
     setId(user._id)
     setEdit(true)
+
+    user.roles.map(
+      (role) =>
+        (role === 'Admin' && setAdminRole(true)) ||
+        (role === 'User' && setUserRole(true))
+    )
   }
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -218,17 +228,39 @@ const UserListScreen = () => {
                     />
                   </div>
 
-                  <div className='form-group'>
-                    <input
-                      type='checkbox'
-                      id='isAdmin'
-                      label='Is Admin'
-                      checked={isAdmin}
-                      onChange={(e) => setIsAdmin(e.target.checked)}
-                    />{' '}
-                    <label htmlFor='isAdmin' id='isAdmin'>
-                      Admin?
-                    </label>
+                  <div className='row'>
+                    <div className='col'>
+                      <div className='form-check'>
+                        <input
+                          className='form-check-input'
+                          type='checkbox'
+                          value='Admin'
+                          id='admin'
+                          name='admin'
+                          checked={adminRole}
+                          onChange={(e) => setAdminRole(e.target.checked)}
+                        />
+                        <label className='form-check-label' htmlFor='admin'>
+                          Admin
+                        </label>
+                      </div>
+                    </div>
+                    <div className='col'>
+                      <div className='form-check'>
+                        <input
+                          className='form-check-input'
+                          type='checkbox'
+                          value='User'
+                          id='user'
+                          name='user'
+                          checked={userRole}
+                          onChange={(e) => setUserRole(e.target.checked)}
+                        />
+                        <label className='form-check-label' htmlFor='user'>
+                          User
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <div className='modal-footer'>
@@ -294,7 +326,7 @@ const UserListScreen = () => {
                         <a href={`mailto:${user.email}`}>{user.email}</a>
                       </td>
                       <td>
-                        {user.isAdmin ? (
+                        {user.roles.includes('Admin') ? (
                           <FaCheckCircle className='text-success' />
                         ) : (
                           <FaTimesCircle className='text-danger' />

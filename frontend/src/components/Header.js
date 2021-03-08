@@ -40,7 +40,7 @@ const Header = () => {
         </ul>
       </li>
 
-      {userInfo && userInfo.isAdmin && (
+      {userInfo && userInfo.roles.includes('Admin') && (
         <li className='nav-item dropdown'>
           <span
             className='nav-link dropdown-toggle'
