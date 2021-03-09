@@ -28,7 +28,18 @@ const UserLogHistoryScreen = () => {
 
   return (
     <>
-      <h3>Users Login History</h3>
+      <div className='row'>
+        <div className='col-2'>
+          <h3>Users Log</h3>
+        </div>
+        <div className='col-10'>
+          <input
+            type='text'
+            className='form-control  rounded-pill shadow-lg text-info '
+            placeholder='Search by Email or Name'
+          />
+        </div>
+      </div>
 
       {loading ? (
         <Loader />
@@ -55,10 +66,10 @@ const UserLogHistoryScreen = () => {
                   currentItems.map((log) => (
                     <tr key={log._id}>
                       <td>{log._id}</td>
-                      <td>{log.user.name}</td>
+                      <td>{log.user && log.user.name}</td>
                       <td>
-                        <a href={`mailto:${log.user.email}`}>
-                          {log.user.email}
+                        <a href={`mailto:${log.user && log.user.email}`}>
+                          {log.user && log.user.email}
                         </a>
                       </td>
                       <td>

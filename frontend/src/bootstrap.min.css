@@ -10,7 +10,7 @@
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url(https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap);
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -421,7 +421,6 @@ mark {
 }
 .initialism {
   font-size: 90%;
-  text-transform: uppercase;
 }
 .blockquote {
   margin-bottom: 1rem;
@@ -9252,7 +9251,7 @@ a.text-dark:hover {
 }
 .navbar {
   font-size: 0.765625rem;
-  text-transform: uppercase;
+
   font-weight: 600;
 }
 .navbar-nav .nav-link {
@@ -9279,7 +9278,6 @@ a.text-dark:hover {
 }
 .btn {
   font-size: 0.765625rem;
-  text-transform: uppercase;
 }
 .btn-group-sm > .btn,
 .btn-sm {
@@ -9321,7 +9319,6 @@ h3,
 h4,
 h5,
 h6 {
-  text-transform: uppercase;
   letter-spacing: 3px;
 }
 .text-secondary {
@@ -9329,7 +9326,6 @@ h6 {
 }
 th {
   font-size: 0.765625rem;
-  text-transform: uppercase;
 }
 .table td,
 .table th {

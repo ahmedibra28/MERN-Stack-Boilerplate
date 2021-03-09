@@ -7,16 +7,6 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './bootstrap.min.css'
 import './index.css'
 
-// import { Provider } from 'react-redux'
-// import store from './store'
-
-// ReactDOM.render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>,
-//   document.getElementById('root')
-// )
-
 import store from './redux/store'
 import { Provider } from 'react-redux'
 
