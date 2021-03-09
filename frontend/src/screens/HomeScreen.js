@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const HomeScreen = ({ match }) => {
+const HomeScreen = () => {
   useEffect(() => {}, [])
 
   return (

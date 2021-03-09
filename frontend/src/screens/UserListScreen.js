@@ -21,6 +21,7 @@ import {
 } from '../redux/users/usersSlice'
 
 import Pagination from '../components/Pagination'
+import { UnlockAccess } from '../components/UnlockAccess'
 
 import { confirmAlert } from 'react-confirm-alert'
 import { Confirm } from '../components/Confirm'
@@ -120,11 +121,12 @@ const UserListScreen = () => {
     setId(user._id)
     setEdit(true)
 
-    user.roles.map(
-      (role) =>
-        (role === 'Admin' && setAdminRole(true)) ||
-        (role === 'User' && setUserRole(true))
-    )
+    user &&
+      user.roles.map(
+        (role) =>
+          (role === 'Admin' && setAdminRole(true)) ||
+          (role === 'User' && setUserRole(true))
+      )
   }
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -284,7 +286,7 @@ const UserListScreen = () => {
       </div>
 
       <div className='d-flex justify-content-between align-items-center'>
-        <h1>Users</h1>
+        <h3>Users</h3>
         <button
           className='btn btn-light btn-sm'
           data-bs-toggle='modal'
@@ -326,7 +328,7 @@ const UserListScreen = () => {
                         <a href={`mailto:${user.email}`}>{user.email}</a>
                       </td>
                       <td>
-                        {user.roles.includes('Admin') ? (
+                        {UnlockAccess(user && user.roles) ? (
                           <FaCheckCircle className='text-success' />
                         ) : (
                           <FaTimesCircle className='text-danger' />
@@ -335,7 +337,7 @@ const UserListScreen = () => {
                       <td className='btn-group'>
                         <button
                           className='btn btn-light btn-sm'
-                          onClick={(e) => editHandler(user)}
+                          onClick={() => editHandler(user)}
                           data-bs-toggle='modal'
                           data-bs-target='#editUserModal'
                         >

@@ -48,7 +48,7 @@ const ProfileScreen = () => {
   }
   return (
     <FormContainer>
-      <h2>User Profile</h2>
+      <h3>User Profile</h3>
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {success && <Message variant='success'>Profile Updated </Message>}

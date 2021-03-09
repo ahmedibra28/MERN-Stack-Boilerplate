@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { logout } from '../redux/users/loginSlice'
 import { userDetailsReset } from '../redux/users/userDetailsSlice'
+import { UnlockAccess } from './UnlockAccess'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -40,7 +41,7 @@ const Header = () => {
         </ul>
       </li>
 
-      {userInfo && userInfo.roles.includes('Admin') && (
+      {UnlockAccess(['Admin']) && (
         <li className='nav-item dropdown'>
           <span
             className='nav-link dropdown-toggle'

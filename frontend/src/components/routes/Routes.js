@@ -8,8 +8,7 @@ import RegisterScreen from '../../screens/RegisterScreen'
 import UserListScreen from '../../screens/UserListScreen'
 import NotFound from '../NotFound'
 
-import PrivateRoute from '../routes/PrivateRoute'
-import AdminPrivateRoute from '../routes/AdminPrivateRoute'
+import PrivateRoute from './PrivateRoute'
 import UserLogHistoryScreen from '../../screens/LogHistoryScreen'
 import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen'
 import ResetPasswordScreen from '../../screens/ResetPasswordScreen'
@@ -18,29 +17,38 @@ const Routes = () => {
   return (
     <section className='container'>
       <Switch>
+        <Route exact path='/' component={HomeScreen} />
         <Route path='/forgotpassword' component={ForgotPasswordScreen} />
         <Route path='/login' component={LoginScreen} />
+        <Route path='/register' r component={RegisterScreen} />
+
+        <PrivateRoute
+          role={['Admin', 'User']}
+          path='/profile'
+          component={ProfileScreen}
+        />
+
         <Route
           path='/resetpassword/:resetToken'
           component={ResetPasswordScreen}
         />
-        <AdminPrivateRoute
+        <PrivateRoute
           path='/admin/users/logs'
+          role={['Admin']}
           component={UserLogHistoryScreen}
         />
-        <Route path='/register' component={RegisterScreen} />
-        <PrivateRoute path='/profile' component={ProfileScreen} />
-        <AdminPrivateRoute
+        <PrivateRoute
           exact
           path='/admin/users'
+          role={['Admin']}
           component={UserListScreen}
         />
-        <AdminPrivateRoute
+        <PrivateRoute
           path='/admin/users/page/:pageNumber'
+          role={['Admin']}
           component={UserListScreen}
         />
 
-        <Route exact path='/' component={HomeScreen} />
         <Route component={NotFound} />
       </Switch>
     </section>

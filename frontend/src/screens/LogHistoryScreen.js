@@ -28,7 +28,7 @@ const UserLogHistoryScreen = () => {
 
   return (
     <>
-      <h1>Users Login History</h1>
+      <h3>Users Login History</h3>
 
       {loading ? (
         <Loader />
