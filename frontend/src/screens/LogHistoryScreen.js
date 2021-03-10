@@ -31,8 +31,9 @@ const UserLogHistoryScreen = () => {
       <h3>Users Log</h3>
       <input
         type='text'
-        className='form-control  shadow-lg text-info '
+        className='form-control text-info '
         placeholder='Search by Email or Name'
+        autoFocus
       />
 
       {loading ? (

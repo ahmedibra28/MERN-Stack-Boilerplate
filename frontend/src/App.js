@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import jwt_decode from 'jwt-decode'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
@@ -6,10 +6,13 @@ import Footer from './components/Footer'
 import Routes from './components/routes/Routes'
 import { useDispatch } from 'react-redux'
 import 'animate.css'
+import { FaBars } from 'react-icons/fa'
 
 import { logout } from './redux/users/loginSlice'
 
 const App = () => {
+  const [toggle, setToggle] = useState(true)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,11 +28,19 @@ const App = () => {
   }, [dispatch])
   return (
     <Router>
-      <Header />
-      <main className='container py-3'>
-        <Route component={Routes} />
+      <main className='d-flex'>
+        <Header toggle={toggle} />
+        <div className='container-fluid main-content '>
+          <button
+            onClick={() => setToggle(!toggle)}
+            className='btn btn-info my-1 btn-sm'
+          >
+            <FaBars className='mb-1' /> Toggler
+          </button>
+          <Route component={Routes} />
+          <Footer />
+        </div>
       </main>
-      <Footer />
     </Router>
   )
 }

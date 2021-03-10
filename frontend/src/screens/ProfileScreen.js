@@ -62,6 +62,7 @@ const ProfileScreen = () => {
             className='form-control'
             value={name}
             onChange={(e) => setName(e.target.value)}
+            autoFocus
             required
           />
         </div>

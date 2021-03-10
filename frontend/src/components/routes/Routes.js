@@ -15,7 +15,7 @@ import ResetPasswordScreen from '../../screens/ResetPasswordScreen'
 
 const Routes = () => {
   return (
-    <section className='container-fluid'>
+    <section className='mx-auto'>
       <Switch>
         <Route exact path='/' component={HomeScreen} />
         <Route path='/forgotpassword' component={ForgotPasswordScreen} />

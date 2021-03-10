@@ -1,16 +1,10 @@
-main {
-  min-height: 78vh;
-}
 body {
   background-color: #2d83f448 !important;
 }
 .modal-background {
   background-color: #c2d3e4d3 !important;
 }
-.navbar {
-  border-bottom-right-radius: 50px;
-  border-bottom-left-radius: 50px;
-}
+
 .bg-dark {
   background-color: #2d83f4 !important;
 }
@@ -40,4 +34,23 @@ body {
 .form-control {
   border-bottom-right-radius: 50px;
   border-top-right-radius: 50px;
+  transition: 0.5s ease-in-out;
+}
+.form-control:focus {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175) !important;
+}
+
+nav {
+  width: 250px;
+  margin-left: -260px;
+  transition: 0.5s ease-in-out;
+  position: fixed;
+}
+.active-nav {
+  margin-left: 0;
+  transition: 0.5s ease-in-out;
+}
+.main-content {
+  transition: 0.5s ease-in-out;
+  margin-left: 10px;
 }

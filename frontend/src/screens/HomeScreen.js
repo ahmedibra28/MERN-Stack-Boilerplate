@@ -5,8 +5,9 @@ const HomeScreen = () => {
 
   return (
     <div className='text-center'>
-      <h6 className='fs-6 text-info fw-lighter'>Welcome To</h6>
-      <h6 className='fs-1 text-info fw-bold'>MERN Stack BoilerPlate</h6>
+      <h1 className='fs-6 text-info fw-lighter'>Welcome To</h1>
+      <p className='text-info fw-lighter display-1 '>MERN Stack Boilerplate</p>
+      <span className='spinner-border text-info mt-5'>Welcome</span>
     </div>
   )
 }

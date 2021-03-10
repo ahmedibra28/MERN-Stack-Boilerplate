@@ -79,6 +79,7 @@ const ResetPasswordScreen = ({ history, match }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoFocus
           />
         </div>
         <div className='form-group'>

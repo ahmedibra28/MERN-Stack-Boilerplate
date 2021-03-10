@@ -44,6 +44,7 @@ const LoginScreen = ({ history }) => {
             className='form-control'
             placeholder='Enter email'
             value={email}
+            autoFocus
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
