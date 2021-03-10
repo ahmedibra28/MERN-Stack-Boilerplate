@@ -13,7 +13,15 @@ const Message = ({ variant, children }) => {
     }
   }, [alert])
 
-  return alert && <div className={`alert alert-${variant}`}>{children}</div>
+  return (
+    alert && (
+      <div
+        className={`alert alert-${variant} animate__animated animate__swing`}
+      >
+        {children}
+      </div>
+    )
+  )
 }
 
 export default Message

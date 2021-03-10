@@ -2,8 +2,10 @@ import { useEffect } from 'react'
 import jwt_decode from 'jwt-decode'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Routes from './components/routes/Routes'
 import { useDispatch } from 'react-redux'
+import 'animate.css'
 
 import { logout } from './redux/users/loginSlice'
 
@@ -23,16 +25,11 @@ const App = () => {
   }, [dispatch])
   return (
     <Router>
-      <main className='container-fluid'>
-        <div className='row'>
-          <div className='col-2 px-0'>
-            <Header />
-          </div>
-          <div className='col-10 px-0 py-4'>
-            <Route component={Routes} />
-          </div>
-        </div>
+      <Header />
+      <main className='container py-3'>
+        <Route component={Routes} />
       </main>
+      <Footer />
     </Router>
   )
 }

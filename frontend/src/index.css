@@ -1,5 +1,5 @@
 main {
-  /* min-height: 100vh; */
+  min-height: 78vh;
 }
 body {
   background-color: #2d83f448 !important;
@@ -28,16 +28,16 @@ body {
   color: #2d83f4;
 }
 .dropdown-menu {
-  color: #fff;
+  color: #2d83f4;
   border: none;
   background-color: transparent;
+  background-color: #2d83f4;
+  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 0;
 }
 
 @media only screen and (max-width: 600px) {
   .hide {
     display: none;
   }
-}
-.vh100 {
-  height: 90vh;
 }
