@@ -24,30 +24,6 @@ const Header = () => {
 
   const authLinks = (
     <ul className='navbar-nav mr-right mb-2 mb-lg-0'>
-      <li className='nav-item dropdown'>
-        <span
-          className='nav-link dropdown-toggle'
-          id='navbarDropdown'
-          role='button'
-          data-bs-toggle='dropdown'
-          aria-expanded='false'
-        >
-          <FaUserCircle className='mb-1' /> {userInfo && userInfo.name}
-        </span>
-        <ul className='dropdown-menu' aria-labelledby='navbarDropdown'>
-          <li>
-            <Link to='/profile' className='dropdown-item'>
-              <FaUserCircle className='mb-1' /> Profile
-            </Link>
-          </li>
-          <li>
-            <Link to='/' onClick={logoutHandler} className='dropdown-item'>
-              <FaSignOutAlt className='mb-1' /> Logout
-            </Link>
-          </li>
-        </ul>
-      </li>
-
       {userInfo && userInfo.roles.includes('Admin') && (
         <li className='nav-item dropdown'>
           <span
@@ -73,6 +49,30 @@ const Header = () => {
           </ul>
         </li>
       )}
+      <li className='nav-item dropdown'>
+        <span
+          className='nav-link dropdown-toggle'
+          id='navbarDropdown'
+          role='button'
+          data-bs-toggle='dropdown'
+          aria-expanded='false'
+        >
+          <FaUserCircle className='mb-1' /> {userInfo && userInfo.name}
+        </span>
+        <ul className='dropdown-menu' aria-labelledby='navbarDropdown'>
+          <li>
+            <Link to='/profile' className='dropdown-item'>
+              <FaUserCircle className='mb-1' /> Profile
+            </Link>
+          </li>
+        </ul>
+      </li>
+
+      <li className='nav-item'>
+        <Link to='/' onClick={logoutHandler} className='nav-link'>
+          <FaSignOutAlt className='mb-1' /> Logout
+        </Link>
+      </li>
     </ul>
   )
 
@@ -92,7 +92,7 @@ const Header = () => {
   )
 
   return (
-    <nav className='navbar navbar-expand-sm navbar-dark bg-dark'>
+    <nav className='navbar navbar-expand-sm navbar-dark bg-dark shadow-lg'>
       <div className='container'>
         <Link className='navbar-brand' to='/'>
           Boilerplate
@@ -108,7 +108,7 @@ const Header = () => {
         >
           <span className='navbar-toggler-icon'></span>
         </button>
-        <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+        <div className='collapse navbar-collapse ' id='navbarSupportedContent'>
           <ul className='navbar-nav mr-auto mb-2 mb-lg-0'></ul>
           {userInfo ? authLinks : guestLinks}
         </div>

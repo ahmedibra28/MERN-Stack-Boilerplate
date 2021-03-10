@@ -7,8 +7,9 @@ body {
 .modal-background {
   background-color: #c2d3e4d3 !important;
 }
-.sidebar {
-  border-top-right-radius: 50px;
+.navbar {
+  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 50px;
 }
 .bg-dark {
   background-color: #2d83f4 !important;
@@ -23,6 +24,7 @@ body {
 .dropdown-item {
   color: #fff;
   transition: 0.3s ease-in-out;
+  border-bottom-right-radius: 50px;
 }
 .dropdown-item:hover {
   color: #2d83f4;
@@ -35,9 +37,7 @@ body {
   border-bottom-right-radius: 50px;
   border-bottom-left-radius: 0;
 }
-
-@media only screen and (max-width: 600px) {
-  .hide {
-    display: none;
-  }
+.form-control {
+  border-bottom-right-radius: 50px;
+  border-top-right-radius: 50px;
 }

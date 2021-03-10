@@ -28,18 +28,12 @@ const UserLogHistoryScreen = () => {
 
   return (
     <>
-      <div className='row'>
-        <div className='col-2'>
-          <h3>Users Log</h3>
-        </div>
-        <div className='col-10'>
-          <input
-            type='text'
-            className='form-control  rounded-pill shadow-lg text-info '
-            placeholder='Search by Email or Name'
-          />
-        </div>
-      </div>
+      <h3>Users Log</h3>
+      <input
+        type='text'
+        className='form-control  shadow-lg text-info '
+        placeholder='Search by Email or Name'
+      />
 
       {loading ? (
         <Loader />
