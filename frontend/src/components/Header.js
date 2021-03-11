@@ -22,7 +22,10 @@ const Header = ({ toggle }) => {
   }
 
   const authLinks = (
-    <ul className='navbar-nav mr-right mb-2 mb-lg-0 d-flex flex-column justify-content-between vh-100 position-fixed '>
+    <ul
+      className='navbar-nav mr-right mb-2 mb-lg-0 d-flex flex-column justify-content-between'
+      style={{ minHeight: '90vh' }}
+    >
       <div className='' style={{ marginTop: '7rem' }}>
         {userInfo && userInfo.roles.includes('Admin') && (
           <>
@@ -46,20 +49,26 @@ const Header = ({ toggle }) => {
           </Link>
         </li>
       </div>
-      <div className='mb-5'>
+      <div className='mb-5 pb-5'>
         <li className='nav-item'>
           <Link to='/' onClick={logoutHandler} className='nav-link'>
             <FaSignOutAlt className='mb-1' /> Logout
           </Link>
         </li>
+        <div className='text-center text-light font-monospace'>
+          Copyright &copy; Ahmed
+        </div>
       </div>
     </ul>
   )
 
   const guestLinks = (
-    <ul className='navbar-nav mr-right mb-2 mb-lg-0 d-flex flex-column justify-content-between vh-100 position-fixed'>
+    <ul
+      className='navbar-nav mr-right mb-2 mb-lg-0 d-flex flex-column justify-content-between '
+      style={{ minHeight: '95vh' }}
+    >
       <div></div>
-      <div className='mb-5'>
+      <div className='mb-5 pb-5'>
         <li className='nav-item'>
           <Link to='/register' className='nav-link'>
             <FaUserPlus className='mb-1' /> Register
@@ -70,23 +79,25 @@ const Header = ({ toggle }) => {
             <FaSignInAlt className='mb-1' /> Login
           </Link>
         </li>
+        <div className='text-center text-light font-monospace'>
+          Copyright &copy; Ahmed
+        </div>
       </div>
     </ul>
   )
 
   return (
     <nav
-      className={`navbar navbar-expand-sm navbar-dark bg-dark shadow-lg d-flex flex-column align-items-start min-vh-100 ${
+      className={`navbar  navbar-expand-sm navbar-dark bg-dark shadow-lg d-flex flex-column min-vh-100 ${
         toggle && 'active-nav'
       }`}
       id='sidebar'
     >
-      <div className='container-fluid d-flex flex-column align-items-start sticky-top '>
-        <Link className='navbar-brand text-center ml-2 position-fixed' to='/'>
+      <div className='d-flex flex-column justify-content-between align-items-center min-vh-100 position-fixed'>
+        <Link className='navbar-brand text-center' to='/'>
           <FaUserCircle className='display-3' /> <br />
           {userInfo && userInfo.name}
         </Link>
-
         {userInfo ? authLinks : guestLinks}
       </div>
     </nav>

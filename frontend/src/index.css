@@ -44,13 +44,20 @@ nav {
   width: 250px;
   margin-left: -260px;
   transition: 0.5s ease-in-out;
-  position: fixed;
 }
 .active-nav {
   margin-left: 0;
+
   transition: 0.5s ease-in-out;
 }
 .main-content {
   transition: 0.5s ease-in-out;
   margin-left: 10px;
+}
+
+.toggle-btn {
+  margin-left: -25px;
+  background: #2d83f4 !important;
+  position: fixed;
+  border-end-end-radius: 20px;
 }
