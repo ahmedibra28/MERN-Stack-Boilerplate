@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa'
 
 const Message = ({ variant, children }) => {
   const [alert, setAlert] = useState(true)
@@ -16,9 +17,23 @@ const Message = ({ variant, children }) => {
   return (
     alert && (
       <div
-        className={`alert alert-${variant} animate__animated animate__swing`}
+        className='position-fixed top-0 end-0 p-2 animate__animated animate__lightSpeedInRight '
+        style={{ zIndex: 5 }}
       >
-        {children}
+        <div
+          className={`toast show text-${variant}`}
+          role='alert'
+          style={{ width: 'fit-content' }}
+        >
+          <div className='toast-body text-center '>
+            {variant === 'success' ? (
+              <FaCheckCircle className='fs-4 mr-3' />
+            ) : (
+              <FaTimesCircle className='fs-4 mr-3' />
+            )}
+            {children}
+          </div>
+        </div>
       </div>
     )
   )
