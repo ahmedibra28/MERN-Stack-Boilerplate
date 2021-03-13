@@ -71,7 +71,7 @@ const ForgotPasswordScreen = ({ history }) => {
           />
         </div>
 
-        <button type='submit' className='btn btn-info btn-sm'>
+        <button type='submit' className='btn btn-light btn-sm'>
           Send
         </button>
       </form>

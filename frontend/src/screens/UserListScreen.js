@@ -151,9 +151,9 @@ const UserListScreen = () => {
         <div className='modal-dialog'>
           <div className='modal-content modal-background'>
             <div className='modal-header'>
-              <h5 className='modal-title' id='editUserModalLabel'>
+              <h3 className='modal-title' id='editUserModalLabel'>
                 Edit User
-              </h5>
+              </h3>
               <button
                 type='button'
                 className='btn-close'
@@ -274,7 +274,7 @@ const UserListScreen = () => {
                     >
                       Close
                     </button>
-                    <button type='submit' className='btn btn-info btn-sm'>
+                    <button type='submit' className='btn btn-light btn-sm'>
                       Update
                     </button>
                   </div>
@@ -306,8 +306,8 @@ const UserListScreen = () => {
         <Message variant='danger'>{errorUsers}</Message>
       ) : (
         <>
-          <div className='table-responsive'>
-            <table className='table table-sm hover bordered striped caption-top'>
+          <div className='table-responsive '>
+            <table className='table table-sm hover bordered striped caption-top text-light'>
               <caption>{users && users.length} records were found</caption>
               <thead>
                 <tr>

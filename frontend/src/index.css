@@ -1,35 +1,51 @@
-body {
-  background-color: #2d83f448 !important;
+.bg-dark,
+.btn-dark,
+.table-dark {
+  background-color: #393c40 !important;
+  color: #f9f871 !important;
 }
-.modal-background {
-  background-color: #c2d3e4d3 !important;
+.text-light {
+  color: #f9f871 !important;
+}
+h3 {
+  color: #f9f871;
 }
 
-.bg-dark {
-  background-color: #2d83f4 !important;
+.page-link {
+  color: #f9f871 !important;
+  background-color: #393c40 !important;
 }
+
+a,
+Link,
 .nav-link {
-  color: #fff !important;
-  font-weight: lighter;
+  color: #f9f871 !important;
 }
-.nav-link:hover {
-  color: rgba(255, 255, 255, 0.452) !important;
+
+.text-dark {
+  color: #393c40 !important;
 }
+
+main {
+  min-height: 60vh;
+}
+
+.modal-background {
+  background-color: #393c40 !important;
+}
+
 .dropdown-item {
-  color: #fff;
+  color: #f9f871 !important;
   transition: 0.3s ease-in-out;
-  border-bottom-right-radius: 50px;
+  background-color: transparent;
 }
 .dropdown-item:hover {
-  color: #2d83f4;
+  color: #393c40 !important;
 }
 .dropdown-menu {
-  color: #2d83f4;
+  color: #393c40;
   border: none;
   background-color: transparent;
-  background-color: #2d83f4;
-  border-bottom-right-radius: 50px;
-  border-bottom-left-radius: 0;
 }
 .form-control {
   border-bottom-right-radius: 50px;
@@ -37,27 +53,5 @@ body {
   transition: 0.5s ease-in-out;
 }
 .form-control:focus {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175) !important;
-}
-
-nav {
-  min-width: 200px;
-  margin-left: -200px;
-  transition: 0.5s ease-in-out;
-}
-.active-nav {
-  margin-left: 0;
-
-  transition: 0.5s ease-in-out;
-}
-.main-content {
-  transition: 0.5s ease-in-out;
-  margin-left: 10px;
-}
-
-.toggle-btn {
-  margin-left: -30px;
-  background: #2d83f4 !important;
-  position: fixed;
-  border-end-end-radius: 20px;
+  box-shadow: 0 0.01rem 1rem rgba(255, 255, 255, 0.589) !important;
 }

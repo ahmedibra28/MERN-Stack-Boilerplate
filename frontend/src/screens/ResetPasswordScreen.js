@@ -93,7 +93,7 @@ const ResetPasswordScreen = ({ history, match }) => {
             required
           />
         </div>
-        <button type='submit' className='btn btn-info btn-sm'>
+        <button type='submit' className='btn btn-light btn-sm'>
           Change
         </button>
       </form>

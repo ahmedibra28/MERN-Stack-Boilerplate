@@ -32,7 +32,7 @@ const LoginScreen = ({ history }) => {
   }
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h3>Sign In</h3>
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader></Loader>}
 
@@ -60,7 +60,7 @@ const LoginScreen = ({ history }) => {
           />
         </div>
 
-        <button type='submit' className='btn btn-info btn-sm'>
+        <button type='submit' className='btn btn-light btn-sm'>
           Sign In
         </button>
       </form>

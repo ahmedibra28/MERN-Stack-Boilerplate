@@ -11,10 +11,10 @@ const Pagination = ({
     <>
       {arrayLength > itemsPerPage && (
         <ReactPaginate
-          previousLabel='P'
+          previousLabel='Previous'
           previousClassName='page-item'
           previousLinkClassName='page-link'
-          nextLabel='N'
+          nextLabel='Next'
           nextClassName='page-item'
           nextLinkClassName='page-link'
           pageClassName='page-item'
@@ -28,7 +28,7 @@ const Pagination = ({
           marginPagesDisplayed={2}
           pageRangeDisplayed={2}
           onPageChange={(e) => setCurrentPage(e.selected + 1)}
-          containerClassName={'page pagination'}
+          containerClassName={'page pagination '}
         />
       )}
     </>

@@ -97,7 +97,7 @@ const ProfileScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <button type='submit' className='btn btn-info btn-sm'>
+        <button type='submit' className='btn btn-light  btn-sm'>
           Update
         </button>
       </form>

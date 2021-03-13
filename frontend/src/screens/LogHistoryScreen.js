@@ -6,6 +6,7 @@ import { getUserLogHistory } from '../redux/users/logHistorySlice'
 import ReactPaginate from 'react-paginate'
 import Moment from 'react-moment'
 import moment from 'moment'
+import Pagination from '../components/Pagination'
 
 const UserLogHistoryScreen = () => {
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ const UserLogHistoryScreen = () => {
 
   const [currentPage, setCurrentPage] = useState(1)
 
-  const itemsPerPage = 30
+  const itemsPerPage = 10
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems =
@@ -43,7 +44,7 @@ const UserLogHistoryScreen = () => {
       ) : (
         <>
           <div className='table-responsive'>
-            <table className='table table-sm hover bordered striped caption-top'>
+            <table className='table table-sm hover bordered striped caption-top text-light'>
               <caption>
                 {logHistory && logHistory.length} records were found
               </caption>
@@ -80,30 +81,15 @@ const UserLogHistoryScreen = () => {
               </tbody>
             </table>
           </div>
-          {logHistory && logHistory.length > itemsPerPage && (
-            <div className='d-flex justify-content-center'>
-              <ReactPaginate
-                previousLabel='previous'
-                previousClassName='page-item'
-                previousLinkClassName='page-link'
-                nextLabel='next'
-                nextClassName='page-item'
-                nextLinkClassName='page-link'
-                pageClassName='page-item'
-                pageLinkClassName='page-link'
-                activeClassName='page-item active'
-                activeLinkClassName={'page-link'}
-                breakLabel={'...'}
-                breakClassName={'page-item'}
-                breakLinkClassName={'page-link'}
-                pageCount={totalItems && totalItems}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={2}
-                onPageChange={(e) => setCurrentPage(e.selected + 1)}
-                containerClassName={'page pagination'}
-              />
-            </div>
-          )}
+
+          <div className='d-flex justify-content-center'>
+            <Pagination
+              setCurrentPage={setCurrentPage}
+              totalItems={totalItems}
+              arrayLength={logHistory && logHistory.length}
+              itemsPerPage={itemsPerPage}
+            />
+          </div>
         </>
       )}
     </>

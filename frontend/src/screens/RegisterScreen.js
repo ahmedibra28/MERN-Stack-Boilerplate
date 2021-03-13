@@ -53,7 +53,7 @@ const RegisterScreen = ({ location, history }) => {
   }
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
+      <h3>Sign Up</h3>
       {successRegister && (
         <Message variant='success'>User has registered successfully</Message>
       )}
@@ -106,7 +106,7 @@ const RegisterScreen = ({ location, history }) => {
             required
           />
         </div>
-        <button type='submit' className='btn btn-info btn-sm'>
+        <button type='submit' className='btn btn-light btn-sm'>
           Sign Up
         </button>
       </form>
