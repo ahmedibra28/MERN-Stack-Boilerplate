@@ -151,8 +151,11 @@ const UserListScreen = () => {
         <div className='modal-dialog'>
           <div className='modal-content modal-background'>
             <div className='modal-header'>
-              <h3 className='modal-title' id='editUserModalLabel'>
-                Edit User
+              <h3
+                className='modal-title custom-text-yellow'
+                id='editUserModalLabel'
+              >
+                {edit ? 'Edit User' : 'Add User'}
               </h3>
               <button
                 type='button'
@@ -286,7 +289,7 @@ const UserListScreen = () => {
       </div>
 
       <div className='d-flex justify-content-between align-items-center'>
-        <h3>Users</h3>
+        <h3 className='custom-text-yellow'>Users</h3>
         <button
           className='btn btn-light btn-sm'
           data-bs-toggle='modal'
@@ -307,7 +310,7 @@ const UserListScreen = () => {
       ) : (
         <>
           <div className='table-responsive '>
-            <table className='table table-sm hover bordered striped caption-top text-light'>
+            <table className='table table-sm hover bordered striped caption-top custom-text-yellow'>
               <caption>{users && users.length} records were found</caption>
               <thead>
                 <tr>

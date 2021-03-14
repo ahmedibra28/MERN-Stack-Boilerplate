@@ -1,16 +1,14 @@
-.bg-dark,
-.btn-dark,
-.table-dark {
+.custom-bg-dark,
+.custom-btn-dark,
+.custom-table-dark {
   background-color: #393c40 !important;
   color: #f9f871 !important;
 }
-.text-light {
+.custom-text-yellow {
   color: #f9f871 !important;
 }
-h3 {
-  color: #f9f871;
-}
 
+.custom-page-link,
 .page-link {
   color: #f9f871 !important;
   background-color: #393c40 !important;
@@ -22,7 +20,7 @@ Link,
   color: #f9f871 !important;
 }
 
-.text-dark {
+.custom-text-dark {
   color: #393c40 !important;
 }
 

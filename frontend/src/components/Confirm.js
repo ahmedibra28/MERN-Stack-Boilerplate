@@ -5,7 +5,7 @@ export const Confirm = (action) => {
   return {
     customUI: ({ onClose }) => {
       return (
-        <div className='px-5 py-3 shadow-lg text-center'>
+        <div className='px-5 py-3 shadow-lg text-center text-dark'>
           <h1>Are you sure?</h1>
           <p>You want to delete this?</p>
           <div className='btn-group d-flex justify-content-between'>

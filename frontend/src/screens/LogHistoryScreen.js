@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserLogHistory } from '../redux/users/logHistorySlice'
-import ReactPaginate from 'react-paginate'
 import Moment from 'react-moment'
 import moment from 'moment'
 import Pagination from '../components/Pagination'
@@ -29,7 +28,7 @@ const UserLogHistoryScreen = () => {
 
   return (
     <>
-      <h3>Users Log</h3>
+      <h3 className='custom-text-yellow'>Users Log</h3>
       <input
         type='text'
         className='form-control text-info '
@@ -44,7 +43,7 @@ const UserLogHistoryScreen = () => {
       ) : (
         <>
           <div className='table-responsive'>
-            <table className='table table-sm hover bordered striped caption-top text-light'>
+            <table className='table table-sm hover bordered striped caption-top custom-text-yellow'>
               <caption>
                 {logHistory && logHistory.length} records were found
               </caption>

@@ -32,7 +32,7 @@ const LoginScreen = ({ history }) => {
   }
   return (
     <FormContainer>
-      <h3>Sign In</h3>
+      <h3 className='custom-text-yellow'>Sign In</h3>
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader></Loader>}
 

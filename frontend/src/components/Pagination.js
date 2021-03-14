@@ -12,17 +12,17 @@ const Pagination = ({
       {arrayLength > itemsPerPage && (
         <ReactPaginate
           previousLabel='Previous'
-          previousClassName='page-item'
+          previousClassName='page-item '
           previousLinkClassName='page-link'
           nextLabel='Next'
-          nextClassName='page-item'
+          nextClassName='page-item '
           nextLinkClassName='page-link'
-          pageClassName='page-item'
+          pageClassName='page-item '
           pageLinkClassName='page-link'
-          activeClassName='page-item active'
+          activeClassName='page-item  active'
           activeLinkClassName={'page-link'}
           breakLabel={'...'}
-          breakClassName={'page-item'}
+          breakClassName={'page-item '}
           breakLinkClassName={'page-link'}
           pageCount={totalItems && totalItems}
           marginPagesDisplayed={2}
