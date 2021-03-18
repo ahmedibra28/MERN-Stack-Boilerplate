@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserLogHistory } from '../redux/users/logHistorySlice'
+import { getUserLogHistory } from '../redux/users/usersThunk'
 import Moment from 'react-moment'
 import moment from 'moment'
 import Pagination from '../components/Pagination'
@@ -11,7 +11,7 @@ const UserLogHistoryScreen = () => {
   const dispatch = useDispatch()
 
   const userLogHistory = useSelector((state) => state.userLogHistory)
-  const { loading, error, logHistory } = userLogHistory
+  const { loadingLogHistory, errorLogHistory, logHistory } = userLogHistory
 
   useEffect(() => {
     dispatch(getUserLogHistory())
@@ -36,10 +36,10 @@ const UserLogHistoryScreen = () => {
         autoFocus
       />
 
-      {loading ? (
+      {loadingLogHistory ? (
         <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
+      ) : errorLogHistory ? (
+        <Message variant='danger'>{errorLogHistory}</Message>
       ) : (
         <>
           <div className='table-responsive'>

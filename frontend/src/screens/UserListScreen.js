@@ -11,14 +11,16 @@ import {
 } from 'react-icons/fa'
 
 import {
-  listUsers,
+  resetDeleteUser,
+  resetListUsers,
+  resetUpdateUser,
+} from '../redux/users/usersSlice'
+import {
   deleteUser,
+  listUsers,
   updateUser,
   registerUser,
-  alertDeleteUserReset,
-  alertListUserReset,
-  alertUpdateUserReset,
-} from '../redux/users/usersSlice'
+} from '../redux/users/usersThunk'
 
 import Pagination from '../components/Pagination'
 import { UnlockAccess } from '../components/UnlockAccess'
@@ -40,16 +42,20 @@ const UserListScreen = () => {
   const dispatch = useDispatch()
 
   const userList = useSelector((state) => state.userList)
-  const { users, loadingUsers, errorUsers } = userList
+  const { users, loadingListUsers, errorListUsers } = userList
 
   const userUpdate = useSelector((state) => state.userUpdate)
-  const { loadingUpdate, errorUpdate, successUpdate } = userUpdate
+  const { loadingUpdateUser, errorUpdateUser, successUpdateUser } = userUpdate
 
   const userDelete = useSelector((state) => state.userDelete)
-  const { successDelete, errorDelete } = userDelete
+  const { successDeleteUser, errorDeleteUser } = userDelete
 
   const userRegister = useSelector((state) => state.userRegister)
-  const { loadingRegister, errorRegister, successRegister } = userRegister
+  const {
+    loadingRegisterUser,
+    errorRegisterUser,
+    successRegisterUser,
+  } = userRegister
 
   const formCleanHandler = () => {
     setName('')
@@ -63,38 +69,37 @@ const UserListScreen = () => {
 
   useEffect(() => {
     if (
-      errorDelete ||
-      errorRegister ||
-      errorUsers ||
-      errorUpdate ||
-      successDelete ||
-      successRegister ||
-      successUpdate
+      errorDeleteUser ||
+      errorRegisterUser ||
+      errorListUsers ||
+      errorUpdateUser ||
+      successDeleteUser ||
+      successRegisterUser ||
+      successUpdateUser
     ) {
       setTimeout(() => {
-        dispatch(alertDeleteUserReset())
-        dispatch(alertListUserReset())
-        dispatch(alertUpdateUserReset())
-        dispatch(alertListUserReset())
+        dispatch(resetDeleteUser())
+        dispatch(resetListUsers())
+        dispatch(resetUpdateUser())
       }, 5000)
     }
   }, [
-    errorDelete,
-    errorRegister,
-    errorUsers,
-    errorUpdate,
-    successDelete,
-    successRegister,
-    successUpdate,
+    errorDeleteUser,
+    errorRegisterUser,
+    errorListUsers,
+    errorUpdateUser,
+    successDeleteUser,
+    successRegisterUser,
+    successUpdateUser,
     dispatch,
   ])
 
   useEffect(() => {
     dispatch(listUsers())
-    if (successUpdate || successRegister) {
+    if (successUpdateUser || successRegisterUser) {
       formCleanHandler()
     }
-  }, [dispatch, successDelete, successUpdate, successRegister])
+  }, [dispatch, successDeleteUser, successUpdateUser, successRegisterUser])
 
   const deleteHandler = (id) => {
     confirmAlert(Confirm(() => dispatch(deleteUser(id))))
@@ -167,27 +172,29 @@ const UserListScreen = () => {
             </div>
             <div className='modal-body'>
               {message && <Message variant='danger'>{message}</Message>}
-              {successUpdate && (
+              {successUpdateUser && (
                 <Message variant='success'>
                   User has been updated successfully.
                 </Message>
               )}
-              {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
-              {loadingUpdate && <Loader />}
-              {successRegister && (
+              {errorUpdateUser && (
+                <Message variant='danger'>{errorUpdateUser}</Message>
+              )}
+              {loadingUpdateUser && <Loader />}
+              {successRegisterUser && (
                 <Message variant='success'>
                   User has been Created successfully.
                 </Message>
               )}
-              {errorRegister && (
-                <Message variant='danger'>{errorRegister}</Message>
+              {errorRegisterUser && (
+                <Message variant='danger'>{errorRegisterUser}</Message>
               )}
-              {loadingRegister && <Loader />}
+              {loadingRegisterUser && <Loader />}
 
-              {loadingUsers ? (
+              {loadingListUsers ? (
                 <Loader />
-              ) : errorUsers ? (
-                <Message variant='danger'>{errorUsers}</Message>
+              ) : errorListUsers ? (
+                <Message variant='danger'>{errorListUsers}</Message>
               ) : (
                 <form onSubmit={submitHandler}>
                   <div className='form-group'>
@@ -299,14 +306,14 @@ const UserListScreen = () => {
         </button>
       </div>
 
-      {successDelete && (
+      {successDeleteUser && (
         <Message variant='success'>User has been deleted successfully.</Message>
       )}
-      {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
-      {loadingUsers ? (
+      {errorDeleteUser && <Message variant='danger'>{errorDeleteUser}</Message>}
+      {loadingListUsers ? (
         <Loader />
-      ) : errorUsers ? (
-        <Message variant='danger'>{errorUsers}</Message>
+      ) : errorListUsers ? (
+        <Message variant='danger'>{errorListUsers}</Message>
       ) : (
         <>
           <div className='table-responsive '>

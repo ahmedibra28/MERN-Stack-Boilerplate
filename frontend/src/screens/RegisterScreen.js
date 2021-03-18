@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { registerUser, alertRegisterUserReset } from '../redux/users/usersSlice'
+import { resetRegisterUser } from '../redux/users/usersSlice'
+
+import { registerUser } from '../redux/users/usersThunk'
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('')
@@ -23,7 +25,7 @@ const RegisterScreen = ({ location, history }) => {
   useEffect(() => {
     if (successRegister || errorRegister) {
       setTimeout(() => {
-        dispatch(alertRegisterUserReset())
+        dispatch(resetRegisterUser())
       }, 5000)
     }
   }, [successRegister, dispatch, errorRegister])

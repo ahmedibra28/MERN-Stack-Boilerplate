@@ -7,7 +7,7 @@ import Routes from './components/routes/Routes'
 import { useDispatch } from 'react-redux'
 import 'animate.css'
 
-import { logout } from './redux/users/loginSlice'
+import { logout } from './redux/users/usersSlice'
 
 const App = () => {
   const dispatch = useDispatch()

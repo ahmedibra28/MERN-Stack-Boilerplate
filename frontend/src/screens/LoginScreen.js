@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { alertReset, login } from '../redux/users/loginSlice'
+import { login } from '../redux/users/usersThunk'
+import { resetLoginState } from '../redux/users/usersSlice'
 
 const LoginScreen = ({ history }) => {
   const [email, setEmail] = useState('')
@@ -12,15 +13,15 @@ const LoginScreen = ({ history }) => {
 
   const dispatch = useDispatch()
   const userLogin = useSelector((state) => state.userLogin)
-  const { loading, error, userInfo } = userLogin
+  const { loadingLogin, errorLogin, userInfo } = userLogin
 
   useEffect(() => {
-    if (error) {
+    if (errorLogin) {
       setTimeout(() => {
-        dispatch(alertReset())
+        dispatch(resetLoginState())
       }, 5000)
     }
-  }, [dispatch, error])
+  }, [dispatch, errorLogin])
 
   useEffect(() => {
     userInfo && history.push('/')
@@ -33,8 +34,8 @@ const LoginScreen = ({ history }) => {
   return (
     <FormContainer>
       <h3 className='custom-text-yellow'>Sign In</h3>
-      {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader></Loader>}
+      {errorLogin && <Message variant='danger'>{errorLogin}</Message>}
+      {loadingLogin && <Loader></Loader>}
 
       <form onSubmit={submitHandler}>
         <div className='form-group'>

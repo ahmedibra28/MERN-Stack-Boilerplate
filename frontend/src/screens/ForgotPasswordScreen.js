@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import {
-  alertForgotPasswordReset,
-  forgotPassword,
-} from '../redux/users/resetPasswordSlice'
+import { resetForgotPassword } from '../redux/users/usersSlice'
+import { forgotPassword } from '../redux/users/usersThunk'
 
 const ForgotPasswordScreen = ({ history }) => {
   const [email, setEmail] = useState('')
@@ -26,7 +24,7 @@ const ForgotPasswordScreen = ({ history }) => {
   useEffect(() => {
     if (errorForgotPassword || successForgotPassword) {
       setTimeout(() => {
-        dispatch(alertForgotPasswordReset())
+        dispatch(resetForgotPassword())
       }, 5000)
     }
   }, [dispatch, errorForgotPassword, successForgotPassword])

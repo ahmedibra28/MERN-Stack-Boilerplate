@@ -11,8 +11,7 @@ import {
   FaUserPlus,
   FaUsers,
 } from 'react-icons/fa'
-import { logout } from '../redux/users/loginSlice'
-import { userDetailsReset } from '../redux/users/userDetailsSlice'
+import { resetUpdateUser, logout } from '../redux/users/usersSlice'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -21,7 +20,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout())
-    dispatch(userDetailsReset())
+    dispatch(resetUpdateUser())
   }
 
   const authLinks = (

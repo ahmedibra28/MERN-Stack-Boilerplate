@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { updateUserProfile } from '../redux/users/userProfileSlice'
-import { getUserDetails } from '../redux/users/userDetailsSlice'
+import { getUserDetails, updateUserProfile } from '../redux/users/usersThunk'
 import FormContainer from '../components/FormContainer'
-import { alertReset } from '../redux/users/userProfileSlice'
+import { resetUpdateUserProfile } from '../redux/users/usersSlice'
 
 const ProfileScreen = () => {
   const [name, setName] = useState('')
@@ -16,18 +15,18 @@ const ProfileScreen = () => {
 
   const dispatch = useDispatch()
   const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, user } = userDetails
+  const { loadingUserDetail, errorUserDetail, user } = userDetails
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { success, error: errorUpdateProfile } = userUpdateProfile
+  const { successUpdateUserProfile, errorUpdateUserProfile } = userUpdateProfile
 
   useEffect(() => {
-    if (success || errorUpdateProfile) {
+    if (successUpdateUserProfile || errorUpdateUserProfile) {
       setTimeout(() => {
-        dispatch(alertReset())
+        dispatch(resetUpdateUserProfile())
       }, 5000)
     }
-  }, [success, errorUpdateProfile, dispatch])
+  }, [successUpdateUserProfile, errorUpdateUserProfile, dispatch])
 
   useEffect(() => {
     if (!user) {
@@ -50,9 +49,14 @@ const ProfileScreen = () => {
     <FormContainer>
       <h3 className='custom-text-yellow'>User Profile</h3>
       {message && <Message variant='danger'>{message}</Message>}
-      {error && <Message variant='danger'>{error}</Message>}
-      {success && <Message variant='success'>Profile Updated </Message>}
-      {loading && <Loader></Loader>}
+      {errorUpdateUserProfile && (
+        <Message variant='danger'>{errorUpdateUserProfile}</Message>
+      )}
+      {errorUserDetail && <Message variant='danger'>{errorUserDetail}</Message>}
+      {successUpdateUserProfile && (
+        <Message variant='success'>Profile Updated </Message>
+      )}
+      {loadingUserDetail && <Loader></Loader>}
       <form onSubmit={submitHandler}>
         <div className='form-group'>
           <label htmlFor='name'>Name</label>

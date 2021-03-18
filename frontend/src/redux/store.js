@@ -1,23 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userLoginSlice from './users/loginSlice'
-import getUserLogHistorySlice from './users/logHistorySlice'
-import getUserDetailsSlice from './users/userDetailsSlice'
-import updateUserProfileSlice from './users/userProfileSlice'
-import { forgotPasswordSliceReducer } from './users/resetPasswordSlice'
-import { resetPasswordSliceReducer } from './users/resetPasswordSlice'
 import {
+  userLoginSliceReducer,
   listUserSliceReducer,
-  updateUserSliceReducer,
-  deleteUserSliceReducer,
+  updateUserProfileSliceReducer,
   registerUserSliceReducer,
+  deleteUserSliceReducer,
+  getUserLogHistorySliceReducer,
+  getUserDetailsSliceReducer,
+  updateUserSliceReducer,
+  forgotPasswordSliceReducer,
+  resetPasswordSliceReducer,
 } from './users/usersSlice'
 
 export default configureStore({
   reducer: {
-    userLogin: userLoginSlice,
-    userLogHistory: getUserLogHistorySlice,
-    userDetails: getUserDetailsSlice,
-    userUpdateProfile: updateUserProfileSlice,
+    userLogin: userLoginSliceReducer,
+    userLogHistory: getUserLogHistorySliceReducer,
+    userDetails: getUserDetailsSliceReducer,
+    userUpdateProfile: updateUserProfileSliceReducer,
     userRegister: registerUserSliceReducer,
     userList: listUserSliceReducer,
     userDelete: deleteUserSliceReducer,
