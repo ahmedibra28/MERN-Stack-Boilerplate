@@ -18,10 +18,34 @@ const logSession = asyncHandler(async (id) => {
 })
 
 export const logHistory = asyncHandler(async (req, res) => {
-  const log = await LogonSession.find({})
+  let query = LogonSession.find()
+
+  const page = parseInt(req.query.page) || 1
+  const pageSize = parseInt(req.query.limit) || 50
+  const skip = (page - 1) * pageSize
+  const total = await LogonSession.countDocuments()
+
+  const pages = Math.ceil(total / pageSize)
+
+  query = query
+    .skip(skip)
+    .limit(pageSize)
     .sort({ logDate: -1 })
     .populate('user', ['name', 'email'])
-  res.json(log)
+
+  if (page > pages) {
+    res.status(404)
+    throw new Error('Page not found')
+  }
+  const result = await query
+
+  res.status(200).json({
+    count: result.length,
+    page,
+    pages,
+    total,
+    data: result,
+  })
 })
 
 export const authUser = asyncHandler(async (req, res) => {

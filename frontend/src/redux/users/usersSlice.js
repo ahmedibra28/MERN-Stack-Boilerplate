@@ -160,7 +160,11 @@ const getUserLogHistorySlice = createSlice({
     },
     [getUserLogHistory.fulfilled]: (state, { payload }) => {
       state.loadingLogHistory = false
-      state.logHistory = payload
+      state.logHistory = payload.data
+      state.count = payload.count
+      state.page = payload.page
+      state.pages = payload.pages
+      state.total = payload.total
     },
     [getUserLogHistory.rejected]: (state, { error }) => {
       state.loadingLogHistory = false

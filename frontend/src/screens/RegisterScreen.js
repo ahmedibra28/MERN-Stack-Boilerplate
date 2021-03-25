@@ -55,7 +55,7 @@ const RegisterScreen = ({ location, history }) => {
   }
   return (
     <FormContainer>
-      <h3 className='custom-text-yellow'>Sign Up</h3>
+      <h3 className=''>Sign Up</h3>
       {successRegister && (
         <Message variant='success'>User has registered successfully</Message>
       )}

@@ -47,7 +47,7 @@ const ForgotPasswordScreen = ({ history }) => {
   }
   return (
     <FormContainer>
-      <h3 className='custom-text-yellow'>Forgot Password</h3>
+      <h3 className=''>Forgot Password</h3>
       {successForgotPassword && (
         <Message variant='success'>{successMessage}</Message>
       )}

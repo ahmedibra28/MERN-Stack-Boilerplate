@@ -1,25 +1,3 @@
-.custom-bg-dark,
-.custom-btn-dark,
-.custom-table-dark {
-  background-color: #393c40 !important;
-  color: #f9f871 !important;
-}
-.custom-text-yellow {
-  color: #f9f871 !important;
-}
-
-.custom-page-link,
-.page-link {
-  color: #f9f871 !important;
-  background-color: #393c40 !important;
-}
-
-a,
-Link,
-.nav-link {
-  color: #f9f871 !important;
-}
-
 .custom-text-dark {
   color: #393c40 !important;
 }
@@ -28,14 +6,15 @@ main {
   min-height: 60vh;
 }
 
-.modal-background {
-  background-color: #393c40 !important;
+.modal-background,
+body {
+  background-color: rgb(204, 200, 200) !important;
 }
 
 .dropdown-item {
-  color: #f9f871 !important;
+  color: #fff !important;
   transition: 0.3s ease-in-out;
-  background-color: transparent;
+  background-color: #343a40;
 }
 .dropdown-item:hover {
   color: #393c40 !important;
@@ -52,4 +31,9 @@ main {
 }
 .form-control:focus {
   box-shadow: 0 0.01rem 1rem rgba(255, 255, 255, 0.589) !important;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
 }

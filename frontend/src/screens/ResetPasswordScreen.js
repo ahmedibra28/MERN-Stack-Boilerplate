@@ -59,7 +59,7 @@ const ResetPasswordScreen = ({ history, match }) => {
 
   return (
     <FormContainer>
-      <h3 className='custom-text-yellow'>Reset Password</h3>
+      <h3 className=''>Reset Password</h3>
       {successResetPassword && (
         <Message variant='success'>{successMessage}</Message>
       )}

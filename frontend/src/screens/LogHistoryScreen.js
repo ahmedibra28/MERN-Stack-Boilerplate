@@ -5,30 +5,29 @@ import Loader from '../components/Loader'
 import { getUserLogHistory } from '../redux/users/usersThunk'
 import Moment from 'react-moment'
 import moment from 'moment'
-import Pagination from '../components/Pagination'
+import Paginate from '../components/Paginate'
 
 const UserLogHistoryScreen = () => {
+  const [page, setPage] = useState(1)
+
   const dispatch = useDispatch()
 
   const userLogHistory = useSelector((state) => state.userLogHistory)
-  const { loadingLogHistory, errorLogHistory, logHistory } = userLogHistory
+  const {
+    loadingLogHistory,
+    errorLogHistory,
+    logHistory,
+    total,
+    pages,
+  } = userLogHistory
 
   useEffect(() => {
-    dispatch(getUserLogHistory())
-  }, [dispatch])
-
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const itemsPerPage = 10
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems =
-    logHistory && logHistory.slice(indexOfFirstItem, indexOfLastItem)
-  const totalItems = logHistory && Math.ceil(logHistory.length / itemsPerPage)
+    dispatch(getUserLogHistory(page))
+  }, [dispatch, page])
 
   return (
     <>
-      <h3 className='custom-text-yellow'>Users Log</h3>
+      <h3 className=''>Users Log</h3>
       <input
         type='text'
         className='form-control text-info '
@@ -42,11 +41,12 @@ const UserLogHistoryScreen = () => {
         <Message variant='danger'>{errorLogHistory}</Message>
       ) : (
         <>
+          <div className='d-flex justify-content-center mt-2'>
+            <Paginate setPage={setPage} page={page} pages={pages} />
+          </div>
           <div className='table-responsive'>
-            <table className='table table-sm hover bordered striped caption-top custom-text-yellow'>
-              <caption>
-                {logHistory && logHistory.length} records were found
-              </caption>
+            <table className='table table-sm hover bordered striped caption-top '>
+              <caption>{total} records were found</caption>
               <thead>
                 <tr>
                   <th>LOG ID</th>
@@ -57,8 +57,8 @@ const UserLogHistoryScreen = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems &&
-                  currentItems.map((log) => (
+                {logHistory &&
+                  logHistory.map((log) => (
                     <tr key={log._id}>
                       <td>{log._id}</td>
                       <td>{log.user && log.user.name}</td>
@@ -80,14 +80,8 @@ const UserLogHistoryScreen = () => {
               </tbody>
             </table>
           </div>
-
           <div className='d-flex justify-content-center'>
-            <Pagination
-              setCurrentPage={setCurrentPage}
-              totalItems={totalItems}
-              arrayLength={logHistory && logHistory.length}
-              itemsPerPage={itemsPerPage}
-            />
+            <Paginate setPage={setPage} page={page} pages={pages} />
           </div>
         </>
       )}

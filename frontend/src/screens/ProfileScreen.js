@@ -47,7 +47,7 @@ const ProfileScreen = () => {
   }
   return (
     <FormContainer>
-      <h3 className='custom-text-yellow'>User Profile</h3>
+      <h3 className=''>User Profile</h3>
       {message && <Message variant='danger'>{message}</Message>}
       {errorUpdateUserProfile && (
         <Message variant='danger'>{errorUpdateUserProfile}</Message>

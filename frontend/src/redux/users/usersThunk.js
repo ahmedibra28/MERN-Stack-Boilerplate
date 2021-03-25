@@ -90,10 +90,10 @@ export const deleteUser = createAsyncThunk(
 // get log history
 export const getUserLogHistory = createAsyncThunk(
   'getUserLogHistory',
-  async () => {
+  async (page) => {
     const config = configHeaderNormal()
     try {
-      const { data } = await axios.get(`/api/users/log`, config)
+      const { data } = await axios.get(`/api/users/log?page=${page}`, config)
       return data
     } catch (error) {
       throw error.response.data
