@@ -5,10 +5,11 @@ import Loader from '../components/Loader'
 import { getUserLogHistory } from '../redux/users/usersThunk'
 import Moment from 'react-moment'
 import moment from 'moment'
-import Paginate from '../components/Paginate'
+import Pagination from '../components/Pagination'
 
 const UserLogHistoryScreen = () => {
   const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(30)
 
   const dispatch = useDispatch()
 
@@ -22,8 +23,8 @@ const UserLogHistoryScreen = () => {
   } = userLogHistory
 
   useEffect(() => {
-    dispatch(getUserLogHistory(page))
-  }, [dispatch, page])
+    dispatch(getUserLogHistory({ page, limit }))
+  }, [dispatch, page, limit])
 
   return (
     <>
@@ -42,7 +43,14 @@ const UserLogHistoryScreen = () => {
       ) : (
         <>
           <div className='d-flex justify-content-center mt-2'>
-            <Paginate setPage={setPage} page={page} pages={pages} />
+            <Pagination
+              setPage={setPage}
+              page={page}
+              pages={pages}
+              limit={limit}
+              setLimit={setLimit}
+              total={total}
+            />
           </div>
           <div className='table-responsive'>
             <table className='table table-sm hover bordered striped caption-top '>
@@ -81,7 +89,14 @@ const UserLogHistoryScreen = () => {
             </table>
           </div>
           <div className='d-flex justify-content-center'>
-            <Paginate setPage={setPage} page={page} pages={pages} />
+            <Pagination
+              setPage={setPage}
+              page={page}
+              pages={pages}
+              limit={limit}
+              setLimit={setLimit}
+              total={total}
+            />
           </div>
         </>
       )}

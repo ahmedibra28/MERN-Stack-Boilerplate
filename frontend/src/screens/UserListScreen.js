@@ -22,11 +22,11 @@ import {
   registerUser,
 } from '../redux/users/usersThunk'
 
-import Pagination from '../components/Pagination'
 import { UnlockAccess } from '../components/UnlockAccess'
 
 import { confirmAlert } from 'react-confirm-alert'
 import { Confirm } from '../components/Confirm'
+import Pagination from '../components/Pagination'
 
 const UserListScreen = () => {
   const [id, setId] = useState(null)
@@ -39,10 +39,13 @@ const UserListScreen = () => {
   const [message, setMessage] = useState('')
   const [edit, setEdit] = useState(false)
 
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(30)
+
   const dispatch = useDispatch()
 
   const userList = useSelector((state) => state.userList)
-  const { users, loadingListUsers, errorListUsers } = userList
+  const { users, loadingListUsers, errorListUsers, total, pages } = userList
 
   const userUpdate = useSelector((state) => state.userUpdate)
   const { loadingUpdateUser, errorUpdateUser, successUpdateUser } = userUpdate
@@ -95,11 +98,18 @@ const UserListScreen = () => {
   ])
 
   useEffect(() => {
-    dispatch(listUsers())
+    dispatch(listUsers({ page, limit }))
     if (successUpdateUser || successRegisterUser) {
       formCleanHandler()
     }
-  }, [dispatch, successDeleteUser, successUpdateUser, successRegisterUser])
+  }, [
+    dispatch,
+    successDeleteUser,
+    successUpdateUser,
+    successRegisterUser,
+    page,
+    limit,
+  ])
 
   const deleteHandler = (id) => {
     confirmAlert(Confirm(() => dispatch(deleteUser(id))))
@@ -133,14 +143,6 @@ const UserListScreen = () => {
           (role === 'User' && setUserRole(true))
       )
   }
-
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const itemsPerPage = 5
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = users && users.slice(indexOfFirstItem, indexOfLastItem)
-  const totalItems = users && Math.ceil(users.length / itemsPerPage)
 
   return (
     <>
@@ -313,9 +315,19 @@ const UserListScreen = () => {
         <Message variant='danger'>{errorListUsers}</Message>
       ) : (
         <>
+          <div className='d-flex justify-content-center mt-2'>
+            <Pagination
+              setPage={setPage}
+              page={page}
+              pages={pages}
+              limit={limit}
+              setLimit={setLimit}
+              total={total}
+            />
+          </div>
           <div className='table-responsive '>
             <table className='table table-sm hover bordered striped caption-top '>
-              <caption>{users && users.length} records were found</caption>
+              <caption>{total} records were found</caption>
               <thead>
                 <tr>
                   <th>ID</th>
@@ -326,8 +338,8 @@ const UserListScreen = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentItems &&
-                  currentItems.map((user) => (
+                {users &&
+                  users.map((user) => (
                     <tr key={user._id}>
                       <td>{user._id}</td>
                       <td>{user.name}</td>
@@ -365,10 +377,12 @@ const UserListScreen = () => {
           </div>
           <div className='d-flex justify-content-center'>
             <Pagination
-              setCurrentPage={setCurrentPage}
-              totalItems={totalItems}
-              arrayLength={users && users.length}
-              itemsPerPage={itemsPerPage}
+              setPage={setPage}
+              page={page}
+              pages={pages}
+              limit={limit}
+              setLimit={setLimit}
+              total={total}
             />
           </div>
         </>

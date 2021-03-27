@@ -62,10 +62,13 @@ export const updateUser = createAsyncThunk(
 // get all users
 export const listUsers = createAsyncThunk(
   'listUsers',
-  async (_, { getState }) => {
+  async (options, { getState }) => {
     const config = configHeader(getState)
     try {
-      const { data } = await axios.get(`/api/users`, config)
+      const { data } = await axios.get(
+        `/api/users?page=${options.page}&&limit=${options.limit}`,
+        config
+      )
       return data
     } catch (error) {
       throw error.response.data
@@ -90,10 +93,13 @@ export const deleteUser = createAsyncThunk(
 // get log history
 export const getUserLogHistory = createAsyncThunk(
   'getUserLogHistory',
-  async (page) => {
+  async (options) => {
     const config = configHeaderNormal()
     try {
-      const { data } = await axios.get(`/api/users/log?page=${page}`, config)
+      const { data } = await axios.get(
+        `/api/users/log?page=${options.page}&&limit=${options.limit}`,
+        config
+      )
       return data
     } catch (error) {
       throw error.response.data

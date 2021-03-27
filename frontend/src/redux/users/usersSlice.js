@@ -66,7 +66,11 @@ const listUserSlice = createSlice({
     [listUsers.fulfilled]: (state, { payload }) => {
       state.loadingListUsers = false
       state.successListUsers = true
-      state.users = payload
+      state.users = payload.data
+      state.count = payload.count
+      state.page = payload.page
+      state.pages = payload.pages
+      state.total = payload.total
     },
     [listUsers.rejected]: (state, { error }) => {
       state.loadingListUsers = false

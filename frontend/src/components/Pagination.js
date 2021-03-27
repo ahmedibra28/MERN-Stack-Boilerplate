@@ -1,37 +1,113 @@
 import React from 'react'
-import ReactPaginate from 'react-paginate'
 
-const Pagination = ({
-  totalItems,
-  setCurrentPage,
-  itemsPerPage,
-  arrayLength,
-}) => {
-  return (
+const Pagination = ({ setPage, page, pages, limit, setLimit, total }) => {
+  const middlePagination = (
     <>
-      {arrayLength > itemsPerPage && (
-        <ReactPaginate
-          previousLabel='Previous'
-          previousClassName='page-item '
-          previousLinkClassName='page-link'
-          nextLabel='Next'
-          nextClassName='page-item '
-          nextLinkClassName='page-link'
-          pageClassName='page-item '
-          pageLinkClassName='page-link'
-          activeClassName='page-item  active'
-          activeLinkClassName={'page-link'}
-          breakLabel={'...'}
-          breakClassName={'page-item '}
-          breakLinkClassName={'page-link'}
-          pageCount={totalItems && totalItems}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={2}
-          onPageChange={(e) => setCurrentPage(e.selected + 1)}
-          containerClassName={'page pagination '}
-        />
+      {page !== 1 && (
+        <>
+          <li className='page-item'>
+            <span onClick={() => setPage(1)} className='page-link'>
+              1
+            </span>
+          </li>
+
+          {page + 1 > 4 && (
+            <li className='page-item'>
+              <span className='page-link'>...</span>
+            </li>
+          )}
+        </>
+      )}
+
+      {page > 2 && (
+        <li className='page-item '>
+          <span onClick={() => setPage(page - 1)} className='page-link'>
+            {page === 1 ? page : page - 1}
+          </span>
+        </li>
+      )}
+
+      <li className='page-item active'>
+        <span className='page-link'>{page}</span>
+      </li>
+      {page !== pages && (
+        <li
+          onClick={() => setPage(page === pages ? page : page + 1)}
+          className='page-item'
+        >
+          <span className='page-link'>{page === pages ? page : page + 1}</span>
+        </li>
+      )}
+
+      {page !== pages && page + 1 !== pages && (
+        <>
+          {page + 2 !== pages && (
+            <li className='page-item'>
+              <span className='page-link'>...</span>
+            </li>
+          )}
+
+          <li className='page-item'>
+            <span onClick={() => setPage(pages)} className='page-link'>
+              {pages}
+            </span>
+          </li>
+        </>
       )}
     </>
+  )
+
+  return (
+    pages > 1 && (
+      <nav aria-label='Page navigation example'>
+        <ul className='pagination'>
+          <li className={`page-item ${page === 1 && 'disabled'}`}>
+            <span
+              onClick={() => setPage(page - 1)}
+              className='page-link'
+              aria-label='Previous'
+            >
+              <span aria-hidden='true'>&laquo;</span>
+            </span>
+          </li>
+          {middlePagination}
+          <li className={`page-item ${page === pages && 'disabled'}`}>
+            <span
+              onClick={() => setPage(page + 1)}
+              className='page-link'
+              aria-label='Next'
+            >
+              <span aria-hidden='true'>&raquo;</span>
+            </span>
+          </li>
+          <li className='page-item'>
+            <select
+              onChange={(e) => setLimit(e.target.value)}
+              value={limit}
+              name='limit'
+              className='page-link outline-none shadow-none ml-2'
+              style={{ fontSize: '13px' }}
+            >
+              {total > 10 && page <= total / 5 && (
+                <option value='10'>10</option>
+              )}
+              {total > 30 && page <= total / 20 && (
+                <option value='30'>30</option>
+              )}
+              {total > 50 && page <= total / 50 && (
+                <option value='50'>50</option>
+              )}
+              {total > 100 && page <= total / 80 && (
+                <option value='100'>100</option>
+              )}
+              {total > 200 && page <= total / 150 && (
+                <option value='200'>200</option>
+              )}
+            </select>
+          </li>
+        </ul>
+      </nav>
+    )
   )
 }
 
