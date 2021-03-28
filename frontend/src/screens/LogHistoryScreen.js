@@ -10,6 +10,7 @@ import Pagination from '../components/Pagination'
 const UserLogHistoryScreen = () => {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(30)
+  const [search, setSearch] = useState('')
 
   const dispatch = useDispatch()
 
@@ -23,17 +24,24 @@ const UserLogHistoryScreen = () => {
   } = userLogHistory
 
   useEffect(() => {
-    dispatch(getUserLogHistory({ page, limit }))
-  }, [dispatch, page, limit])
+    search.trim()
+      ? dispatch(getUserLogHistory({ page, limit: total }))
+      : dispatch(getUserLogHistory({ page, limit }))
+  }, [dispatch, page, limit, search])
 
   return (
     <>
       <h3 className=''>Users Log</h3>
+
       <input
         type='text'
         className='form-control text-info '
         placeholder='Search by Email or Name'
+        name='search'
+        value={search}
+        onChange={(e) => setSearch(e.target.value.toLowerCase())}
         autoFocus
+        required
       />
 
       {loadingLogHistory ? (
@@ -66,25 +74,31 @@ const UserLogHistoryScreen = () => {
               </thead>
               <tbody>
                 {logHistory &&
-                  logHistory.map((log) => (
-                    <tr key={log._id}>
-                      <td>{log._id}</td>
-                      <td>{log.user && log.user.name}</td>
-                      <td>
-                        <a href={`mailto:${log.user && log.user.email}`}>
-                          {log.user && log.user.email}
-                        </a>
-                      </td>
-                      <td>
-                        <Moment format='YYYY-MM-DD'>
-                          {moment(log.logDate)}
-                        </Moment>
-                      </td>
-                      <td>
-                        <Moment format='HH:mm:ss'>{moment(log.logDate)}</Moment>
-                      </td>
-                    </tr>
-                  ))}
+                  logHistory.map(
+                    (log) =>
+                      log.user &&
+                      log.user.email.includes(search.trim()) && (
+                        <tr key={log._id}>
+                          <td>{log._id}</td>
+                          <td>{log.user && log.user.name}</td>
+                          <td>
+                            <a href={`mailto:${log.user && log.user.email}`}>
+                              {log.user && log.user.email}
+                            </a>
+                          </td>
+                          <td>
+                            <Moment format='YYYY-MM-DD'>
+                              {moment(log.logDate)}
+                            </Moment>
+                          </td>
+                          <td>
+                            <Moment format='HH:mm:ss'>
+                              {moment(log.logDate)}
+                            </Moment>
+                          </td>
+                        </tr>
+                      )
+                  )}
               </tbody>
             </table>
           </div>

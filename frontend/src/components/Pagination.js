@@ -91,7 +91,7 @@ const Pagination = ({ setPage, page, pages, limit, setLimit, total }) => {
               {total > 10 && page <= total / 5 && (
                 <option value='10'>10</option>
               )}
-              {total > 30 && page <= total / 20 && (
+              {total > 30 && page <= total / 30 && (
                 <option value='30'>30</option>
               )}
               {total > 50 && page <= total / 50 && (
