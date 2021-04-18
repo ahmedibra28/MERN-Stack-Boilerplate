@@ -10,9 +10,9 @@ const HomeScreen = () => {
       <span className='spinner-grow mt-5' /> <br />
       <span>
         Built & Design by{' '}
-        <a href='https://ahmaat.tk' target='blank'>
+        <a href='https://geeltech.com' target='blank'>
           {' '}
-          https://ahmaat.tk
+          https://geeltech.com
         </a>
       </span>
     </div>

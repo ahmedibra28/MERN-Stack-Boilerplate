@@ -27,7 +27,7 @@ const UserLogHistoryScreen = () => {
     search.trim()
       ? dispatch(getUserLogHistory({ page, limit: total }))
       : dispatch(getUserLogHistory({ page, limit }))
-  }, [dispatch, page, limit, search])
+  }, [dispatch, page, limit, search, total])
 
   return (
     <>

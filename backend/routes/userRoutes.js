@@ -21,7 +21,7 @@ router.route('/forgotpassword').post(forgotPassword)
 router.route('/resetpassword/:resetToken').put(resetPassword)
 
 router.route('/login').post(authUser)
-router.route('/log').get(logHistory)
+router.route('/logs').get(protect, admin, logHistory)
 
 router
   .route('/profile')

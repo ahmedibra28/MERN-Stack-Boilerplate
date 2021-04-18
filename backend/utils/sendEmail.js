@@ -2,9 +2,9 @@ import nodemailer from 'nodemailer'
 
 export const sendEmail = (options) => {
   const smtpTransparent = nodemailer.createTransport({
-    service: process.env.SMTP_SERVER,
+    host: process.env.SMTP_SERVER,
     port: process.env.SMTP_PORT,
-    secure: false,
+    secure: true,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_KEY,
@@ -12,7 +12,7 @@ export const sendEmail = (options) => {
   })
 
   const mailOptions = {
-    from: `"Ahmed " <${process.env.SMTP_USER}>`,
+    from: `"Geel Tech Team " <${process.env.SMTP_USER}>`,
     to: options.to,
     subject: options.subject,
     html: options.text,
