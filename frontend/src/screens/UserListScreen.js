@@ -179,7 +179,6 @@ const UserListScreen = () => {
               {errorUpdateUser && (
                 <Message variant='danger'>{errorUpdateUser}</Message>
               )}
-              {loadingUpdateUser && <Loader />}
               {successRegisterUser && (
                 <Message variant='success'>
                   User has been Created successfully.
@@ -188,7 +187,6 @@ const UserListScreen = () => {
               {errorRegisterUser && (
                 <Message variant='danger'>{errorRegisterUser}</Message>
               )}
-              {loadingRegisterUser && <Loader />}
 
               {loadingListUsers ? (
                 <Loader />
@@ -283,8 +281,18 @@ const UserListScreen = () => {
                     >
                       Close
                     </button>
-                    <button type='submit' className='btn btn-light btn-sm'>
-                      Update
+                    <button
+                      type='submit'
+                      className='btn btn-light btn-sm'
+                      disabled={
+                        loadingRegisterUser || (loadingUpdateUser && true)
+                      }
+                    >
+                      {loadingRegisterUser || loadingUpdateUser ? (
+                        <span className='spinner-border spinner-border-sm' />
+                      ) : (
+                        'Submit'
+                      )}
                     </button>
                   </div>
                 </form>

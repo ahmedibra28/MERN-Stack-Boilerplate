@@ -206,8 +206,8 @@ const updateUserProfileSlice = createSlice({
   initialState: {},
   reducers: {
     resetUpdateUserProfile: (state) => {
-      state.success = false
-      state.error = null
+      state.successUpdateUserProfile = false
+      state.errorUpdateUserProfile = null
     },
   },
 

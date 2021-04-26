@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { resetRegisterUser } from '../redux/users/usersSlice'
 
@@ -61,7 +60,6 @@ const RegisterScreen = ({ location, history }) => {
       )}
       {message && <Message variant='danger'>{message}</Message>}
       {errorRegister && <Message variant='danger'>{errorRegister}</Message>}
-      {loadingRegister && <Loader></Loader>}
       <form onSubmit={submitHandler}>
         <div className='form-group'>
           <label htmlFor='name'>Name</label>
@@ -108,8 +106,16 @@ const RegisterScreen = ({ location, history }) => {
             required
           />
         </div>
-        <button type='submit' className='btn btn-light btn-sm'>
-          Sign Up
+        <button
+          type='submit'
+          className='btn btn-light btn-sm'
+          disabled={loadingRegister && true}
+        >
+          {loadingRegister ? (
+            <span className='spinner-border spinner-border-sm' />
+          ) : (
+            'Sign Up'
+          )}
         </button>
       </form>
 

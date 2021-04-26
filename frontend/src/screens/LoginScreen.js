@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { login } from '../redux/users/usersThunk'
 import { resetLoginState } from '../redux/users/usersSlice'
@@ -35,7 +34,6 @@ const LoginScreen = ({ history }) => {
     <FormContainer>
       <h3 className=''>Sign In</h3>
       {errorLogin && <Message variant='danger'>{errorLogin}</Message>}
-      {loadingLogin && <Loader></Loader>}
 
       <form onSubmit={submitHandler}>
         <div className='form-group'>
@@ -61,8 +59,16 @@ const LoginScreen = ({ history }) => {
           />
         </div>
 
-        <button type='submit' className='btn btn-light btn-sm'>
-          Sign In
+        <button
+          type='submit'
+          className='btn btn-light btn-sm'
+          disabled={loadingLogin && true}
+        >
+          {loadingLogin ? (
+            <span className='spinner-border spinner-border-sm' />
+          ) : (
+            'Sign In'
+          )}
         </button>
       </form>
       <div className='row pt-3'>

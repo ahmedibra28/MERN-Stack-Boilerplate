@@ -18,7 +18,11 @@ const ProfileScreen = () => {
   const { loadingUserDetail, errorUserDetail, user } = userDetails
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { successUpdateUserProfile, errorUpdateUserProfile } = userUpdateProfile
+  const {
+    successUpdateUserProfile,
+    errorUpdateUserProfile,
+    loadingUpdateUserProfile,
+  } = userUpdateProfile
 
   useEffect(() => {
     if (successUpdateUserProfile || errorUpdateUserProfile) {
@@ -101,8 +105,16 @@ const ProfileScreen = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <button type='submit' className='btn btn-light  btn-sm'>
-          Update
+        <button
+          type='submit'
+          className='btn btn-light  btn-sm'
+          disabled={loadingUpdateUserProfile && true}
+        >
+          {loadingUpdateUserProfile ? (
+            <span className='spinner-border spinner-border-sm' />
+          ) : (
+            'Update'
+          )}
         </button>
       </form>
     </FormContainer>

@@ -9,7 +9,7 @@
     "@testing-library/user-event": "^13.1.4",
     "animate.css": "^4.1.1",
     "axios": "^0.21.1",
-    "bootstrap": "^5.0.0-beta2",
+    "bootstrap": "^5.0.0-beta3",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-confirm-alert": "^2.7.0",
