@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../redux/users/usersThunk'
 import FormContainer from '../components/FormContainer'
 import { resetUpdateUserProfile } from '../redux/users/usersSlice'
+import { useForm } from 'react-hook-form'
 
 const ProfileScreen = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [message, setMessage] = useState('')
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm()
 
   const dispatch = useDispatch()
   const userDetails = useSelector((state) => state.userDetails)
@@ -36,23 +39,17 @@ const ProfileScreen = () => {
     if (!user) {
       dispatch(getUserDetails('profile'))
     } else {
-      setName(user.name)
-      setEmail(user.email)
+      setValue('name', user.name)
+      setValue('email', user.email)
     }
-  }, [dispatch, user])
+  }, [dispatch, user, setValue])
 
-  const submitHandler = (e) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      setMessage('Password do not match')
-    } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }))
-    }
+  const submitHandler = (data) => {
+    dispatch(updateUserProfile(data))
   }
   return (
     <FormContainer>
       <h3 className=''>User Profile</h3>
-      {message && <Message variant='danger'>{message}</Message>}
       {errorUpdateUserProfile && (
         <Message variant='danger'>{errorUpdateUserProfile}</Message>
       )}
@@ -61,49 +58,75 @@ const ProfileScreen = () => {
         <Message variant='success'>Profile Updated </Message>
       )}
       {loadingUserDetail && <Loader></Loader>}
-      <form onSubmit={submitHandler}>
+      <form onSubmit={handleSubmit(submitHandler)}>
         <div className='form-group'>
           <label htmlFor='name'>Name</label>
           <input
+            {...register('name', { required: 'Name is required' })}
             type='text'
             placeholder='Enter name'
             className='form-control'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
             autoFocus
-            required
           />
+          {errors.name && (
+            <span className='text-danger'>{errors.name.message}</span>
+          )}
         </div>
         <div className='form-group'>
           <label htmlFor='email'>Email Address</label>
           <input
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /\S+@\S+\.+\S+/,
+                message: 'Entered value does not match email format',
+              },
+            })}
             type='email'
             placeholder='Enter email'
             className='form-control'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
           />
+          {errors.email && (
+            <span className='text-danger'>{errors.email.message}</span>
+          )}
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
+            {...register('password', {
+              minLength: {
+                value: 6,
+                message: 'Password must have at least 6 characters',
+              },
+            })}
             type='password'
             placeholder='Enter password'
             className='form-control'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
+          {errors.password && (
+            <span className='text-danger'>{errors.password.message}</span>
+          )}
         </div>
         <div className='form-group'>
           <label htmlFor='confirmPassword'>Confirm Password</label>
           <input
+            {...register('confirmPassword', {
+              minLength: {
+                value: 6,
+                message: 'Password must have at least 6 characters',
+              },
+              validate: (value) =>
+                value === watch().password || 'The passwords do not match',
+            })}
             type='password'
             placeholder='Confirm password'
             className='form-control'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
           />
+          {errors.confirmPassword && (
+            <span className='text-danger'>
+              {errors.confirmPassword.message}
+            </span>
+          )}
         </div>
         <button
           type='submit'

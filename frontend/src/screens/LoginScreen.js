@@ -1,14 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import { login } from '../redux/users/usersThunk'
 import { resetLoginState } from '../redux/users/usersSlice'
+import { useForm } from 'react-hook-form'
 
 const LoginScreen = ({ history }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
 
   const dispatch = useDispatch()
   const userLogin = useSelector((state) => state.userLogin)
@@ -26,37 +30,46 @@ const LoginScreen = ({ history }) => {
     userInfo && history.push('/')
   }, [history, userInfo])
 
-  const submitHandler = (e) => {
-    e.preventDefault()
-    dispatch(login({ email, password }))
+  const submitHandler = (data) => {
+    dispatch(login(data))
   }
   return (
     <FormContainer>
       <h3 className=''>Sign In</h3>
       {errorLogin && <Message variant='danger'>{errorLogin}</Message>}
 
-      <form onSubmit={submitHandler}>
+      <form onSubmit={handleSubmit(submitHandler)}>
         <div className='form-group'>
           <label htmlFor='email'>Email Address</label>
           <input
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /\S+@\S+\.+\S+/,
+                message: 'Entered value does not match email format',
+              },
+            })}
             type='email'
             className='form-control'
             placeholder='Enter email'
-            value={email}
             autoFocus
-            onChange={(e) => setEmail(e.target.value)}
           />
+          {errors.email && (
+            <span className='text-danger'>{errors.email.message}</span>
+          )}
         </div>
 
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
+            {...register('password', { required: 'Password is required' })}
             type='password'
             placeholder='Enter password'
             className='form-control'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
+          {errors.password && (
+            <span className='text-danger'>{errors.password.message}</span>
+          )}
         </div>
 
         <button

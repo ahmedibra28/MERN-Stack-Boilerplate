@@ -14,6 +14,7 @@ import {
   resetDeleteUser,
   resetListUsers,
   resetUpdateUser,
+  resetRegisterUser,
 } from '../redux/users/usersSlice'
 import {
   deleteUser,
@@ -27,16 +28,24 @@ import { UnlockAccess } from '../components/UnlockAccess'
 import { confirmAlert } from 'react-confirm-alert'
 import { Confirm } from '../components/Confirm'
 import Pagination from '../components/Pagination'
+import { useForm } from 'react-hook-form'
 
 const UserListScreen = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      admin: false,
+      user: false,
+    },
+  })
+
   const [id, setId] = useState(null)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [adminRole, setAdminRole] = useState(false)
-  const [userRole, setUserRole] = useState(false)
-  const [message, setMessage] = useState('')
   const [edit, setEdit] = useState(false)
 
   const [page, setPage] = useState(1)
@@ -61,13 +70,8 @@ const UserListScreen = () => {
   } = userRegister
 
   const formCleanHandler = () => {
-    setName('')
-    setEmail('')
-    setPassword('')
-    setAdminRole(false)
-    setUserRole(false)
-    setConfirmPassword('')
     setEdit(false)
+    reset()
   }
 
   useEffect(() => {
@@ -84,6 +88,7 @@ const UserListScreen = () => {
         dispatch(resetDeleteUser())
         dispatch(resetListUsers())
         dispatch(resetUpdateUser())
+        dispatch(resetRegisterUser())
       }, 5000)
     }
   }, [
@@ -102,6 +107,7 @@ const UserListScreen = () => {
     if (successUpdateUser || successRegisterUser) {
       formCleanHandler()
     }
+    // eslint-disable-next-line
   }, [
     dispatch,
     successDeleteUser,
@@ -115,32 +121,32 @@ const UserListScreen = () => {
     confirmAlert(Confirm(() => dispatch(deleteUser(id))))
   }
 
-  const roles = { admin: adminRole, user: userRole }
-
-  const submitHandler = (e) => {
-    e.preventDefault()
-
-    if (password !== confirmPassword) {
-      setMessage('Password do not match')
-    } else {
-      edit
-        ? dispatch(updateUser({ _id: id, name, email, password, roles }))
-        : dispatch(registerUser({ name, email, password, roles }))
-    }
+  const submitHandler = (data) => {
+    edit
+      ? dispatch(
+          updateUser({
+            _id: id,
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            admin: data.admin,
+            user: data.user,
+          })
+        )
+      : dispatch(registerUser(data))
   }
 
   const editHandler = (user) => {
-    setName(user.name)
-    setEmail(user.email)
-    setPassword('')
     setId(user._id)
     setEdit(true)
+    setValue('name', user.name)
+    setValue('email', user.email)
 
     user &&
       user.roles.map(
         (role) =>
-          (role === 'Admin' && setAdminRole(true)) ||
-          (role === 'User' && setUserRole(true))
+          (role === 'Admin' && setValue('admin', true)) ||
+          (role === 'User' && setValue('user', true))
       )
   }
 
@@ -170,7 +176,6 @@ const UserListScreen = () => {
               ></button>
             </div>
             <div className='modal-body'>
-              {message && <Message variant='danger'>{message}</Message>}
               {successUpdateUser && (
                 <Message variant='success'>
                   User has been updated successfully.
@@ -193,48 +198,80 @@ const UserListScreen = () => {
               ) : errorListUsers ? (
                 <Message variant='danger'>{errorListUsers}</Message>
               ) : (
-                <form onSubmit={submitHandler}>
+                <form onSubmit={handleSubmit(submitHandler)}>
                   <div className='form-group'>
                     <label htmlFor='name'>Name</label>
                     <input
+                      {...register('name', { required: 'Name is required' })}
                       type='text'
                       placeholder='Enter name'
                       className='form-control'
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
+                      autoFocus
                     />
+                    {errors.name && (
+                      <span className='text-danger'>{errors.name.message}</span>
+                    )}
                   </div>
                   <div className='form-group'>
                     <label htmlFor='email'>Email Address</label>
                     <input
+                      {...register('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /\S+@\S+\.+\S+/,
+                          message: 'Entered value does not match email format',
+                        },
+                      })}
                       type='email'
                       placeholder='Enter email'
                       className='form-control'
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
                     />
+                    {errors.email && (
+                      <span className='text-danger'>
+                        {errors.email.message}
+                      </span>
+                    )}
                   </div>
                   <div className='form-group'>
                     <label htmlFor='password'>Password</label>
                     <input
+                      {...register('password', {
+                        minLength: {
+                          value: 6,
+                          message: 'Password must have at least 6 characters',
+                        },
+                      })}
                       type='password'
                       placeholder='Enter password'
                       className='form-control'
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
                     />
+                    {errors.password && (
+                      <span className='text-danger'>
+                        {errors.password.message}
+                      </span>
+                    )}
                   </div>
                   <div className='form-group'>
                     <label htmlFor='confirmPassword'>Confirm Password</label>
                     <input
+                      {...register('confirmPassword', {
+                        minLength: {
+                          value: 6,
+                          message: 'Password must have at least 6 characters',
+                        },
+                        validate: (value) =>
+                          value === watch().password ||
+                          'The passwords do not match',
+                      })}
                       type='password'
                       placeholder='Confirm password'
                       className='form-control'
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
+                    {errors.confirmPassword && (
+                      <span className='text-danger'>
+                        {errors.confirmPassword.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className='row'>
@@ -243,11 +280,9 @@ const UserListScreen = () => {
                         <input
                           className='form-check-input'
                           type='checkbox'
-                          value='Admin'
                           id='admin'
-                          name='admin'
-                          checked={adminRole}
-                          onChange={(e) => setAdminRole(e.target.checked)}
+                          {...register('admin')}
+                          checked={watch().admin}
                         />
                         <label className='form-check-label' htmlFor='admin'>
                           Admin
@@ -259,11 +294,9 @@ const UserListScreen = () => {
                         <input
                           className='form-check-input'
                           type='checkbox'
-                          value='User'
                           id='user'
-                          name='user'
-                          checked={userRole}
-                          onChange={(e) => setUserRole(e.target.checked)}
+                          {...register('user')}
+                          checked={watch().user}
                         />
                         <label className='form-check-label' htmlFor='user'>
                           User

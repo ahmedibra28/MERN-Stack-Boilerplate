@@ -6,28 +6,36 @@ import FormContainer from '../components/FormContainer'
 import { resetRegisterUser } from '../redux/users/usersSlice'
 
 import { registerUser } from '../redux/users/usersThunk'
+import { useForm } from 'react-hook-form'
 
 const RegisterScreen = ({ location, history }) => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [message, setMessage] = useState('')
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      admin: false,
+      user: false,
+    },
+  })
 
   const dispatch = useDispatch()
   const userRegister = useSelector((state) => state.userRegister)
-  const { loadingRegister, errorRegister, successRegister } = userRegister
+  const { loadingRegister, errorRegister, successRegisterUser } = userRegister
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   useEffect(() => {
-    if (successRegister || errorRegister) {
+    if (successRegisterUser || errorRegister) {
       setTimeout(() => {
         dispatch(resetRegisterUser())
       }, 5000)
     }
-  }, [successRegister, dispatch, errorRegister])
+  }, [successRegisterUser, dispatch, errorRegister])
 
   useEffect(() => {
     if (userInfo) {
@@ -36,75 +44,93 @@ const RegisterScreen = ({ location, history }) => {
   }, [history, userInfo])
 
   useEffect(() => {
-    if (successRegister) {
-      setName('')
-      setEmail('')
-      setPassword('')
-      setConfirmPassword('')
+    if (successRegisterUser) {
+      reset()
     }
-  }, [successRegister])
+  }, [successRegisterUser])
 
-  const submitHandler = (e) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      setMessage('Password do not match')
-    } else {
-      dispatch(registerUser({ name, email, password }))
-    }
+  const submitHandler = (data) => {
+    dispatch(registerUser(data))
   }
   return (
     <FormContainer>
       <h3 className=''>Sign Up</h3>
-      {successRegister && (
+      {successRegisterUser && (
         <Message variant='success'>User has registered successfully</Message>
       )}
-      {message && <Message variant='danger'>{message}</Message>}
+
       {errorRegister && <Message variant='danger'>{errorRegister}</Message>}
-      <form onSubmit={submitHandler}>
+      <form onSubmit={handleSubmit(submitHandler)}>
         <div className='form-group'>
           <label htmlFor='name'>Name</label>
           <input
+            {...register('name', { required: 'Name is required' })}
             type='text'
             placeholder='Enter name'
             className='form-control'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
             autoFocus
           />
+          {errors.name && (
+            <span className='text-danger'>{errors.name.message}</span>
+          )}
         </div>
         <div className='form-group'>
           <label htmlFor='email'>Email Address</label>
           <input
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /\S+@\S+\.+\S+/,
+                message: 'Entered value does not match email format',
+              },
+            })}
             type='email'
             placeholder='Enter email'
             className='form-control'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
           />
+          {errors.email && (
+            <span className='text-danger'>{errors.email.message}</span>
+          )}
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
+            {...register('password', {
+              required: 'Password is required',
+              minLength: {
+                value: 6,
+                message: 'Password must have at least 6 characters',
+              },
+            })}
             type='password'
             placeholder='Enter password'
             className='form-control'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
           />
+          {errors.password && (
+            <span className='text-danger'>{errors.password.message}</span>
+          )}
         </div>
         <div className='form-group'>
           <label htmlFor='confirmPassword'>Confirm Password</label>
           <input
+            {...register('confirmPassword', {
+              required: 'Confirm password is required',
+              minLength: {
+                value: 6,
+                message: 'Password must have at least 6 characters',
+              },
+              validate: (value) =>
+                value === watch().password || 'The passwords do not match',
+            })}
             type='password'
             placeholder='Confirm password'
             className='form-control'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
           />
+          {errors.confirmPassword && (
+            <span className='text-danger'>
+              {errors.confirmPassword.message}
+            </span>
+          )}
         </div>
         <button
           type='submit'

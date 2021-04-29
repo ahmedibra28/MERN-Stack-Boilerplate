@@ -69,13 +69,13 @@ const Header = () => {
               </li>
             </ul>
           </li>
-          <li className='nav-item'>
-            <Link to='/' onClick={logoutHandler} className='nav-link'>
-              <FaPowerOff className='mb-1' /> Logout
-            </Link>
-          </li>
         </>
       )}
+      <li className='nav-item'>
+        <Link to='/' onClick={logoutHandler} className='nav-link'>
+          <FaPowerOff className='mb-1' /> Logout
+        </Link>
+      </li>
     </ul>
   )
 

@@ -70,7 +70,7 @@ export const authUser = asyncHandler(async (req, res) => {
 })
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, roles } = req.body
+  const { name, email, password, admin, user } = req.body
   const userExist = await User.findOne({ email })
   if (userExist) {
     res.status(400)
@@ -78,23 +78,26 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 
   const userRoles = []
-  roles.admin && userRoles.push('Admin')
-  roles.user && userRoles.push('User')
+  admin && userRoles.push('Admin')
+  user && userRoles.push('User')
+  !admin && !user && userRoles.push('User')
 
-  const user = await User.create({
+  const userCreate = await User.create({
     name,
     email,
     password,
     roles: userRoles,
   })
 
-  if (user) {
+  console.log(userCreate)
+
+  if (userCreate) {
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      roles: user.roles,
-      token: generateToken(user._id),
+      _id: userCreate._id,
+      name: userCreate.name,
+      email: userCreate.email,
+      roles: userCreate.roles,
+      token: generateToken(userCreate._id),
     })
   } else {
     res.status(400)
@@ -201,8 +204,9 @@ export const getUserById = asyncHandler(async (req, res) => {
 })
 
 export const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
-  const roles = req.body.roles
+  const userExist = await User.findById(req.params.id)
+  const admin = req.body.admin
+  const user = req.body.user
 
   if (req.params.id == req.user._id) {
     res.status(400)
@@ -210,18 +214,18 @@ export const updateUser = asyncHandler(async (req, res) => {
   }
 
   const userRoles = []
-  roles.admin && userRoles.push('Admin')
-  roles.user && userRoles.push('User')
+  admin && userRoles.push('Admin')
+  user && userRoles.push('User')
 
-  if (user) {
-    user.name = req.body.name || user.name
-    user.email = req.body.email.toLowerCase() || user.email
-    user.roles = userRoles || user.roles
+  if (userExist) {
+    userExist.name = req.body.name || userExist.name
+    userExist.email = req.body.email.toLowerCase() || userExist.email
+    userExist.roles = userRoles || userExist.roles
     if (req.body.password) {
-      user.password = req.body.password
+      userExist.password = req.body.password
     }
 
-    const updatedUser = await user.save()
+    const updatedUser = await userExist.save()
 
     res.json({
       _id: updatedUser._id,
