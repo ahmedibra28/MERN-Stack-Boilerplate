@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { resetForgotPassword } from '../redux/users/usersSlice'
 import { forgotPassword } from '../redux/users/usersThunk'
+import { useForm } from 'react-hook-form'
 
 const ForgotPasswordScreen = ({ history }) => {
-  const [email, setEmail] = useState('')
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm()
 
   const dispatch = useDispatch()
   const userForgotPassword = useSelector((state) => state.userForgotPassword)
@@ -27,7 +32,7 @@ const ForgotPasswordScreen = ({ history }) => {
         dispatch(resetForgotPassword())
       }, 5000)
     }
-  }, [dispatch, errorForgotPassword, successForgotPassword])
+  }, [dispatch, errorForgotPassword, successForgotPassword, reset])
 
   useEffect(() => {
     if (userInfo) {
@@ -37,13 +42,12 @@ const ForgotPasswordScreen = ({ history }) => {
 
   useEffect(() => {
     if (successForgotPassword) {
-      setEmail('')
+      reset()
     }
-  }, [successForgotPassword])
+  }, [successForgotPassword, reset])
 
-  const submitHandler = (e) => {
-    e.preventDefault()
-    dispatch(forgotPassword({ email }))
+  const submitHandler = (data) => {
+    dispatch(forgotPassword(data))
   }
   return (
     <FormContainer>
@@ -54,23 +58,38 @@ const ForgotPasswordScreen = ({ history }) => {
       {errorForgotPassword && (
         <Message variant='danger'>{errorForgotPassword}</Message>
       )}
-      {loadingForgotPassword && <Loader></Loader>}
-      <form onSubmit={submitHandler}>
+
+      <form onSubmit={handleSubmit(submitHandler)}>
         <div className='form-group'>
           <label htmlFor='email'>Email Address</label>
           <input
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /\S+@\S+\.+\S+/,
+                message: 'Entered value does not match email format',
+              },
+            })}
             type='email'
             placeholder='Enter email'
             className='form-control'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
             autoFocus
           />
+          {errors.email && (
+            <span className='text-danger'>{errors.email.message}</span>
+          )}
         </div>
 
-        <button type='submit' className='btn btn-light btn-sm'>
-          Send
+        <button
+          type='submit'
+          className='btn btn-light  btn-sm'
+          disabled={loadingForgotPassword && true}
+        >
+          {loadingForgotPassword ? (
+            <span className='spinner-border spinner-border-sm' />
+          ) : (
+            'Send'
+          )}
         </button>
       </form>
     </FormContainer>

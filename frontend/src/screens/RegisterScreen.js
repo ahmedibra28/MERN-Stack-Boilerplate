@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -8,7 +8,7 @@ import { resetRegisterUser } from '../redux/users/usersSlice'
 import { registerUser } from '../redux/users/usersThunk'
 import { useForm } from 'react-hook-form'
 
-const RegisterScreen = ({ location, history }) => {
+const RegisterScreen = ({ history }) => {
   const {
     register,
     handleSubmit,
@@ -47,7 +47,7 @@ const RegisterScreen = ({ location, history }) => {
     if (successRegisterUser) {
       reset()
     }
-  }, [successRegisterUser])
+  }, [successRegisterUser, reset])
 
   const submitHandler = (data) => {
     dispatch(registerUser(data))

@@ -1,18 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { resetResetPassword } from '../redux/users/usersSlice'
 
 import { resetPassword } from '../redux/users/usersThunk'
+import { useForm } from 'react-hook-form'
 
 const ResetPasswordScreen = ({ history, match }) => {
   const resetToken = match.params.resetToken
 
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [message, setMessage] = useState('')
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      admin: false,
+      user: false,
+    },
+  })
 
   const dispatch = useDispatch()
   const userResetPassword = useSelector((state) => state.userResetPassword)
@@ -42,19 +51,14 @@ const ResetPasswordScreen = ({ history, match }) => {
 
   useEffect(() => {
     if (successResetPassword) {
-      setPassword('')
-      setConfirmPassword('')
+      reset()
       history.push('/login')
     }
-  }, [successResetPassword, history])
+  }, [successResetPassword, history, reset])
 
-  const submitHandler = (e) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      setMessage('Password do not match')
-    } else {
-      dispatch(resetPassword({ password, resetToken }))
-    }
+  const submitHandler = (data) => {
+    const password = data.password
+    dispatch(resetPassword({ password, resetToken }))
   }
 
   return (
@@ -63,37 +67,63 @@ const ResetPasswordScreen = ({ history, match }) => {
       {successResetPassword && (
         <Message variant='success'>{successMessage}</Message>
       )}
-      {message && <Message variant='danger'>{message}</Message>}
+
       {errorResetPassword && (
         <Message variant='danger'>{errorResetPassword}</Message>
       )}
-      {loadingResetPassword && <Loader></Loader>}
-      <form onSubmit={submitHandler}>
+
+      <form onSubmit={handleSubmit(submitHandler)}>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
+            {...register('password', {
+              required: 'Password is required',
+              minLength: {
+                value: 6,
+                message: 'Password must have at least 6 characters',
+              },
+            })}
             type='password'
             placeholder='Enter password'
             className='form-control'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoFocus
           />
+          {errors.password && (
+            <span className='text-danger'>{errors.password.message}</span>
+          )}
         </div>
         <div className='form-group'>
           <label htmlFor='confirmPassword'>Confirm Password</label>
           <input
+            {...register('confirmPassword', {
+              required: 'Confirm password is required',
+              minLength: {
+                value: 6,
+                message: 'Password must have at least 6 characters',
+              },
+              validate: (value) =>
+                value === watch().password || 'The passwords do not match',
+            })}
             type='password'
             placeholder='Confirm password'
             className='form-control'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
           />
+          {errors.confirmPassword && (
+            <span className='text-danger'>
+              {errors.confirmPassword.message}
+            </span>
+          )}
         </div>
-        <button type='submit' className='btn btn-light btn-sm'>
-          Change
+
+        <button
+          type='submit'
+          className='btn btn-light btn-sm'
+          disabled={loadingResetPassword && true}
+        >
+          {loadingResetPassword ? (
+            <span className='spinner-border spinner-border-sm' />
+          ) : (
+            'Change'
+          )}
         </button>
       </form>
     </FormContainer>
