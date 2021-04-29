@@ -151,7 +151,7 @@ const UserListScreen = () => {
   }
 
   return (
-    <>
+    <div className='container'>
       <div
         className='modal fade'
         id='editUserModal'
@@ -199,7 +199,7 @@ const UserListScreen = () => {
                 <Message variant='danger'>{errorListUsers}</Message>
               ) : (
                 <form onSubmit={handleSubmit(submitHandler)}>
-                  <div className='form-group'>
+                  <div className='mb-3'>
                     <label htmlFor='name'>Name</label>
                     <input
                       {...register('name', { required: 'Name is required' })}
@@ -212,7 +212,7 @@ const UserListScreen = () => {
                       <span className='text-danger'>{errors.name.message}</span>
                     )}
                   </div>
-                  <div className='form-group'>
+                  <div className='mb-3'>
                     <label htmlFor='email'>Email Address</label>
                     <input
                       {...register('email', {
@@ -232,7 +232,7 @@ const UserListScreen = () => {
                       </span>
                     )}
                   </div>
-                  <div className='form-group'>
+                  <div className='mb-3'>
                     <label htmlFor='password'>Password</label>
                     <input
                       {...register('password', {
@@ -251,7 +251,7 @@ const UserListScreen = () => {
                       </span>
                     )}
                   </div>
-                  <div className='form-group'>
+                  <div className='mb-3'>
                     <label htmlFor='confirmPassword'>Confirm Password</label>
                     <input
                       {...register('confirmPassword', {
@@ -308,7 +308,7 @@ const UserListScreen = () => {
                   <div className='modal-footer'>
                     <button
                       type='button'
-                      className='btn btn-secondary btn-sm'
+                      className='btn btn-secondary '
                       data-bs-dismiss='modal'
                       onClick={formCleanHandler}
                     >
@@ -316,7 +316,7 @@ const UserListScreen = () => {
                     </button>
                     <button
                       type='submit'
-                      className='btn btn-light btn-sm'
+                      className='btn btn-primary '
                       disabled={
                         loadingRegisterUser || (loadingUpdateUser && true)
                       }
@@ -338,11 +338,11 @@ const UserListScreen = () => {
       <div className='d-flex justify-content-between align-items-center'>
         <h3 className=''>Users</h3>
         <button
-          className='btn btn-light btn-sm'
+          className='btn btn-primary '
           data-bs-toggle='modal'
           data-bs-target='#editUserModal'
         >
-          <FaPlus /> REGISTER NEW USER
+          <FaPlus className='mb-1' />
         </button>
       </div>
 
@@ -389,26 +389,26 @@ const UserListScreen = () => {
                       </td>
                       <td>
                         {UnlockAccess(user && user.roles) ? (
-                          <FaCheckCircle className='text-success' />
+                          <FaCheckCircle className='text-success mb-1' />
                         ) : (
-                          <FaTimesCircle className='text-danger' />
+                          <FaTimesCircle className='text-danger mb-1' />
                         )}
                       </td>
                       <td className='btn-group'>
                         <button
-                          className='btn btn-light btn-sm'
+                          className='btn btn-primary btn-sm'
                           onClick={() => editHandler(user)}
                           data-bs-toggle='modal'
                           data-bs-target='#editUserModal'
                         >
-                          <FaEdit /> Edit
+                          <FaEdit className='mb-1' /> Edit
                         </button>
 
                         <button
                           className='btn btn-danger btn-sm'
                           onClick={() => deleteHandler(user._id)}
                         >
-                          <FaTrash /> Delete
+                          <FaTrash className='mb-1' /> Delete
                         </button>
                       </td>
                     </tr>
@@ -428,7 +428,7 @@ const UserListScreen = () => {
           </div>
         </>
       )}
-    </>
+    </div>
   )
 }
 

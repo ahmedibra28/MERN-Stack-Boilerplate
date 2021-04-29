@@ -85,8 +85,7 @@ const Pagination = ({ setPage, page, pages, limit, setLimit, total }) => {
               onChange={(e) => setLimit(e.target.value)}
               value={limit}
               name='limit'
-              className='page-link outline-none shadow-none ml-2'
-              style={{ fontSize: '13px' }}
+              className='page-link outline-none shadow-none'
             >
               {total > 10 && page <= total / 5 && (
                 <option value='10'>10</option>

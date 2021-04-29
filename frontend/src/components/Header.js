@@ -95,7 +95,7 @@ const Header = () => {
   )
 
   return (
-    <nav className='navbar navbar-expand-sm navbar-dark bg-dark shadow-lg'>
+    <nav className='navbar navbar-expand-sm navbar-light bg-light shadow-lg'>
       <div className='container'>
         <Link className='navbar-brand' to='/'>
           DarkPro <FaPlusCircle className='mb-1' />
@@ -112,7 +112,7 @@ const Header = () => {
           <span className='navbar-toggler-icon'></span>
         </button>
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-          <ul className='navbar-nav mr-auto mb-2 mb-lg-0'></ul>
+          <ul className='navbar-nav me-auto mb-2 mb-lg-0'></ul>
           {userInfo ? authLinks : guestLinks}
         </div>
       </div>

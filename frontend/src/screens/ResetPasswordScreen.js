@@ -73,7 +73,7 @@ const ResetPasswordScreen = ({ history, match }) => {
       )}
 
       <form onSubmit={handleSubmit(submitHandler)}>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='password'>Password</label>
           <input
             {...register('password', {
@@ -91,7 +91,7 @@ const ResetPasswordScreen = ({ history, match }) => {
             <span className='text-danger'>{errors.password.message}</span>
           )}
         </div>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='confirmPassword'>Confirm Password</label>
           <input
             {...register('confirmPassword', {
@@ -116,7 +116,7 @@ const ResetPasswordScreen = ({ history, match }) => {
 
         <button
           type='submit'
-          className='btn btn-light btn-sm'
+          className='btn btn-primary '
           disabled={loadingResetPassword && true}
         >
           {loadingResetPassword ? (

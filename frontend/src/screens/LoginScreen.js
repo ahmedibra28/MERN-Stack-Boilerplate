@@ -39,7 +39,7 @@ const LoginScreen = ({ history }) => {
       {errorLogin && <Message variant='danger'>{errorLogin}</Message>}
 
       <form onSubmit={handleSubmit(submitHandler)}>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='email'>Email Address</label>
           <input
             {...register('email', {
@@ -59,7 +59,7 @@ const LoginScreen = ({ history }) => {
           )}
         </div>
 
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='password'>Password</label>
           <input
             {...register('password', { required: 'Password is required' })}
@@ -74,7 +74,7 @@ const LoginScreen = ({ history }) => {
 
         <button
           type='submit'
-          className='btn btn-light btn-sm'
+          className='btn btn-primary '
           disabled={loadingLogin && true}
         >
           {loadingLogin ? (

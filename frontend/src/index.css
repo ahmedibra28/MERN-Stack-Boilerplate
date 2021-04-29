@@ -1,39 +1,58 @@
-.custom-text-dark {
-  color: #393c40 !important;
+@import url(https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap);
+
+/* ===================
+sidebar functionality
+====================== */
+#sidebar {
+  height: 100vh;
+  transition: 0.7s ease-in-out;
+  min-width: 10rem;
+  position: fixed;
+  z-index: 1;
+}
+#sidebar.active {
+  margin-left: -50rem;
 }
 
+#content {
+  position: relative;
+  margin-top: 40px;
+  width: 100%;
+  opacity: 1;
+}
+/* ===================
+end sidebar functionality
+====================== */
 main {
   min-height: 60vh;
 }
 
+button {
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+input {
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.7rem !important;
+}
+
 .modal-background,
 body {
+  font-family: 'Open Sans', sans-serif;
   background-color: rgb(204, 200, 200) !important;
 }
 
-.dropdown-item {
-  color: #fff !important;
-  transition: 0.3s ease-in-out;
-  background-color: #343a40;
-}
-.dropdown-item:hover {
-  color: #393c40 !important;
-}
-.dropdown-menu {
-  color: #393c40;
-  border: none;
-  background-color: transparent;
-}
-.form-control {
-  border-bottom-right-radius: 50px;
-  border-top-right-radius: 50px;
-  transition: 0.5s ease-in-out;
-}
-.form-control:focus {
-  box-shadow: 0 0.01rem 1rem rgba(255, 255, 255, 0.589) !important;
+label {
+  opacity: 0.5;
 }
 
-.disabled {
-  pointer-events: none;
-  opacity: 0.6;
+.dropdown-menu,
+.alert,
+.toast {
+  border-radius: 0 !important;
+  border: none;
 }

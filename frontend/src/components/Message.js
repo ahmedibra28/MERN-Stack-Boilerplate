@@ -27,10 +27,10 @@ const Message = ({ variant, children }) => {
         >
           <div className='toast-body text-center '>
             {variant === 'success' ? (
-              <FaCheckCircle className='fs-4 mr-3' />
+              <FaCheckCircle className='fs-4 mr-3 mb-1' />
             ) : (
-              <FaTimesCircle className='fs-4 mr-3' />
-            )}
+              <FaTimesCircle className='fs-4 mr-3 mb-1' />
+            )}{' '}
             {children}
           </div>
         </div>

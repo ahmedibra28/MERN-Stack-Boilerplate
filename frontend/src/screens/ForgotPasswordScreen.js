@@ -60,7 +60,7 @@ const ForgotPasswordScreen = ({ history }) => {
       )}
 
       <form onSubmit={handleSubmit(submitHandler)}>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='email'>Email Address</label>
           <input
             {...register('email', {
@@ -82,7 +82,7 @@ const ForgotPasswordScreen = ({ history }) => {
 
         <button
           type='submit'
-          className='btn btn-light  btn-sm'
+          className='btn btn-primary  '
           disabled={loadingForgotPassword && true}
         >
           {loadingForgotPassword ? (

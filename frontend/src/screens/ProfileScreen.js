@@ -59,7 +59,7 @@ const ProfileScreen = () => {
       )}
       {loadingUserDetail && <Loader></Loader>}
       <form onSubmit={handleSubmit(submitHandler)}>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='name'>Name</label>
           <input
             {...register('name', { required: 'Name is required' })}
@@ -72,7 +72,7 @@ const ProfileScreen = () => {
             <span className='text-danger'>{errors.name.message}</span>
           )}
         </div>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='email'>Email Address</label>
           <input
             {...register('email', {
@@ -90,7 +90,7 @@ const ProfileScreen = () => {
             <span className='text-danger'>{errors.email.message}</span>
           )}
         </div>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='password'>Password</label>
           <input
             {...register('password', {
@@ -107,7 +107,7 @@ const ProfileScreen = () => {
             <span className='text-danger'>{errors.password.message}</span>
           )}
         </div>
-        <div className='form-group'>
+        <div className='mb-3'>
           <label htmlFor='confirmPassword'>Confirm Password</label>
           <input
             {...register('confirmPassword', {
@@ -130,7 +130,7 @@ const ProfileScreen = () => {
         </div>
         <button
           type='submit'
-          className='btn btn-light  btn-sm'
+          className='btn btn-primary  '
           disabled={loadingUpdateUserProfile && true}
         >
           {loadingUpdateUserProfile ? (

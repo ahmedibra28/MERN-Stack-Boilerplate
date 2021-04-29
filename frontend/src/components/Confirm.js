@@ -19,7 +19,7 @@ export const Confirm = (action) => {
                 onClose()
               }}
             >
-              <FaTrash /> Yes, Delete it!
+              <FaTrash className='mb-1' /> Yes, Delete it!
             </button>
           </div>
         </div>
