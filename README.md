@@ -27,6 +27,9 @@ I used number of different technologies
 - axios
 - react-confirm-alert
 - Bootstrap v5
+- React-Hook-Form
+- Zoho Mail
+- and so on
 
 ## Installation
 
@@ -37,8 +40,9 @@ This MERN Boilerplate requires these technologies to run:
 
 ```sh
 cd MERN-Stack-Boilerplate
+cd backend
 npm i
-cd frontend
+cd ../frontend
 npm i
 cd ..
 npm run dev
