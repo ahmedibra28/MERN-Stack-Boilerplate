@@ -40,11 +40,10 @@ This MERN Boilerplate requires these technologies to run:
 
 ```sh
 cd MERN-Stack-Boilerplate
-cd backend
+cd frontend
 npm i
-cd ../frontend
+cd ../backend
 npm i
-cd ..
 npm run dev
 ```
 
