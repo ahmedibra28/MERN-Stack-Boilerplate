@@ -1,8 +1,11 @@
-@import url(https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap);
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap');
 
-/* ===================
-sidebar functionality
-====================== */
+:root {
+  --primary-color: #845ec2;
+  --secondary-color: #cee7f1;
+  --tertiary-color: #11819f;
+}
+
 #sidebar {
   height: 100vh;
   transition: 0.7s ease-in-out;
@@ -14,15 +17,6 @@ sidebar functionality
   margin-left: -50rem;
 }
 
-#content {
-  position: relative;
-  margin-top: 40px;
-  width: 100%;
-  opacity: 1;
-}
-/* ===================
-end sidebar functionality
-====================== */
 main {
   min-height: 60vh;
 }
@@ -40,10 +34,35 @@ input {
   padding: 0.7rem !important;
 }
 
+.btn-primary,
+.bg-primary {
+  background-color: var(--primary-color);
+}
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
 .modal-background,
 body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: rgb(204, 200, 200) !important;
+  font-family: 'PT Sans Narrow', sans-serif;
+  background-color: var(--secondary-color) !important;
+}
+nav {
+  background-color: var(--tertiary-color) !important;
+}
+.navbar-brand,
+.nav-link,
+.dropdown-item {
+  color: var(--secondary-color) !important;
+}
+
+.dropdown-item:hover {
+  color: var(--primary-color) !important;
+  background-color: var(--secondary-color) !important;
+}
+.dropdown-menu {
+  background-color: transparent;
 }
 
 label {

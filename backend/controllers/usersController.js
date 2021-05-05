@@ -80,7 +80,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   const userRoles = []
   admin && userRoles.push('Admin')
   user && userRoles.push('User')
-  !admin && !user && userRoles.push('User')
+  !admin && !user && userRoles.push('Admin')
 
   const userCreate = await User.create({
     name,
