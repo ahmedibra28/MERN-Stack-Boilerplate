@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - ./frontend/build:/var/www/html
+      - ./frontend/nginx.conf:/etc/nginx/sites-available/default
+    depends_on:
+      - api
+  api:
+    build: ./backend
+    ports:
+      - 5000:5000
+    env_file:
+      - ./backend/env.sh
+    restart: unless-stopped
+  db:
+    image: mongo:4.0-xenial
+    ports:
+      - 27018:27017
+    volumes:
+      - boilerplate:/data/db
+    restart: unless-stopped
+
+volumes:
+  boilerplate:

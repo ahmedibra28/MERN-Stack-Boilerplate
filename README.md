@@ -29,6 +29,8 @@ I used number of different technologies
 - Bootstrap v5
 - React-Hook-Form
 - Zoho Mail
+- react-icons
+- docker
 - and so on
 
 ## Installation
@@ -45,6 +47,13 @@ npm i
 cd ../backend
 npm i
 npm run dev
+```
+
+To run inside a docker use:-
+
+```sh
+cd MERN-Stack-Boilerplate
+docker-compose -f docker-compose.prod.yml up --build -d
 ```
 
 ### Admin User Registration
