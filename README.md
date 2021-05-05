@@ -1,5 +1,7 @@
 # Complete MERN-Stack Boilerplate
 
+![Image](../screenshot.png?raw=true)
+
 ## Features
 
 - Login
