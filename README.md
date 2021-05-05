@@ -1,6 +1,6 @@
 # Complete MERN-Stack Boilerplate
 
-![Image](../screenshot.png)
+[![Boilerplate Screenshots](./screenshot.png)]
 
 ## Features
 
