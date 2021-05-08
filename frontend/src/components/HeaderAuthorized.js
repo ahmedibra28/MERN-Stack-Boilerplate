@@ -1,54 +1,21 @@
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   FaCog,
   FaFileContract,
-  FaPowerOff,
-  FaSlidersH,
   FaUser,
   FaUserCircle,
   FaUsers,
 } from 'react-icons/fa'
-import { resetUpdateUser, logout } from '../redux/users/usersSlice'
 
 const HeaderAuthorized = () => {
-  const dispatch = useDispatch()
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const logoutHandler = () => {
-    dispatch(logout())
-    dispatch(resetUpdateUser())
-  }
-
-  const toggler = () => {
-    const sidebar = document.querySelector('#sidebar')
-    sidebar.classList.toggle('active')
-  }
-
   return (
     <>
-      <nav className='navbar navbar-expand-sm navbar-dark sticky-top'>
-        <div className='container-fluid'>
-          <button
-            onClick={toggler}
-            className='navbar-brand btn btn-transparent shadow-none border-0'
-          >
-            <FaSlidersH />
-          </button>
-
-          <ul className='navbar-nav d-flex flex-row'>
-            <li className='nav-item'>
-              <Link to='/' onClick={logoutHandler} className='nav-link'>
-                <FaPowerOff className='mb-1' /> Logout
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <nav className='' id='sidebar'>
-        <div className='container-fluid'>
+      <nav className='sticky-top' id='sidebar'>
+        <div className='container-fluid pt-3'>
           <Link to='/' className='navbar-brand fw-bold fs-6'>
             Boilerplate
           </Link>

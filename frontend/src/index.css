@@ -9,15 +9,20 @@
 #sidebar {
   height: 100vh;
   transition: 0.7s ease-in-out;
-  position: fixed;
+
   z-index: 1;
 }
 #sidebar.active {
-  margin-left: -50rem;
+  margin-left: -6.3rem;
+}
+
+.wrapper {
+  min-width: 100%;
 }
 
 main {
   min-height: 60vh;
+  width: 100%;
 }
 
 button {
