@@ -59,7 +59,7 @@ const Pagination = ({ setPage, page, pages, limit, setLimit, total }) => {
 
   return (
     pages > 1 && (
-      <nav aria-label='Page navigation example'>
+      <div aria-label='Page navigation example'>
         <ul className='pagination'>
           <li className={`page-item ${page === 1 && 'disabled'}`}>
             <span
@@ -86,6 +86,7 @@ const Pagination = ({ setPage, page, pages, limit, setLimit, total }) => {
               value={limit}
               name='limit'
               className='page-link outline-none shadow-none'
+              style={{ padding: '0.42rem 0px' }}
             >
               {total > 10 && page <= total / 5 && (
                 <option value='10'>10</option>
@@ -105,7 +106,7 @@ const Pagination = ({ setPage, page, pages, limit, setLimit, total }) => {
             </select>
           </li>
         </ul>
-      </nav>
+      </div>
     )
   )
 }
