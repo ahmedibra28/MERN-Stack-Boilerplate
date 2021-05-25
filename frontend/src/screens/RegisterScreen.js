@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { resetRegisterUser } from '../redux/users/usersSlice'
 
-import { registerUser } from '../redux/users/usersThunk'
+import { createUser } from '../api/users'
+import { useMutation } from 'react-query'
+
 import { useForm } from 'react-hook-form'
 
 const RegisterScreen = ({ history }) => {
@@ -22,44 +22,37 @@ const RegisterScreen = ({ history }) => {
     },
   })
 
-  const dispatch = useDispatch()
-  const userRegister = useSelector((state) => state.userRegister)
-  const { loadingRegister, errorRegister, successRegisterUser } = userRegister
-
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-
-  useEffect(() => {
-    if (successRegisterUser || errorRegister) {
-      setTimeout(() => {
-        dispatch(resetRegisterUser())
-      }, 5000)
+  const { isLoading, isError, error, isSuccess, mutateAsync } = useMutation(
+    'createUser',
+    createUser,
+    {
+      retry: 0,
+      onSuccess: () => {
+        reset()
+        setTimeout(() => {
+          history.push('/')
+        }, 3000)
+      },
     }
-  }, [successRegisterUser, dispatch, errorRegister])
+  )
 
   useEffect(() => {
-    if (userInfo) {
+    if (localStorage.getItem('userInfo')) {
       history.push('/')
     }
-  }, [history, userInfo])
-
-  useEffect(() => {
-    if (successRegisterUser) {
-      reset()
-    }
-  }, [successRegisterUser, reset])
+  }, [history])
 
   const submitHandler = (data) => {
-    dispatch(registerUser(data))
+    mutateAsync(data)
   }
   return (
     <FormContainer>
       <h3 className=''>Sign Up</h3>
-      {successRegisterUser && (
+      {isSuccess && (
         <Message variant='success'>User has registered successfully</Message>
       )}
 
-      {errorRegister && <Message variant='danger'>{errorRegister}</Message>}
+      {isError && <Message variant='danger'>{error}</Message>}
       <form onSubmit={handleSubmit(submitHandler)}>
         <div className='mb-3'>
           <label htmlFor='name'>Name</label>
@@ -132,12 +125,8 @@ const RegisterScreen = ({ history }) => {
             </span>
           )}
         </div>
-        <button
-          type='submit'
-          className='btn btn-primary '
-          disabled={loadingRegister && true}
-        >
-          {loadingRegister ? (
+        <button type='submit' className='btn btn-primary ' disabled={isLoading}>
+          {isLoading ? (
             <span className='spinner-border spinner-border-sm' />
           ) : (
             'Sign Up'

@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { resetForgotPassword } from '../redux/users/usersSlice'
-import { forgotPassword } from '../redux/users/usersThunk'
 import { useForm } from 'react-hook-form'
+
+import { forgotPassword } from '../api/users'
+import { useMutation } from 'react-query'
 
 const ForgotPasswordScreen = ({ history }) => {
   const {
@@ -14,50 +14,35 @@ const ForgotPasswordScreen = ({ history }) => {
     formState: { errors },
   } = useForm()
 
-  const dispatch = useDispatch()
-  const userForgotPassword = useSelector((state) => state.userForgotPassword)
-  const {
-    loadingForgotPassword,
-    errorForgotPassword,
-    successForgotPassword,
-    message: successMessage,
-  } = userForgotPassword
-
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-
-  useEffect(() => {
-    if (errorForgotPassword || successForgotPassword) {
-      setTimeout(() => {
-        dispatch(resetForgotPassword())
-      }, 5000)
+  const { isLoading, isError, error, isSuccess, mutateAsync } = useMutation(
+    'forgotpassword',
+    forgotPassword,
+    {
+      retry: 0,
+      onSuccess: () => {
+        reset()
+      },
     }
-  }, [dispatch, errorForgotPassword, successForgotPassword, reset])
+  )
 
   useEffect(() => {
-    if (userInfo) {
+    if (localStorage.getItem('userInfo')) {
       history.push('/')
     }
-  }, [history, userInfo])
-
-  useEffect(() => {
-    if (successForgotPassword) {
-      reset()
-    }
-  }, [successForgotPassword, reset])
+  }, [history])
 
   const submitHandler = (data) => {
-    dispatch(forgotPassword(data))
+    mutateAsync(data)
   }
   return (
     <FormContainer>
       <h3 className=''>Forgot Password</h3>
-      {successForgotPassword && (
-        <Message variant='success'>{successMessage}</Message>
+      {isSuccess && (
+        <Message variant='success'>
+          An email has been sent with further instructions.
+        </Message>
       )}
-      {errorForgotPassword && (
-        <Message variant='danger'>{errorForgotPassword}</Message>
-      )}
+      {isError && <Message variant='danger'>{error}</Message>}
 
       <form onSubmit={handleSubmit(submitHandler)}>
         <div className='mb-3'>
@@ -83,9 +68,9 @@ const ForgotPasswordScreen = ({ history }) => {
         <button
           type='submit'
           className='btn btn-primary  '
-          disabled={loadingForgotPassword && true}
+          disabled={isLoading}
         >
-          {loadingForgotPassword ? (
+          {isLoading ? (
             <span className='spinner-border spinner-border-sm' />
           ) : (
             'Send'

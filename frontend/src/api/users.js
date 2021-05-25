@@ -93,7 +93,11 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (info) => {
   try {
-    const { data } = await api.put(`/api/users/resetpassword`, info.resetToken)
+    const { data } = await api.put(
+      `/api/users/resetpassword`,
+      info,
+      info.resetToken
+    )
     return data
   } catch (error) {
     throw error.response.data.message
