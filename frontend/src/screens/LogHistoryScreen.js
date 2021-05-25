@@ -1,33 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { getUserLogHistory } from '../redux/users/usersThunk'
 import Moment from 'react-moment'
 import moment from 'moment'
-import Pagination from '../components/Pagination'
+import { getUsersLog } from '../api/users'
+import { useQuery } from 'react-query'
+
+import Loader from 'react-loader-spinner'
 
 const UserLogHistoryScreen = () => {
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(30)
+  const { data, error, isLoading, isError } = useQuery(
+    'users-log',
+    () => getUsersLog(),
+    { retry: 0 }
+  )
+
   const [search, setSearch] = useState('')
-
-  const dispatch = useDispatch()
-
-  const userLogHistory = useSelector((state) => state.userLogHistory)
-  const {
-    loadingLogHistory,
-    errorLogHistory,
-    logHistory,
-    total,
-    pages,
-  } = userLogHistory
-
-  useEffect(() => {
-    search.trim()
-      ? dispatch(getUserLogHistory({ page, limit: total }))
-      : dispatch(getUserLogHistory({ page, limit }))
-  }, [dispatch, page, limit, search, total])
 
   return (
     <>
@@ -44,25 +31,23 @@ const UserLogHistoryScreen = () => {
         required
       />
 
-      {loadingLogHistory ? (
-        <Loader />
-      ) : errorLogHistory ? (
-        <Message variant='danger'>{errorLogHistory}</Message>
+      {isLoading ? (
+        <div className='text-center'>
+          <Loader
+            type='ThreeDots'
+            color='#00BFFF'
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
+          />
+        </div>
+      ) : isError ? (
+        <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <div className='d-flex justify-content-center mt-2'>
-            <Pagination
-              setPage={setPage}
-              page={page}
-              pages={pages}
-              limit={limit}
-              setLimit={setLimit}
-              total={total}
-            />
-          </div>
           <div className='table-responsive'>
             <table className='table table-sm hover bordered striped caption-top '>
-              <caption>{total} records were found</caption>
+              <caption>{!isLoading && data.total} records were found</caption>
               <thead>
                 <tr>
                   <th>LOG ID</th>
@@ -73,8 +58,8 @@ const UserLogHistoryScreen = () => {
                 </tr>
               </thead>
               <tbody>
-                {logHistory &&
-                  logHistory.map(
+                {!isLoading &&
+                  data.data.map(
                     (log) =>
                       log.user &&
                       log.user.email.includes(search.trim()) && (
@@ -101,16 +86,6 @@ const UserLogHistoryScreen = () => {
                   )}
               </tbody>
             </table>
-          </div>
-          <div className='d-flex justify-content-center'>
-            <Pagination
-              setPage={setPage}
-              page={page}
-              pages={pages}
-              limit={limit}
-              setLimit={setLimit}
-              total={total}
-            />
           </div>
         </>
       )}

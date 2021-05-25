@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
-import { getUserDetails, updateUserProfile } from '../redux/users/usersThunk'
+import Loader from 'react-loader-spinner'
 import FormContainer from '../components/FormContainer'
-import { resetUpdateUserProfile } from '../redux/users/usersSlice'
 import { useForm } from 'react-hook-form'
+
+import { getUserDetails, updateUserProfile } from '../api/users'
+import { useQuery, useMutation } from 'react-query'
 
 const ProfileScreen = () => {
   const {
@@ -16,48 +16,60 @@ const ProfileScreen = () => {
     formState: { errors },
   } = useForm()
 
-  const dispatch = useDispatch()
-  const userDetails = useSelector((state) => state.userDetails)
-  const { loadingUserDetail, errorUserDetail, user } = userDetails
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const { data, isLoading, isError, error } = useQuery(
+    ['userDetails', userInfo._id],
+    () => getUserDetails(userInfo._id),
+    {
+      retry: 0,
+    }
+  )
+
   const {
-    successUpdateUserProfile,
-    errorUpdateUserProfile,
-    loadingUpdateUserProfile,
-  } = userUpdateProfile
+    isLoading: isLoadingUpdateProfile,
+    isError: isErrorUpdateProfile,
+    error: errorUpdateProfile,
+    isSuccess,
+    mutateAsync,
+  } = useMutation(['updateProfile', userInfo._id], updateUserProfile, {
+    retry: 0,
+    onSuccess: () => {
+      setValue('password', '')
+      setValue('confirmPassword', '')
+    },
+  })
 
   useEffect(() => {
-    if (successUpdateUserProfile || errorUpdateUserProfile) {
-      setTimeout(() => {
-        dispatch(resetUpdateUserProfile())
-      }, 5000)
-    }
-  }, [successUpdateUserProfile, errorUpdateUserProfile, dispatch])
-
-  useEffect(() => {
-    if (!user) {
-      dispatch(getUserDetails('profile'))
-    } else {
-      setValue('name', user.name)
-      setValue('email', user.email)
-    }
-  }, [dispatch, user, setValue])
+    setValue('name', !isLoading ? data && data.name : '')
+    setValue('email', !isLoading ? data && data.email : '')
+  }, [isLoading, setValue, data])
 
   const submitHandler = (data) => {
-    dispatch(updateUserProfile(data))
+    mutateAsync(data)
   }
+
   return (
     <FormContainer>
       <h3 className=''>User Profile</h3>
-      {errorUpdateUserProfile && (
-        <Message variant='danger'>{errorUpdateUserProfile}</Message>
+      {isErrorUpdateProfile && (
+        <Message variant='danger'>{errorUpdateProfile}</Message>
       )}
-      {errorUserDetail && <Message variant='danger'>{errorUserDetail}</Message>}
-      {successUpdateUserProfile && (
-        <Message variant='success'>Profile Updated </Message>
+      {isError && <Message variant='danger'>{error}</Message>}
+      {isSuccess && (
+        <Message variant='success'>User has been updated successfully</Message>
       )}
-      {loadingUserDetail && <Loader></Loader>}
+      {isLoading && (
+        <div className='text-center'>
+          <Loader
+            type='ThreeDots'
+            color='#00BFFF'
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
+          />
+        </div>
+      )}
       <form onSubmit={handleSubmit(submitHandler)}>
         <div className='mb-3'>
           <label htmlFor='name'>Name</label>
@@ -131,9 +143,9 @@ const ProfileScreen = () => {
         <button
           type='submit'
           className='btn btn-primary  '
-          disabled={loadingUpdateUserProfile && true}
+          disabled={isLoadingUpdateProfile}
         >
-          {loadingUpdateUserProfile ? (
+          {isLoadingUpdateProfile ? (
             <span className='spinner-border spinner-border-sm' />
           ) : (
             'Update'

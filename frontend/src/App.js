@@ -71,7 +71,7 @@ const App = () => {
           )}
 
           <div
-            className={`${!userInfo ? 'container' : 'container-fluid'}`}
+            className={`${!userInfo ? 'container' : 'container'}`}
             id='mainContainer'
           >
             <Route component={Routes} />
