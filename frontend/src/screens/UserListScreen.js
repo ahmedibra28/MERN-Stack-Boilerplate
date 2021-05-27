@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
+import Loader from 'react-loader-spinner'
 import {
   FaCheckCircle,
   FaEdit,
@@ -165,7 +165,15 @@ const UserListScreen = () => {
               )}
 
               {isLoading ? (
-                <Loader />
+                <div className='text-center'>
+                  <Loader
+                    type='ThreeDots'
+                    color='#00BFFF'
+                    height={100}
+                    width={100}
+                    timeout={3000} //3 secs
+                  />
+                </div>
               ) : isError ? (
                 <Message variant='danger'>{error}</Message>
               ) : (
@@ -322,7 +330,15 @@ const UserListScreen = () => {
         <Message variant='danger'>{errorDeleteUser}</Message>
       )}
       {isLoading ? (
-        <Loader />
+        <div className='text-center'>
+          <Loader
+            type='ThreeDots'
+            color='#00BFFF'
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
+          />
+        </div>
       ) : isError ? (
         <Message variant='danger'>{error}</Message>
       ) : (

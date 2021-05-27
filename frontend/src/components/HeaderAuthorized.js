@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import {
   FaCog,
   FaFileContract,
@@ -9,8 +8,12 @@ import {
 } from 'react-icons/fa'
 
 const HeaderAuthorized = () => {
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+  // const userLogin = useSelector((state) => state.userLogin)
+  // const { userInfo } = userLogin
+
+  const userInfo =
+    localStorage.getItem('userInfo') &&
+    JSON.parse(localStorage.getItem('userInfo'))
 
   return (
     <>

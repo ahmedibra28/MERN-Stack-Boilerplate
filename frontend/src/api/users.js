@@ -1,18 +1,15 @@
 import axios from 'axios'
+import { Redirect } from 'react-router-dom'
 
-const api = axios.create({
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${
-      localStorage.getItem('userInfo') &&
-      JSON.parse(localStorage.getItem('userInfo')).token
-    }`,
-  },
-})
+axios.defaults.headers.common['Content-Type'] = 'application/json'
+axios.defaults.headers.common['Authorization'] = `Bearer ${
+  localStorage.getItem('userInfo') &&
+  JSON.parse(localStorage.getItem('userInfo')).token
+}`
 
 export const getUsersLog = async () => {
   try {
-    const { data } = await api.get(`/api/users/logs?page=1`)
+    const { data } = await axios.get(`/api/users/logs?page=1`)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -21,7 +18,7 @@ export const getUsersLog = async () => {
 
 export const getUsers = async () => {
   try {
-    const { data } = await api.get(`/api/users?page=1`)
+    const { data } = await axios.get(`/api/users?page=1`)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -30,16 +27,29 @@ export const getUsers = async () => {
 
 export const login = async (credentials) => {
   try {
-    const { data } = await api.post(`/api/users/login`, credentials)
+    const { data } = await axios.post(`/api/users/login`, credentials)
+    localStorage.setItem('userInfo', JSON.stringify(data))
     return data
   } catch (error) {
     throw error.response.data.message
   }
 }
 
+export const logout = () => {
+  Redirect('/login')
+  return localStorage.removeItem('userInfo')
+}
+
+export const userInfoFn = () => {
+  return (
+    localStorage.getItem('userInfo') &&
+    JSON.parse(localStorage.getItem('userInfo'))
+  )
+}
+
 export const createUser = async (user) => {
   try {
-    const { data } = await api.post(`/api/users`, user)
+    const { data } = await axios.post(`/api/users`, user)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -48,7 +58,7 @@ export const createUser = async (user) => {
 
 export const updateUser = async (user) => {
   try {
-    const { data } = await api.put(`/api/users/${user._id}`, user)
+    const { data } = await axios.put(`/api/users/${user._id}`, user)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -57,7 +67,7 @@ export const updateUser = async (user) => {
 
 export const deleteUser = async (id) => {
   try {
-    const { data } = await api.delete(`/api/users/${id}`)
+    const { data } = await axios.delete(`/api/users/${id}`)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -66,7 +76,7 @@ export const deleteUser = async (id) => {
 
 export const getUserDetails = async (id) => {
   try {
-    const { data } = await api.get(`/api/users/${id}`)
+    const { data } = await axios.get(`/api/users/${id}`)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -75,7 +85,7 @@ export const getUserDetails = async (id) => {
 
 export const updateUserProfile = async (user) => {
   try {
-    const { data } = await api.put(`/api/users/profile`, user)
+    const { data } = await axios.put(`/api/users/profile`, user)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -84,7 +94,7 @@ export const updateUserProfile = async (user) => {
 
 export const forgotPassword = async (email) => {
   try {
-    const { data } = await api.post(`/api/users/forgotpassword`, email)
+    const { data } = await axios.post(`/api/users/forgotpassword`, email)
     return data
   } catch (error) {
     throw error.response.data.message
@@ -93,7 +103,7 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (info) => {
   try {
-    const { data } = await api.put(
+    const { data } = await axios.put(
       `/api/users/resetpassword`,
       info,
       info.resetToken

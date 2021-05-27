@@ -10,8 +10,8 @@ import Loader from 'react-loader-spinner'
 const UserLogHistoryScreen = () => {
   const { data, error, isLoading, isError } = useQuery(
     'users-log',
-    () => getUsersLog(),
-    { retry: 0 }
+    async () => await getUsersLog(),
+    { retry: 0, refetchInterval: 10000 }
   )
 
   const [search, setSearch] = useState('')

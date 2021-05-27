@@ -9,11 +9,12 @@
 #sidebar {
   height: 100vh;
   transition: 0.7s ease-in-out;
+  min-width: 10rem;
 
   z-index: 1;
 }
 #sidebar.active {
-  margin-left: -6.3rem;
+  margin-left: -10rem;
 }
 
 .wrapper {

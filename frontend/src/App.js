@@ -3,40 +3,50 @@ import jwt_decode from 'jwt-decode'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Footer from './components/Footer'
 import Routes from './components/routes/Routes'
-import { useDispatch, useSelector } from 'react-redux'
 import 'animate.css'
 import { FaPowerOff, FaSlidersH } from 'react-icons/fa'
-import { resetUpdateUser, logout } from './redux/users/usersSlice'
+
+import { logout, userInfoFn } from './api/users'
+import { useMutation, useQuery } from 'react-query'
 
 import HeaderGuest from './components/HeaderGuest'
 import HeaderAuthorized from './components/HeaderAuthorized'
 
 const App = () => {
-  const dispatch = useDispatch()
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+  const { mutateAsync } = useMutation(logout)
+  useQuery('userInfo', userInfoFn)
 
   useEffect(() => {
-    // log user out from all tabs if they log out in one tab
     window.addEventListener('storage', () => {
-      if (!localStorage.userInfo) dispatch(logout())
+      if (!localStorage.getItem('userInfo')) mutateAsync({})
     })
     window.addEventListener('click', () => {
-      if (localStorage.userInfo) {
-        const token = JSON.parse(localStorage.getItem('userInfo'))
-        const decoded = jwt_decode(token.token)
-        if (decoded.exp * 1000 < Date.now()) dispatch(logout())
+      if (localStorage.getItem('userInfo')) {
+        const decoded = jwt_decode(
+          localStorage.getItem('userInfo') &&
+            JSON.parse(localStorage.getItem('userInfo')).token
+        )
+
+        if (decoded.exp * 1000 < Date.now()) mutateAsync({})
       }
     })
-  }, [dispatch])
+    window.addEventListener('focus', () => {
+      if (localStorage.getItem('userInfo')) {
+        const decoded = jwt_decode(
+          localStorage.getItem('userInfo') &&
+            JSON.parse(localStorage.getItem('userInfo')).token
+        )
+        if (decoded.exp * 1000 < Date.now()) mutateAsync({})
+      }
+    })
+  }, [mutateAsync])
 
   const style = {
     display: 'flex',
   }
 
   const logoutHandler = () => {
-    dispatch(logout())
-    dispatch(resetUpdateUser())
+    mutateAsync({})
   }
 
   const toggler = () => {
@@ -46,10 +56,17 @@ const App = () => {
 
   return (
     <Router>
-      <div className='wrapper' style={userInfo && style}>
-        {userInfo ? <HeaderAuthorized toggler={toggler} /> : <HeaderGuest />}
+      <div
+        className='wrapper'
+        style={localStorage.getItem('userInfo') && style}
+      >
+        {localStorage.getItem('userInfo') ? (
+          <HeaderAuthorized toggler={toggler} />
+        ) : (
+          <HeaderGuest />
+        )}
         <main>
-          {userInfo && (
+          {localStorage.getItem('userInfo') && (
             <nav className='navbar navbar-expand-sm navbar-dark sticky-top'>
               <div className='container-fluid'>
                 <button
@@ -71,7 +88,9 @@ const App = () => {
           )}
 
           <div
-            className={`${!userInfo ? 'container' : 'container'}`}
+            className={`${
+              !localStorage.getItem('userInfo') ? 'container' : 'container'
+            }`}
             id='mainContainer'
           >
             <Route component={Routes} />

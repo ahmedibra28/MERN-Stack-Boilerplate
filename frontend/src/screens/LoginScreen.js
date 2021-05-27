@@ -1,42 +1,45 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { login } from '../redux/users/usersThunk'
-import { resetLoginState } from '../redux/users/usersSlice'
 import { useForm } from 'react-hook-form'
+import { login } from '../api/users'
+import { useMutation, useQueryClient } from 'react-query'
 
 const LoginScreen = ({ history }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm()
 
-  const dispatch = useDispatch()
-  const userLogin = useSelector((state) => state.userLogin)
-  const { loadingLogin, errorLogin, userInfo } = userLogin
+  const queryClient = useQueryClient()
 
-  useEffect(() => {
-    if (errorLogin) {
-      setTimeout(() => {
-        dispatch(resetLoginState())
-      }, 5000)
+  const { isLoading, isError, error, mutateAsync } = useMutation(
+    'userInfo',
+    login,
+    {
+      retry: 0,
+      onSuccess: (data) => {
+        reset()
+        queryClient.setQueryData('userInfo', data)
+        history.push('/')
+      },
     }
-  }, [dispatch, errorLogin])
+  )
 
   useEffect(() => {
-    userInfo && history.push('/')
-  }, [history, userInfo])
+    localStorage.getItem('userInfo') && history.push('/')
+  }, [history])
 
   const submitHandler = (data) => {
-    dispatch(login(data))
+    mutateAsync(data)
   }
   return (
     <FormContainer>
       <h3 className=''>Sign In</h3>
-      {errorLogin && <Message variant='danger'>{errorLogin}</Message>}
+      {isError && <Message variant='danger'>{error}</Message>}
 
       <form onSubmit={handleSubmit(submitHandler)}>
         <div className='mb-3'>
@@ -72,12 +75,8 @@ const LoginScreen = ({ history }) => {
           )}
         </div>
 
-        <button
-          type='submit'
-          className='btn btn-primary '
-          disabled={loadingLogin && true}
-        >
-          {loadingLogin ? (
+        <button type='submit' className='btn btn-primary ' disabled={isLoading}>
+          {isLoading ? (
             <span className='spinner-border spinner-border-sm' />
           ) : (
             'Sign In'
