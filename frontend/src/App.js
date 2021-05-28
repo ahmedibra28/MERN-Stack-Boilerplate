@@ -6,40 +6,38 @@ import Routes from './components/routes/Routes'
 import 'animate.css'
 import { FaPowerOff, FaSlidersH } from 'react-icons/fa'
 
-import { logout, userInfoFn } from './api/users'
+import { logout } from './api/users'
 import { useMutation, useQuery } from 'react-query'
 
 import HeaderGuest from './components/HeaderGuest'
 import HeaderAuthorized from './components/HeaderAuthorized'
 
 const App = () => {
-  const { mutateAsync } = useMutation(logout)
-  useQuery('userInfo', userInfoFn)
+  const { mutateAsync } = useMutation(logout, () => {})
+  useQuery('userInfo', () => {})
+
+  let userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo')).token
+    : null
 
   useEffect(() => {
     window.addEventListener('storage', () => {
-      if (!localStorage.getItem('userInfo')) mutateAsync({})
+      if (userInfo) mutateAsync({})
     })
     window.addEventListener('click', () => {
-      if (localStorage.getItem('userInfo')) {
-        const decoded = jwt_decode(
-          localStorage.getItem('userInfo') &&
-            JSON.parse(localStorage.getItem('userInfo')).token
-        )
+      if (userInfo) {
+        const decoded = jwt_decode(userInfo && userInfo)
 
         if (decoded.exp * 1000 < Date.now()) mutateAsync({})
       }
     })
     window.addEventListener('focus', () => {
-      if (localStorage.getItem('userInfo')) {
-        const decoded = jwt_decode(
-          localStorage.getItem('userInfo') &&
-            JSON.parse(localStorage.getItem('userInfo')).token
-        )
+      if (userInfo) {
+        const decoded = jwt_decode(userInfo && userInfo)
         if (decoded.exp * 1000 < Date.now()) mutateAsync({})
       }
     })
-  }, [mutateAsync])
+  }, [mutateAsync, userInfo])
 
   const style = {
     display: 'flex',
@@ -56,17 +54,10 @@ const App = () => {
 
   return (
     <Router>
-      <div
-        className='wrapper'
-        style={localStorage.getItem('userInfo') && style}
-      >
-        {localStorage.getItem('userInfo') ? (
-          <HeaderAuthorized toggler={toggler} />
-        ) : (
-          <HeaderGuest />
-        )}
+      <div className='wrapper' style={userInfo && style}>
+        {userInfo ? <HeaderAuthorized toggler={toggler} /> : <HeaderGuest />}
         <main>
-          {localStorage.getItem('userInfo') && (
+          {userInfo && (
             <nav className='navbar navbar-expand-sm navbar-dark sticky-top'>
               <div className='container-fluid'>
                 <button
@@ -88,9 +79,7 @@ const App = () => {
           )}
 
           <div
-            className={`${
-              !localStorage.getItem('userInfo') ? 'container' : 'container'
-            }`}
+            className={`${!userInfo ? 'container' : 'container'}`}
             id='mainContainer'
           >
             <Route component={Routes} />

@@ -1,6 +1,6 @@
 # Complete MERN-Stack Boilerplate
 
-[![Boilerplate Screenshots](./screenshot.png)]
+![Boilerplate Screenshots](./screenshot.png)
 
 ## Features
 
@@ -12,7 +12,7 @@
 - Profile Page
 - Admin Page
 - Users Management
-- Users Activity Track
+- User Logs With React Query RealTime
 - Pagination
 
 ## Tech
@@ -25,7 +25,7 @@ I used number of different technologies
 - MongoDB
 - ReactJS
 - Moment.js
-- Redux Toolkit
+- React Query
 - axios
 - react-confirm-alert
 - Bootstrap v5
@@ -44,10 +44,8 @@ This MERN Boilerplate requires these technologies to run:
 
 ```sh
 cd MERN-Stack-Boilerplate
-cd frontend
-npm i
-cd ../backend
-npm i
+cd frontend && npm install
+cd ../backend && npm install
 npm run dev
 ```
 
@@ -57,9 +55,5 @@ To run inside a docker use:-
 cd MERN-Stack-Boilerplate
 docker-compose -f docker-compose.prod.yml up --build -d
 ```
-
-### Admin User Registration
-
-To use Admin user, use [Postman](https://postman.com) for registering and add **roles** **['Admin']**
 
 **_Free MERN Boilerplate, Hell Yeah!_**

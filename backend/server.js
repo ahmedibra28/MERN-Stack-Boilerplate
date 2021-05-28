@@ -1,7 +1,6 @@
 import path from 'path'
 import express from 'express'
 import dotenv from 'dotenv'
-import helmet from 'helmet'
 import colors from 'colors'
 import morgan from 'morgan'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
@@ -19,7 +18,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json())
-app.use(helmet())
 
 app.use('/api/users', userRoutes)
 

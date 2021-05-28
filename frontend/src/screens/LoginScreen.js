@@ -16,18 +16,15 @@ const LoginScreen = ({ history }) => {
 
   const queryClient = useQueryClient()
 
-  const { isLoading, isError, error, mutateAsync } = useMutation(
-    'userInfo',
-    login,
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        reset()
-        queryClient.setQueryData('userInfo', data)
-        history.push('/')
-      },
-    }
-  )
+  const { isLoading, isError, error, mutateAsync } = useMutation(login, {
+    retry: 0,
+    staleTime: 100000,
+    onSuccess: (data) => {
+      reset()
+      queryClient.setQueryData('userInfo', data)
+      history.push('/')
+    },
+  })
 
   useEffect(() => {
     localStorage.getItem('userInfo') && history.push('/')

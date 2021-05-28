@@ -1,6 +1,6 @@
 {
   "name": "mern-stack-boilerplate",
-  "version": "1.0.1",
+  "version": "2.0",
   "description": "Complete MERN-Stack boilerplate",
   "main": "server.js",
   "type": "module",
