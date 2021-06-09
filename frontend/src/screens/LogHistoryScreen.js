@@ -1,24 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Message from '../components/Message'
 import Moment from 'react-moment'
 import moment from 'moment'
 import { getUsersLog } from '../api/users'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 
 import Loader from 'react-loader-spinner'
+import Pagination from '../components/Pagination'
 
 const UserLogHistoryScreen = () => {
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+
+  const queryClient = useQueryClient()
+
   const { data, error, isLoading, isError } = useQuery(
     'users-log',
-    async () => await getUsersLog(),
-    { retry: 0, refetchInterval: 10000 }
+    () => getUsersLog(page),
+    {
+      retry: 0,
+    }
   )
 
-  const [search, setSearch] = useState('')
+  useEffect(() => {
+    const refetch = async () => {
+      await queryClient.prefetchQuery('users-log')
+    }
+    refetch()
+  }, [page, queryClient])
 
   return (
     <>
       <h3 className=''>Users Log</h3>
+      <Pagination data={data} setPage={setPage} />
 
       <input
         type='text'

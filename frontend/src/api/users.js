@@ -13,18 +13,18 @@ const config = () => {
   }
 }
 
-export const getUsersLog = async () => {
+export const getUsersLog = async (page) => {
   try {
-    const { data } = await axios.get(`/api/users/logs?page=1`, config())
+    const { data } = await axios.get(`/api/users/logs?page=${page}`, config())
     return data
   } catch (error) {
     throw error.response.data.message
   }
 }
 
-export const getUsers = async () => {
+export const getUsers = async (page) => {
   try {
-    const { data } = await axios.get(`/api/users?page=1`, config())
+    const { data } = await axios.get(`/api/users?page=${page}`, config())
     return data
   } catch (error) {
     throw error.response.data.message

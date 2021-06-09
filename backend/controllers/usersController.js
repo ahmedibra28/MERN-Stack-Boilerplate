@@ -21,7 +21,7 @@ export const logHistory = asyncHandler(async (req, res) => {
   let query = LogonSession.find()
 
   const page = parseInt(req.query.page) || 1
-  const pageSize = parseInt(req.query.limit) || 30
+  const pageSize = parseInt(req.query.limit) || 50
   const skip = (page - 1) * pageSize
   const total = await LogonSession.countDocuments()
 
@@ -33,13 +33,11 @@ export const logHistory = asyncHandler(async (req, res) => {
     .sort({ logDate: -1 })
     .populate('user', ['name', 'email'])
 
-  if (page > pages) {
-    res.status(404)
-    throw new Error('Page not found')
-  }
   const result = await query
 
   res.status(200).json({
+    startIndex: skip + 1,
+    endIndex: skip + result.length,
     count: result.length,
     page,
     pages,
@@ -88,8 +86,6 @@ export const registerUser = asyncHandler(async (req, res) => {
     password,
     roles: userRoles,
   })
-
-  console.log(userCreate)
 
   if (userCreate) {
     res.status(201).json({
@@ -149,7 +145,7 @@ export const getUsers = asyncHandler(async (req, res) => {
   let query = User.find()
 
   const page = parseInt(req.query.page) || 1
-  const pageSize = parseInt(req.query.limit) || 30
+  const pageSize = parseInt(req.query.limit) || 50
   const skip = (page - 1) * pageSize
   const total = await User.countDocuments()
 
@@ -161,13 +157,11 @@ export const getUsers = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate('user', ['name', 'email'])
 
-  if (page > pages) {
-    res.status(404)
-    throw new Error('Page not found')
-  }
   const result = await query
 
   res.status(200).json({
+    startIndex: skip + 1,
+    endIndex: skip + result.length,
     count: result.length,
     page,
     pages,

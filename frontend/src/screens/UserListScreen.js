@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Message from '../components/Message'
 import Loader from 'react-loader-spinner'
 import {
@@ -8,7 +8,7 @@ import {
   FaTimesCircle,
   FaTrash,
 } from 'react-icons/fa'
-
+import Pagination from '../components/Pagination'
 import { getUsers, updateUser, deleteUser, createUser } from '../api/users'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 
@@ -19,6 +19,7 @@ import { Confirm } from '../components/Confirm'
 import { useForm } from 'react-hook-form'
 
 const UserListScreen = () => {
+  const [page, setPage] = useState(1)
   const {
     register,
     handleSubmit,
@@ -37,7 +38,7 @@ const UserListScreen = () => {
 
   const { data, isLoading, isError, error } = useQuery(
     'users',
-    () => getUsers(),
+    () => getUsers(page),
     {
       retry: 0,
     }
@@ -121,8 +122,17 @@ const UserListScreen = () => {
       )
   }
 
+  useEffect(() => {
+    const refetch = async () => {
+      await queryClient.prefetchQuery('users')
+    }
+    refetch()
+  }, [page, queryClient])
+
   return (
     <div className='container'>
+      <Pagination data={data} setPage={setPage} />
+
       <div
         className='modal fade'
         id='editUserModal'
