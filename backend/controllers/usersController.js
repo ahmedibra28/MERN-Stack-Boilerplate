@@ -58,7 +58,7 @@ export const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      roles: user.roles,
+      group: user.group,
       token: generateToken(user._id),
     })
   } else {
@@ -68,23 +68,18 @@ export const authUser = asyncHandler(async (req, res) => {
 })
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, admin, user } = req.body
+  const { name, email, password, group } = req.body
   const userExist = await User.findOne({ email })
   if (userExist) {
     res.status(400)
     throw new Error('User already exist')
   }
 
-  const userRoles = []
-  admin && userRoles.push('Admin')
-  user && userRoles.push('User')
-  !admin && !user && userRoles.push('Admin')
-
   const userCreate = await User.create({
     name,
     email,
     password,
-    roles: userRoles,
+    group,
   })
 
   if (userCreate) {
@@ -92,7 +87,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       _id: userCreate._id,
       name: userCreate.name,
       email: userCreate.email,
-      roles: userCreate.roles,
+      group: userCreate.group,
       token: generateToken(userCreate._id),
     })
   } else {
@@ -108,7 +103,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      roles: user.roles,
+      group: user.group,
     })
   } else {
     res.status(404)
@@ -132,7 +127,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      roles: updatedUser.roles,
+      group: updatedUser.group,
       token: generateToken(updatedUser._id),
     })
   } else {
@@ -199,22 +194,16 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 export const updateUser = asyncHandler(async (req, res) => {
   const userExist = await User.findById(req.params.id)
-  const admin = req.body.admin
-  const user = req.body.user
 
   if (req.params.id == req.user._id) {
     res.status(400)
     throw new Error("You can't edit your own user in the admin area.")
   }
 
-  const userRoles = []
-  admin && userRoles.push('Admin')
-  user && userRoles.push('User')
-
   if (userExist) {
     userExist.name = req.body.name || userExist.name
+    userExist.group = req.body.group || userExist.group
     userExist.email = req.body.email.toLowerCase() || userExist.email
-    userExist.roles = userRoles || userExist.roles
     if (req.body.password) {
       userExist.password = req.body.password
     }
@@ -224,8 +213,8 @@ export const updateUser = asyncHandler(async (req, res) => {
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
+      group: updatedUser.group,
       email: updatedUser.email,
-      roles: updatedUser.roles,
     })
   } else {
     res.status(404)

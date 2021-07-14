@@ -12,10 +12,11 @@ import PrivateRoute from './PrivateRoute'
 import UserLogHistoryScreen from '../../screens/LogHistoryScreen'
 import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen'
 import ResetPasswordScreen from '../../screens/ResetPasswordScreen'
+import GroupScreen from '../../screens/GroupScreen'
 
 const Routes = () => {
   return (
-    <section className='mx-auto mt-5'>
+    <section className='mx-auto'>
       <Switch>
         <Route exact path='/' component={HomeScreen} />
         <Route path='/forgotpassword' component={ForgotPasswordScreen} />
@@ -23,7 +24,7 @@ const Routes = () => {
         <Route path='/register' r component={RegisterScreen} />
 
         <PrivateRoute
-          role={['Admin', 'User']}
+          role={['admin', 'user']}
           path='/profile'
           component={ProfileScreen}
         />
@@ -34,18 +35,24 @@ const Routes = () => {
         />
         <PrivateRoute
           path='/admin/users/logs'
-          role={['Admin']}
+          role={['admin']}
           component={UserLogHistoryScreen}
         />
         <PrivateRoute
           exact
           path='/admin/users'
-          role={['Admin']}
+          role={['admin']}
           component={UserListScreen}
         />
         <PrivateRoute
+          exact
+          path='/admin/users/groups'
+          role={['admin']}
+          component={GroupScreen}
+        />
+        <PrivateRoute
           path='/admin/users/page/:pageNumber'
-          role={['Admin']}
+          role={['admin']}
           component={UserListScreen}
         />
 

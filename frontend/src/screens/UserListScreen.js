@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fa'
 import Pagination from '../components/Pagination'
 import { getUsers, updateUser, deleteUser, createUser } from '../api/users'
+import { getGroups } from '../api/groups'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 
 import { UnlockAccess } from '../components/UnlockAccess'
@@ -28,10 +29,7 @@ const UserListScreen = () => {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      admin: false,
-      user: false,
-    },
+    defaultValues: {},
   })
 
   const queryClient = useQueryClient()
@@ -43,6 +41,8 @@ const UserListScreen = () => {
       retry: 0,
     }
   )
+
+  const { data: groupData } = useQuery('groups', () => getGroups())
 
   const {
     isLoading: isLoadingUpdateUser,
@@ -102,8 +102,7 @@ const UserListScreen = () => {
           name: data.name,
           email: data.email,
           password: data.password,
-          admin: data.admin,
-          user: data.user,
+          group: data.group,
         })
       : createUserMutateAsync(data)
   }
@@ -113,13 +112,7 @@ const UserListScreen = () => {
     setEdit(true)
     setValue('name', user.name)
     setValue('email', user.email)
-
-    user &&
-      user.roles.map(
-        (role) =>
-          (role === 'Admin' && setValue('admin', true)) ||
-          (role === 'User' && setValue('user', true))
-      )
+    setValue('group', user.group)
   }
 
   useEffect(() => {
@@ -131,7 +124,24 @@ const UserListScreen = () => {
 
   return (
     <div className='container'>
-      <Pagination data={data} setPage={setPage} />
+      {isSuccessDeleteUser && (
+        <Message variant='success'>User has been deleted successfully.</Message>
+      )}
+      {isErrorDeleteUser && (
+        <Message variant='danger'>{errorDeleteUser}</Message>
+      )}
+      {isSuccessUpdateUser && (
+        <Message variant='success'>User has been updated successfully.</Message>
+      )}
+      {isErrorUpdateUser && (
+        <Message variant='danger'>{errorUpdateUser}</Message>
+      )}
+      {isSuccessCreateUser && (
+        <Message variant='success'>User has been Created successfully.</Message>
+      )}
+      {isErrorCreateUser && (
+        <Message variant='danger'>{errorCreateUser}</Message>
+      )}
 
       <div
         className='modal fade'
@@ -157,23 +167,6 @@ const UserListScreen = () => {
               ></button>
             </div>
             <div className='modal-body'>
-              {isSuccessUpdateUser && (
-                <Message variant='success'>
-                  User has been updated successfully.
-                </Message>
-              )}
-              {isErrorUpdateUser && (
-                <Message variant='danger'>{errorUpdateUser}</Message>
-              )}
-              {isSuccessCreateUser && (
-                <Message variant='success'>
-                  User has been Created successfully.
-                </Message>
-              )}
-              {isErrorCreateUser && (
-                <Message variant='danger'>{errorCreateUser}</Message>
-              )}
-
               {isLoading ? (
                 <div className='text-center'>
                   <Loader
@@ -263,35 +256,28 @@ const UserListScreen = () => {
                     )}
                   </div>
 
-                  <div className='row'>
-                    <div className='col'>
-                      <div className='form-check'>
-                        <input
-                          className='form-check-input'
-                          type='checkbox'
-                          id='admin'
-                          {...register('admin')}
-                          checked={watch().admin}
-                        />
-                        <label className='form-check-label' htmlFor='admin'>
-                          Admin
-                        </label>
-                      </div>
-                    </div>
-                    <div className='col'>
-                      <div className='form-check'>
-                        <input
-                          className='form-check-input'
-                          type='checkbox'
-                          id='user'
-                          {...register('user')}
-                          checked={watch().user}
-                        />
-                        <label className='form-check-label' htmlFor='user'>
-                          User
-                        </label>
-                      </div>
-                    </div>
+                  <div className='mb-3'>
+                    <label htmlFor='group'>Group</label>
+                    <select
+                      {...register('group', { required: 'Group is required' })}
+                      type='text'
+                      placeholder='Enter group'
+                      className='form-control'
+                      autoFocus
+                    >
+                      <option value=''>-------</option>
+                      {groupData &&
+                        groupData.map((group) => (
+                          <option key={group._id} value={group.name}>
+                            {group.name}
+                          </option>
+                        ))}
+                    </select>
+                    {errors.group && (
+                      <span className='text-danger'>
+                        {errors.group.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className='modal-footer'>
@@ -323,7 +309,6 @@ const UserListScreen = () => {
       </div>
 
       <div className='d-flex justify-content-between align-items-center'>
-        <h3 className=''>Users</h3>
         <button
           className='btn btn-primary '
           data-bs-toggle='modal'
@@ -331,14 +316,10 @@ const UserListScreen = () => {
         >
           <FaPlus className='mb-1' />
         </button>
+        <h3 className=''>Users</h3>
+        <Pagination data={data} setPage={setPage} />
       </div>
 
-      {isSuccessDeleteUser && (
-        <Message variant='success'>User has been deleted successfully.</Message>
-      )}
-      {isErrorDeleteUser && (
-        <Message variant='danger'>{errorDeleteUser}</Message>
-      )}
       {isLoading ? (
         <div className='text-center'>
           <Loader
@@ -361,7 +342,7 @@ const UserListScreen = () => {
                   <th>ID</th>
                   <th>NAME</th>
                   <th>EMAIL</th>
-                  <th>ADMIN</th>
+                  <th>GROUP</th>
                   <th></th>
                 </tr>
               </thead>
@@ -375,7 +356,7 @@ const UserListScreen = () => {
                         <a href={`mailto:${user.email}`}>{user.email}</a>
                       </td>
                       <td>
-                        {UnlockAccess(user && user.roles) ? (
+                        {UnlockAccess(user && user.group) ? (
                           <FaCheckCircle className='text-success mb-1' />
                         ) : (
                           <FaTimesCircle className='text-danger mb-1' />

@@ -1,13 +1,20 @@
 export const UnlockAccess = (role) => {
-  const roles =
+  const group =
     localStorage.getItem('userInfo') &&
-    JSON.parse(localStorage.getItem('userInfo')).roles
+    JSON.parse(localStorage.getItem('userInfo')).group
+  return group === role && true
+}
+
+export const UnlockAccessRoute = (role) => {
+  const group =
+    localStorage.getItem('userInfo') &&
+    JSON.parse(localStorage.getItem('userInfo')).group.split(' ')
 
   let willReturn = []
   let i, j
-  for (i in roles) {
+  for (i in group) {
     for (j in role) {
-      willReturn.push(role[j] === roles[i])
+      willReturn.push(role[j] === group[i])
     }
   }
 

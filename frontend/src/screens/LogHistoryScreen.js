@@ -31,8 +31,10 @@ const UserLogHistoryScreen = () => {
 
   return (
     <>
-      <h3 className=''>Users Log</h3>
-      <Pagination data={data} setPage={setPage} />
+      <div className='d-flex justify-content-between align-items-center'>
+        <h3 className=''>Users Log</h3>
+        <Pagination data={data} setPage={setPage} />
+      </div>
 
       <input
         type='text'

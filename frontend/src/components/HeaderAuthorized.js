@@ -47,7 +47,7 @@ const HeaderAuthorized = () => {
               </li>
             </div>
 
-            {userInfo && userInfo.roles.includes('Admin') && (
+            {userInfo && userInfo.group === 'admin' && (
               <>
                 <li className='nav-item dropdown '>
                   <span
@@ -63,6 +63,11 @@ const HeaderAuthorized = () => {
                     className='dropdown-menu '
                     aria-labelledby='navbarDropdown'
                   >
+                    <li>
+                      <Link to='/admin/users/groups' className='dropdown-item'>
+                        <FaUsers className='mb-1' /> Groups
+                      </Link>
+                    </li>
                     <li>
                       <Link to='/admin/users' className='dropdown-item'>
                         <FaUsers className='mb-1' /> Users

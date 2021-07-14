@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { UnlockAccess } from '../UnlockAccess'
+import { UnlockAccessRoute } from '../UnlockAccess'
 
 const PrivateRoute = ({ component: Component, role, ...rest }) => {
   const userInfo =
@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: Component, role, ...rest }) => {
       render={(props) =>
         !userInfo ? (
           <Redirect to='/login' />
-        ) : userInfo && !UnlockAccess(role, userInfo) ? (
+        ) : userInfo && !UnlockAccessRoute(role, userInfo) ? (
           <Redirect to='/' />
         ) : (
           <Component {...props} />
