@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Message from '../components/Message'
 import Loader from 'react-loader-spinner'
-import moment from 'moment'
 import {
   FaCheckCircle,
   FaEdit,
@@ -10,15 +9,14 @@ import {
   FaTrash,
 } from 'react-icons/fa'
 
-import { getGroups, updateGroup, deleteGroup, addGroup } from '../api/groups'
+import { getRoutes, updateRoute, deleteRoute, addRoute } from '../api/routes'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 
 import { confirmAlert } from 'react-confirm-alert'
 import { Confirm } from '../components/Confirm'
 import { useForm } from 'react-hook-form'
-import { getRoutes } from '../api/routes'
 
-const GroupScreen = () => {
+const RouteScreen = () => {
   const {
     register,
     handleSubmit,
@@ -35,53 +33,49 @@ const GroupScreen = () => {
   const queryClient = useQueryClient()
 
   const { data, isLoading, isError, error } = useQuery(
-    'groups',
-    () => getGroups(),
+    'routes',
+    () => getRoutes(),
     {
       retry: 0,
     }
   )
 
-  const { data: routeData } = useQuery('routes', () => getRoutes(), {
-    retry: 0,
-  })
-
   const {
-    isLoading: isLoadingUpdateGroup,
-    isError: isErrorUpdateGroup,
-    error: errorUpdateGroup,
-    isSuccess: isSuccessUpdateGroup,
-    mutateAsync: updateGroupMutateAsync,
-  } = useMutation(['updateGroup'], updateGroup, {
+    isLoading: isLoadingUpdateRoute,
+    isError: isErrorUpdateRoute,
+    error: errorUpdateRoute,
+    isSuccess: isSuccessUpdateRoute,
+    mutateAsync: updateRouteMutateAsync,
+  } = useMutation(['updateRoute'], updateRoute, {
     retry: 0,
     onSuccess: () => {
       reset()
-      queryClient.invalidateQueries(['groups'])
+      queryClient.invalidateQueries(['routes'])
     },
   })
 
   const {
-    isLoading: isLoadingDeleteGroup,
-    isError: isErrorDeleteGroup,
-    error: errorDeleteGroup,
-    isSuccess: isSuccessDeleteGroup,
-    mutateAsync: deleteGroupMutateAsync,
-  } = useMutation(['deleteGroup'], deleteGroup, {
+    isLoading: isLoadingDeleteRoute,
+    isError: isErrorDeleteRoute,
+    error: errorDeleteRoute,
+    isSuccess: isSuccessDeleteRoute,
+    mutateAsync: deleteRouteMutateAsync,
+  } = useMutation(['deleteRoute'], deleteRoute, {
     retry: 0,
-    onSuccess: () => queryClient.invalidateQueries(['groups']),
+    onSuccess: () => queryClient.invalidateQueries(['routes']),
   })
 
   const {
-    isLoading: isLoadingAddGroup,
-    isError: isErrorAddGroup,
-    error: errorAddGroup,
-    isSuccess: isSuccessAddGroup,
-    mutateAsync: addGroupMutateAsync,
-  } = useMutation(['addGroup'], addGroup, {
+    isLoading: isLoadingAddRoute,
+    isError: isErrorAddRoute,
+    error: errorAddRoute,
+    isSuccess: isSuccessAddRoute,
+    mutateAsync: addRouteMutateAsync,
+  } = useMutation(['addRoute'], addRoute, {
     retry: 0,
     onSuccess: () => {
       reset()
-      queryClient.invalidateQueries(['groups'])
+      queryClient.invalidateQueries(['routes'])
     },
   })
 
@@ -94,69 +88,68 @@ const GroupScreen = () => {
   }
 
   const deleteHandler = (id) => {
-    confirmAlert(Confirm(() => deleteGroupMutateAsync(id)))
+    confirmAlert(Confirm(() => deleteRouteMutateAsync(id)))
   }
 
   const submitHandler = (data) => {
     edit
-      ? updateGroupMutateAsync({
+      ? updateRouteMutateAsync({
           _id: id,
-          name: data.name,
-          route: data.route,
+          path: data.path,
+          component: data.component,
           isActive: data.isActive,
+          name: data.name,
         })
-      : addGroupMutateAsync(data)
+      : addRouteMutateAsync(data)
   }
 
-  const editHandler = (group) => {
-    setId(group._id)
+  const editHandler = (route) => {
+    setId(route._id)
     setEdit(true)
-    setValue('name', group.name)
-    setValue(
-      'route',
-      group.route.map((id) => id._id)
-    )
-    setValue('isActive', group.isActive)
+    setValue('path', route.path)
+    setValue('component', route.component)
+    setValue('isActive', route.isActive)
+    setValue('name', route.name)
   }
 
   return (
     <div className='container'>
-      {isSuccessUpdateGroup && (
+      {isSuccessUpdateRoute && (
         <Message variant='success'>
-          Group has been updated successfully.
+          Route has been updated successfully.
         </Message>
       )}
-      {isErrorUpdateGroup && (
-        <Message variant='danger'>{errorUpdateGroup}</Message>
+      {isErrorUpdateRoute && (
+        <Message variant='danger'>{errorUpdateRoute}</Message>
       )}
-      {isSuccessAddGroup && (
+      {isSuccessAddRoute && (
         <Message variant='success'>
-          Group has been Created successfully.
+          Route has been Created successfully.
         </Message>
       )}
-      {isErrorAddGroup && <Message variant='danger'>{errorAddGroup}</Message>}
-      {isSuccessDeleteGroup && (
+      {isErrorAddRoute && <Message variant='danger'>{errorAddRoute}</Message>}
+      {isSuccessDeleteRoute && (
         <Message variant='success'>
-          Group has been deleted successfully.
+          Route has been deleted successfully.
         </Message>
       )}
-      {isErrorDeleteGroup && (
-        <Message variant='danger'>{errorDeleteGroup}</Message>
+      {isErrorDeleteRoute && (
+        <Message variant='danger'>{errorDeleteRoute}</Message>
       )}
       <div
         className='modal fade'
-        id='editGroupModal'
+        id='editRouteModal'
         data-bs-backdrop='static'
         data-bs-keyboard='false'
         tabIndex='-1'
-        aria-labelledby='editGroupModalLabel'
+        aria-labelledby='editRouteModalLabel'
         aria-hidden='true'
       >
         <div className='modal-dialog'>
           <div className='modal-content modal-background'>
             <div className='modal-header'>
-              <h3 className='modal-title ' id='editGroupModalLabel'>
-                {edit ? 'Edit Group' : 'Add Group'}
+              <h3 className='modal-title ' id='editRouteModalLabel'>
+                {edit ? 'Edit Route' : 'Add Route'}
               </h3>
               <button
                 type='button'
@@ -195,27 +188,36 @@ const GroupScreen = () => {
                     )}
                   </div>
 
-                  <div className='row g-1 mb-3'>
-                    {routeData &&
-                      routeData.map((route) => (
-                        <div key={route._id} className='col-md-4 col-6'>
-                          <div className='form-check'>
-                            <input
-                              {...register('route')}
-                              className='form-check-input'
-                              type='checkbox'
-                              value={route._id}
-                              id={`flexCheck${route._id}`}
-                            />
-                            <label
-                              className='form-check-label'
-                              htmlFor={`flexCheck${route._id}`}
-                            >
-                              {route.name}
-                            </label>
-                          </div>
-                        </div>
-                      ))}
+                  <div className='mb-3'>
+                    <label htmlFor='path'>Path</label>
+                    <input
+                      {...register('path', { required: 'Path is required' })}
+                      type='text'
+                      placeholder='Enter path'
+                      className='form-control'
+                      autoFocus
+                    />
+                    {errors.path && (
+                      <span className='text-danger'>{errors.path.message}</span>
+                    )}
+                  </div>
+
+                  <div className='mb-3'>
+                    <label htmlFor='component'>Component</label>
+                    <input
+                      {...register('component', {
+                        required: 'Component is required',
+                      })}
+                      type='text'
+                      placeholder='Enter component'
+                      className='form-control'
+                      autoFocus
+                    />
+                    {errors.component && (
+                      <span className='text-danger'>
+                        {errors.component.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className='row'>
@@ -247,9 +249,9 @@ const GroupScreen = () => {
                     <button
                       type='submit'
                       className='btn btn-primary '
-                      disabled={isLoadingAddGroup || isLoadingUpdateGroup}
+                      disabled={isLoadingAddRoute || isLoadingUpdateRoute}
                     >
-                      {isLoadingAddGroup || isLoadingUpdateGroup ? (
+                      {isLoadingAddRoute || isLoadingUpdateRoute ? (
                         <span className='spinner-border spinner-border-sm' />
                       ) : (
                         'Submit'
@@ -264,11 +266,11 @@ const GroupScreen = () => {
       </div>
 
       <div className='d-flex justify-content-between align-items-center'>
-        <h3 className=''>Groups</h3>
+        <h3 className=''>Routes</h3>
         <button
           className='btn btn-primary '
           data-bs-toggle='modal'
-          data-bs-target='#editGroupModal'
+          data-bs-target='#editRouteModal'
         >
           <FaPlus className='mb-1' />
         </button>
@@ -293,47 +295,44 @@ const GroupScreen = () => {
               <caption>{data && data.length} records were found</caption>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>GROUP NAME</th>
+                  <th>ROUTE NAME</th>
+                  <th>PATH</th>
+                  <th>COMPONENT</th>
                   <th>ACTIVE</th>
-                  <th>DATE & TIME</th>
                   <th>ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
                 {data &&
-                  data.map((group) => (
-                    <tr key={group._id}>
-                      <td>{group._id}</td>
+                  data.map((route) => (
+                    <tr key={route._id}>
+                      <td>{route.name}</td>
+                      <td>{route.path}</td>
+                      <td>{route.component}</td>
                       <td>
-                        {group.name.charAt(0).toUpperCase() +
-                          group.name.slice(1)}
-                      </td>
-                      <td>
-                        {group.isActive ? (
+                        {route.isActive ? (
                           <FaCheckCircle className='text-success mb-1' />
                         ) : (
                           <FaTimesCircle className='text-danger mb-1' />
                         )}
                       </td>
-                      <td>{moment(group.createdAt).format('llll')}</td>
 
-                      <td className='btn-group'>
+                      <td className='btn-route'>
                         <button
                           className='btn btn-primary btn-sm'
-                          onClick={() => editHandler(group)}
+                          onClick={() => editHandler(route)}
                           data-bs-toggle='modal'
-                          data-bs-target='#editGroupModal'
+                          data-bs-target='#editRouteModal'
                         >
                           <FaEdit className='mb-1' /> Edit
                         </button>
 
                         <button
                           className='btn btn-danger btn-sm'
-                          onClick={() => deleteHandler(group._id)}
-                          disabled={isLoadingDeleteGroup}
+                          onClick={() => deleteHandler(route._id)}
+                          disabled={isLoadingDeleteRoute}
                         >
-                          {isLoadingDeleteGroup ? (
+                          {isLoadingDeleteRoute ? (
                             <span className='spinner-border spinner-border-sm' />
                           ) : (
                             <span>
@@ -354,4 +353,4 @@ const GroupScreen = () => {
   )
 }
 
-export default GroupScreen
+export default RouteScreen

@@ -7,6 +7,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
 import userRoutes from './routes/userRoutes.js'
 import groupRoutes from './routes/groupRoutes.js'
+import routeRoutes from './routes/routeRoutes.js'
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ app.use(express.json())
 
 app.use('/api/users', userRoutes)
 app.use('/api/groups', groupRoutes)
+app.use('/api/routes', routeRoutes)
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))

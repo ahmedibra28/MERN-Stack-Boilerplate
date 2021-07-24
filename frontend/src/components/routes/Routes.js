@@ -13,51 +13,70 @@ import UserLogHistoryScreen from '../../screens/LogHistoryScreen'
 import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen'
 import ResetPasswordScreen from '../../screens/ResetPasswordScreen'
 import GroupScreen from '../../screens/GroupScreen'
+import RouteScreen from '../../screens/RouteScreen'
+
+import { useQuery } from 'react-query'
+import { getGroups } from '../../api/groups'
 
 const Routes = () => {
+  const { data: groupData, isLoading } = useQuery('groups', () => getGroups(), {
+    retry: 0,
+  })
+
+  let group = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo')).group
+    : null
+
+  const switchRoutes = (component) => {
+    switch (component) {
+      case 'ProfileScreen':
+        return ProfileScreen
+      case 'UserListScreen':
+        return UserListScreen
+      case 'UserLogHistoryScreen':
+        return UserLogHistoryScreen
+      case 'GroupScreen':
+        return GroupScreen
+      case 'RouteScreen':
+        return RouteScreen
+      default:
+        return NotFound
+    }
+  }
+
   return (
     <section className='mx-auto'>
-      <Switch>
-        <Route exact path='/' component={HomeScreen} />
-        <Route path='/forgotpassword' component={ForgotPasswordScreen} />
-        <Route path='/login' component={LoginScreen} />
-        <Route path='/register' r component={RegisterScreen} />
+      {isLoading ? (
+        'Loading...'
+      ) : (
+        <Switch>
+          <Route exact path='/' component={HomeScreen} />
+          <Route path='/login' component={LoginScreen} />
+          <Route path='/forgotpassword' component={ForgotPasswordScreen} />
+          <Route path='/register' component={RegisterScreen} />
+          <Route
+            path='/resetpassword/:resetToken'
+            component={ResetPasswordScreen}
+          />
 
-        <PrivateRoute
-          role={['admin', 'user']}
-          path='/profile'
-          component={ProfileScreen}
-        />
+          {groupData &&
+            groupData.map(
+              (route) =>
+                route.name === group &&
+                route.isActive &&
+                route.route.map((r) => (
+                  <PrivateRoute
+                    exact
+                    path={r.path}
+                    component={switchRoutes(r.component)}
+                    role={[route.name]}
+                  />
+                ))
+            )}
 
-        <Route
-          path='/resetpassword/:resetToken'
-          component={ResetPasswordScreen}
-        />
-        <PrivateRoute
-          path='/admin/users/logs'
-          role={['admin']}
-          component={UserLogHistoryScreen}
-        />
-        <PrivateRoute
-          exact
-          path='/admin/users'
-          role={['admin']}
-          component={UserListScreen}
-        />
-        <PrivateRoute
-          exact
-          path='/admin/users/groups'
-          role={['admin']}
-          component={GroupScreen}
-        />
-        <PrivateRoute
-          path='/admin/users/page/:pageNumber'
-          role={['admin']}
-          component={UserListScreen}
-        />
-
-        <Route component={NotFound} />
-      </Switch>
+          <Route component={NotFound} />
+        </Switch>
+      )}
     </section>
   )
 }

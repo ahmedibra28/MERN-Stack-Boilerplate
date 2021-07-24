@@ -9,7 +9,7 @@ import { admin, protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.route('/').get(protect, getGroup).post(protect, admin, addGroup)
+router.route('/').get(getGroup).post(protect, admin, addGroup)
 router
   .route('/:id')
   .delete(protect, admin, deleteGroup)

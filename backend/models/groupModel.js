@@ -4,13 +4,19 @@ const groupScheme = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
-      default: 'Admin',
+      default: 'admin',
     },
     isActive: {
       type: Boolean,
       default: true,
     },
+    route: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Route',
+        required: true,
+      },
+    ],
   },
   {
     timestamps: true,

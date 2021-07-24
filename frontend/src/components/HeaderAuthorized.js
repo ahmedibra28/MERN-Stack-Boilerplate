@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import {
   FaCog,
   FaFileContract,
+  FaRoute,
   FaUser,
   FaUserCircle,
   FaUsers,
@@ -64,7 +65,12 @@ const HeaderAuthorized = () => {
                     aria-labelledby='navbarDropdown'
                   >
                     <li>
-                      <Link to='/admin/users/groups' className='dropdown-item'>
+                      <Link to='/admin/routes' className='dropdown-item'>
+                        <FaRoute className='mb-1' /> Routes
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to='/admin/groups' className='dropdown-item'>
                         <FaUsers className='mb-1' /> Groups
                       </Link>
                     </li>
