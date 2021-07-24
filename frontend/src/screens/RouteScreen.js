@@ -30,6 +30,9 @@ const RouteScreen = () => {
     },
   })
 
+  const [id, setId] = useState(null)
+  const [edit, setEdit] = useState(false)
+
   const queryClient = useQueryClient()
 
   const { data, isLoading, isError, error } = useQuery(
@@ -50,6 +53,7 @@ const RouteScreen = () => {
     retry: 0,
     onSuccess: () => {
       reset()
+      setEdit(false)
       queryClient.invalidateQueries(['routes'])
     },
   })
@@ -78,9 +82,6 @@ const RouteScreen = () => {
       queryClient.invalidateQueries(['routes'])
     },
   })
-
-  const [id, setId] = useState(null)
-  const [edit, setEdit] = useState(false)
 
   const formCleanHandler = () => {
     setEdit(false)
