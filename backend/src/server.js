@@ -3,11 +3,11 @@ import express from 'express'
 import dotenv from 'dotenv'
 import colors from 'colors'
 import morgan from 'morgan'
-import { notFound, errorHandler } from './middleware/errorMiddleware.js'
+import { notFound, errorHandler } from './api/middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
-import userRoutes from './routes/userRoutes.js'
-import groupRoutes from './routes/groupRoutes.js'
-import routeRoutes from './routes/routeRoutes.js'
+import userRoutes from './api/routes/userRoutes.js'
+import groupRoutes from './api/routes/groupRoutes.js'
+import routeRoutes from './api/routes/routeRoutes.js'
 
 dotenv.config()
 
@@ -26,13 +26,13 @@ app.use('/api/groups', groupRoutes)
 app.use('/api/routes', routeRoutes)
 
 const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('./api/uploads', express.static(path.join(__dirname, '/uploads')))
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')))
 
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    res.sendFile(path.resolve(__dirname, '../frontend', 'build', 'index.html'))
   )
 } else {
   app.get('/', (req, res) => {
