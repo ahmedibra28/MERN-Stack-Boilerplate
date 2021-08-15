@@ -1,4 +1,5 @@
 import express from 'express'
+import { seeds } from '../controllers/seedsController.js'
 import {
   authUser,
   registerUser,
@@ -27,6 +28,8 @@ router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile)
+
+router.route('/insert/seeds').get(seeds)
 router
   .route('/:id')
   .delete(protect, admin, deleteUser)
