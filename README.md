@@ -58,4 +58,17 @@ cd MERN-Stack-Boilerplate
 docker-compose -f docker-compose.prod.yml up --build -d
 ```
 
+## To insert default seed data
+
+copy and paste the below URL to your browser URL bar.
+
+```
+http://localhost:4000/api/users/insert/seeds
+```
+
+### Default admin authentication is:
+
+- Email: _ahmaat19@gmail.com_
+- Password: _123456_
+
 **_Free MERN Boilerplate, Hell Yeah!_**
