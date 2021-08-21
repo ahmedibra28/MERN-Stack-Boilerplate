@@ -89,12 +89,12 @@ const UserLogHistoryScreen = () => {
                           </td>
                           <td>
                             <Moment format='YYYY-MM-DD'>
-                              {moment(log.logDate)}
+                              {moment(log.createdAt)}
                             </Moment>
                           </td>
                           <td>
                             <Moment format='HH:mm:ss'>
-                              {moment(log.logDate)}
+                              {moment(log.createdAt)}
                             </Moment>
                           </td>
                         </tr>

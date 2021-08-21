@@ -52,12 +52,9 @@ const Routes = () => {
         <Switch>
           <Route exact path='/' component={HomeScreen} />
           <Route path='/login' component={LoginScreen} />
-          <Route path='/forgotpassword' component={ForgotPasswordScreen} />
+          <Route path='/forgot' component={ForgotPasswordScreen} />
           <Route path='/register' component={RegisterScreen} />
-          <Route
-            path='/resetpassword/:resetToken'
-            component={ResetPasswordScreen}
-          />
+          <Route path='/reset/:resetToken' component={ResetPasswordScreen} />
 
           {groupData &&
             groupData.map(

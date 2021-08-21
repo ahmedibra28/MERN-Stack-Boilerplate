@@ -82,7 +82,7 @@ const LoginScreen = ({ history }) => {
       </form>
       <div className='row pt-3'>
         <div className='col'>
-          <Link to='/forgotpassword'> Forgot Password</Link>
+          <Link to='/forgot'> Forgot Password</Link>
         </div>
       </div>
       <div className='row '>

@@ -55,6 +55,20 @@ export const createUser = async (user) => {
   }
 }
 
+export const createGuestUser = async (user) => {
+  try {
+    const { data } = await axios.post(
+      `/api/users/register/guest`,
+      user,
+      config()
+    )
+    localStorage.setItem('userInfo', JSON.stringify(data))
+    return data
+  } catch (error) {
+    throw error.response.data.message
+  }
+}
+
 export const updateUser = async (user) => {
   try {
     const { data } = await axios.put(`/api/users/${user._id}`, user, config())

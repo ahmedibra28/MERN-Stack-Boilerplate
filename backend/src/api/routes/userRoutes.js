@@ -12,12 +12,17 @@ import {
   logHistory,
   forgotPassword,
   resetPassword,
+  guestRegisterUser,
 } from '../controllers/usersController.js'
 import { admin, protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.route('/').post(registerUser).get(protect, admin, getUsers)
+router
+  .route('/')
+  .post(protect, admin, guestRegisterUser)
+  .get(protect, admin, getUsers)
+router.route('/register/guest').post(registerUser)
 router.route('/forgotpassword').post(forgotPassword)
 router.route('/resetpassword/:resetToken').put(resetPassword)
 

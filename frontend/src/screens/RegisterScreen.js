@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 
-import { createUser } from '../api/users'
+import { createGuestUser } from '../api/users'
 import { useMutation } from 'react-query'
 
 import { useForm } from 'react-hook-form'
@@ -23,15 +23,13 @@ const RegisterScreen = ({ history }) => {
   })
 
   const { isLoading, isError, error, isSuccess, mutateAsync } = useMutation(
-    'createUser',
-    createUser,
+    'createGuestUser',
+    createGuestUser,
     {
       retry: 0,
       onSuccess: () => {
         reset()
-        setTimeout(() => {
-          history.push('/')
-        }, 3000)
+        history.push('/')
       },
     }
   )

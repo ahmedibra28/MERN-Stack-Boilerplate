@@ -9,11 +9,9 @@ import { forgotMessage } from '../utils/forgotEmailTemplate.js'
 const logSession = asyncHandler(async (id) => {
   const user = id
   const date = Date.now()
-  const logDate = new Date(date)
 
   return await LogonSession.create({
     user,
-    logDate,
   })
 })
 
@@ -30,7 +28,7 @@ export const logHistory = asyncHandler(async (req, res) => {
   query = query
     .skip(skip)
     .limit(pageSize)
-    .sort({ logDate: -1 })
+    .sort({ createdAt: -1 })
     .populate('user', ['name', 'email'])
 
   const result = await query
@@ -68,6 +66,35 @@ export const authUser = asyncHandler(async (req, res) => {
 })
 
 export const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password, group } = req.body
+  const userExist = await User.findOne({ email })
+  if (userExist) {
+    res.status(400)
+    throw new Error('User already exist')
+  }
+
+  const userCreate = await User.create({
+    name,
+    email,
+    password,
+    group: 'user',
+  })
+
+  if (userCreate) {
+    res.status(201).json({
+      _id: userCreate._id,
+      name: userCreate.name,
+      email: userCreate.email,
+      group: userCreate.group,
+      token: generateToken(userCreate._id),
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid user data')
+  }
+})
+
+export const guestRegisterUser = asyncHandler(async (req, res) => {
   const { name, email, password, group } = req.body
   const userExist = await User.findOne({ email })
   if (userExist) {
@@ -236,7 +263,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 
   await user.save()
 
-  const resetUrl = `http://localhost:3000/resetpassword/${resetToken}`
+  const resetUrl = `http://localhost:3000/reset/${resetToken}`
 
   const message = forgotMessage(resetUrl, user)
 
