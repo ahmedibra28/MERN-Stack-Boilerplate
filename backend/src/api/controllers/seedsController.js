@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import GroupModel from '../models/groupModel.js'
 import User from '../models/userModel.js'
+import LogonSession from '../models/userLogonSessionModel.js'
 import RouteModel from '../models/routeModel.js'
 
 const routes = () => {
@@ -73,6 +74,7 @@ export const seeds = asyncHandler(async (req, res) => {
 
     if (groupInsertion) {
       await User.deleteMany()
+      await LogonSession.deleteMany()
       const userInsertion = await User.create(users())
 
       if (userInsertion) {

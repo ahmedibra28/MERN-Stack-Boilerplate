@@ -83,10 +83,5 @@ label {
 }
 
 main {
-  min-height: 60vh;
-  width: 100%;
-}
-
-.text-primary {
-  color: var(--primary-color) !important;
+  min-height: 80vh;
 }

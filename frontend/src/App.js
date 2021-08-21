@@ -40,9 +40,10 @@ const App = () => {
   return (
     <Router>
       <Navigation />
-      <div className='container pt-2'>
+      <main className='container pt-2'>
         <Route component={Routes} />
-      </div>
+      </main>
+
       <Footer />
     </Router>
   )
