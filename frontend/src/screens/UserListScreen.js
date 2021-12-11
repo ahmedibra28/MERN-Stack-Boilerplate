@@ -10,7 +10,6 @@ import {
 } from 'react-icons/fa'
 import Pagination from '../components/Pagination'
 import { getUsers, updateUser, deleteUser, createUser } from '../api/users'
-import { getGroups } from '../api/groups'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 
 import { UnlockAccess } from '../components/UnlockAccess'
@@ -41,8 +40,6 @@ const UserListScreen = () => {
       retry: 0,
     }
   )
-
-  const { data: groupData } = useQuery('groups', () => getGroups())
 
   const {
     isLoading: isLoadingUpdateUser,
@@ -102,7 +99,6 @@ const UserListScreen = () => {
           name: data.name,
           email: data.email,
           password: data.password,
-          group: data.group,
         })
       : createUserMutateAsync(data)
   }
@@ -112,7 +108,6 @@ const UserListScreen = () => {
     setEdit(true)
     setValue('name', user.name)
     setValue('email', user.email)
-    setValue('group', user.group)
   }
 
   useEffect(() => {
@@ -256,30 +251,6 @@ const UserListScreen = () => {
                     )}
                   </div>
 
-                  <div className='mb-3'>
-                    <label htmlFor='group'>Group</label>
-                    <select
-                      {...register('group', { required: 'Group is required' })}
-                      type='text'
-                      placeholder='Enter group'
-                      className='form-control'
-                      autoFocus
-                    >
-                      <option value=''>-------</option>
-                      {groupData &&
-                        groupData.map((group) => (
-                          <option key={group._id} value={group.name}>
-                            {group.name}
-                          </option>
-                        ))}
-                    </select>
-                    {errors.group && (
-                      <span className='text-danger'>
-                        {errors.group.message}
-                      </span>
-                    )}
-                  </div>
-
                   <div className='modal-footer'>
                     <button
                       type='button'
@@ -356,11 +327,11 @@ const UserListScreen = () => {
                         <a href={`mailto:${user.email}`}>{user.email}</a>
                       </td>
                       <td>
-                        {UnlockAccess(user && user.group) ? (
+                        {/* {UnlockAccess(user && user.group) ? (
                           <FaCheckCircle className='text-success mb-1' />
                         ) : (
                           <FaTimesCircle className='text-danger mb-1' />
-                        )}
+                        )} */}
                       </td>
                       <td className='btn-group'>
                         <button

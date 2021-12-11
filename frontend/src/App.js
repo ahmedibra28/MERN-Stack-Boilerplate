@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import jwt_decode from 'jwt-decode'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import Footer from './components/Footer'
 import RoutesComponent from './components/routes/Routes'
 import 'animate.css'
@@ -43,7 +43,6 @@ const App = () => {
       <main className='container pt-2'>
         <RoutesComponent />
       </main>
-
       <Footer />
     </BrowserRouter>
   )
