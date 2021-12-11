@@ -173,11 +173,7 @@ export const getUsers = asyncHandler(async (req, res) => {
 
   const pages = Math.ceil(total / pageSize)
 
-  query = query
-    .skip(skip)
-    .limit(pageSize)
-    .sort({ createdAt: -1 })
-    .populate('user', ['name', 'email'])
+  query = query.skip(skip).limit(pageSize).sort({ createdAt: -1 })
 
   const result = await query
 

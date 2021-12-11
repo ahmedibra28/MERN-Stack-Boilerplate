@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Redirect } from 'react-router-dom'
 
 const config = () => {
   return {
@@ -42,7 +41,6 @@ export const login = async (credentials) => {
 }
 
 export const logout = () => {
-  Redirect('/login')
   return localStorage.removeItem('userInfo')
 }
 

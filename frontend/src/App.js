@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import jwt_decode from 'jwt-decode'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Footer from './components/Footer'
-import Routes from './components/routes/Routes'
+import RoutesComponent from './components/routes/Routes'
 import 'animate.css'
 
 import { logout } from './api/users'
@@ -38,14 +38,14 @@ const App = () => {
   }, [mutateAsync, userInfo])
 
   return (
-    <Router>
+    <BrowserRouter>
       <Navigation />
       <main className='container pt-2'>
-        <Route component={Routes} />
+        <RoutesComponent />
       </main>
 
       <Footer />
-    </Router>
+    </BrowserRouter>
   )
 }
 

@@ -1,5 +1,11 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import {
+  Route,
+  Routes,
+  useNavigate,
+  useLocation,
+  useRoutes,
+} from 'react-router-dom'
 
 import HomeScreen from '../../screens/HomeScreen'
 import LoginScreen from '../../screens/LoginScreen'
@@ -18,64 +24,102 @@ import RouteScreen from '../../screens/RouteScreen'
 import { useQuery } from 'react-query'
 import { getGroups } from '../../api/groups'
 
-const Routes = () => {
+const RoutesComponent = () => {
+  let navigate = useNavigate()
+  let location = useLocation()
   const { data: groupData, isLoading } = useQuery('groups', () => getGroups(), {
     retry: 0,
   })
+
+  let userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null
 
   let group = localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo')).group
     : null
 
-  const switchRoutes = (component) => {
-    switch (component) {
-      case 'ProfileScreen':
-        return ProfileScreen
-      case 'UserListScreen':
-        return UserListScreen
-      case 'UserLogHistoryScreen':
-        return UserLogHistoryScreen
-      case 'GroupScreen':
-        return GroupScreen
-      case 'RouteScreen':
-        return RouteScreen
-      default:
-        return NotFound
-    }
+  const apiRoutes = () => {
+    const routesArray =
+      groupData && groupData.find((item) => item.name === group)
+    const routes = routesArray && routesArray.route
+    return (
+      routes &&
+      routes.map((route) => ({
+        path: route.path,
+        element: <route.component />,
+      }))
+    )
   }
 
-  return (
-    <section className='mx-auto'>
-      {isLoading ? (
-        'Loading...'
-      ) : (
-        <Switch>
-          <Route exact path='/' component={HomeScreen} />
-          <Route path='/login' component={LoginScreen} />
-          <Route path='/forgot' component={ForgotPasswordScreen} />
-          <Route path='/register' component={RegisterScreen} />
-          <Route path='/reset/:resetToken' component={ResetPasswordScreen} />
+  console.log(apiRoutes())
 
-          {groupData &&
-            groupData.map(
-              (route) =>
-                route.name === group &&
-                route.isActive &&
-                route.route.map((r) => (
-                  <PrivateRoute
-                    exact
-                    path={r.path}
-                    component={switchRoutes(r.component)}
-                    role={[route.name]}
-                  />
-                ))
-            )}
+  // const switchRoutes = (element) => {
+  //   switch (element) {
+  //     case 'ProfileScreen':
+  //       return ProfileScreen
+  //     case 'UserListScreen':
+  //       return UserListScreen
+  //     case 'UserLogHistoryScreen':
+  //       return UserLogHistoryScreen
+  //     case 'GroupScreen':
+  //       return GroupScreen
+  //     case 'RouteScreen':
+  //       return RouteScreen
+  //     default:
+  //       return NotFound
+  //   }
+  // }
+  useEffect(() => {
+    location.key === 'default' && navigate('/')
+  }, [navigate, location])
 
-          <Route component={NotFound} />
-        </Switch>
-      )}
-    </section>
-  )
+  let publicElement = useRoutes([
+    { path: '/', element: <HomeScreen /> },
+    { path: '/login', element: <LoginScreen /> },
+    { path: '/forgot', element: <ForgotPasswordScreen /> },
+    { path: '/register', element: <RegisterScreen /> },
+    { path: '/reset/:resetToken', element: <ResetPasswordScreen /> },
+    { path: '*', element: <NotFound /> },
+  ])
+
+  let privateElement = useRoutes([
+    { path: '/', element: <HomeScreen /> },
+    { path: '/profile', element: <ProfileScreen /> },
+    {
+      path: '/admin',
+      children: [
+        { path: 'users', element: <UserListScreen /> },
+        { path: 'users/logs', element: <UserLogHistoryScreen /> },
+        { path: 'groups', element: <GroupScreen /> },
+        { path: 'routes', element: <RouteScreen /> },
+      ],
+    },
+    { path: '*', element: <NotFound /> },
+  ])
+
+  return userInfo ? privateElement : publicElement
+
+  // return (
+  //   <Routes>
+  //     {publicElement}
+
+  //     {/* {groupData &&
+  //           groupData.map(
+  //             (route) =>
+  //               route.name === group &&
+  //               route.isActive &&
+  //               route.route.map((r) => (
+  //                 <PrivateRoute
+  //                   exact
+  //                   path={r.path}
+  //                   element={switchRoutes(r.element)}
+  //                   role={[route.name]}
+  //                 />
+  //               ))
+  //           )} */}
+  //   </Routes>
+  // )
 }
 
-export default Routes
+export default RoutesComponent

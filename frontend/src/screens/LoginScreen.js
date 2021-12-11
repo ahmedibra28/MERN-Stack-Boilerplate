@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import { useForm } from 'react-hook-form'
 import { login } from '../api/users'
 import { useMutation, useQueryClient } from 'react-query'
 
-const LoginScreen = ({ history }) => {
+const LoginScreen = () => {
+  let navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -22,13 +23,13 @@ const LoginScreen = ({ history }) => {
     onSuccess: (data) => {
       reset()
       queryClient.setQueryData('userInfo', data)
-      history.push('/')
+      navigate('/')
     },
   })
 
   useEffect(() => {
-    localStorage.getItem('userInfo') && history.push('/')
-  }, [history])
+    localStorage.getItem('userInfo') && navigate('/')
+  }, [navigate])
 
   const submitHandler = (data) => {
     mutateAsync(data)
