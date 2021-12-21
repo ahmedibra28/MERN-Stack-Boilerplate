@@ -34,6 +34,7 @@ I used number of different technologies
 - React-Hook-Form
 - Zoho Mail
 - react-icons
+- react router dom v6
 - docker
 - and so on
 

@@ -56,7 +56,7 @@ export const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      group: user.group,
+      isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
   } else {
@@ -66,7 +66,7 @@ export const authUser = asyncHandler(async (req, res) => {
 })
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, group } = req.body
+  const { name, email, password, isAdmin } = req.body
   const userExist = await User.findOne({ email })
   if (userExist) {
     res.status(400)
@@ -77,7 +77,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    group: 'user',
+    isAdmin,
   })
 
   if (userCreate) {
@@ -85,7 +85,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       _id: userCreate._id,
       name: userCreate.name,
       email: userCreate.email,
-      group: userCreate.group,
+      isAdmin: userCreate.isAdmin,
       token: generateToken(userCreate._id),
     })
   } else {
@@ -95,7 +95,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 })
 
 export const guestRegisterUser = asyncHandler(async (req, res) => {
-  const { name, email, password, group } = req.body
+  const { name, email, password } = req.body
   const userExist = await User.findOne({ email })
   if (userExist) {
     res.status(400)
@@ -106,7 +106,7 @@ export const guestRegisterUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    group,
+    isAdmin: true,
   })
 
   if (userCreate) {
@@ -114,7 +114,7 @@ export const guestRegisterUser = asyncHandler(async (req, res) => {
       _id: userCreate._id,
       name: userCreate.name,
       email: userCreate.email,
-      group: userCreate.group,
+      isAdmin: userCreate.isAdmin,
       token: generateToken(userCreate._id),
     })
   } else {
@@ -130,7 +130,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      group: user.group,
+      isAdmin: user.isAdmin,
     })
   } else {
     res.status(404)
@@ -154,7 +154,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      group: updatedUser.group,
+      isAdmin: updatedUser.isAdmin,
       token: generateToken(updatedUser._id),
     })
   } else {
@@ -173,11 +173,7 @@ export const getUsers = asyncHandler(async (req, res) => {
 
   const pages = Math.ceil(total / pageSize)
 
-  query = query
-    .skip(skip)
-    .limit(pageSize)
-    .sort({ createdAt: -1 })
-    .populate('user', ['name', 'email'])
+  query = query.skip(skip).limit(pageSize).sort({ createdAt: -1 })
 
   const result = await query
 
@@ -229,7 +225,7 @@ export const updateUser = asyncHandler(async (req, res) => {
 
   if (userExist) {
     userExist.name = req.body.name || userExist.name
-    userExist.group = req.body.group || userExist.group
+    userExist.isAdmin = req.body.isAdmin || userExist.isAdmin
     userExist.email = req.body.email.toLowerCase() || userExist.email
     if (req.body.password) {
       userExist.password = req.body.password
@@ -240,7 +236,7 @@ export const updateUser = asyncHandler(async (req, res) => {
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
-      group: updatedUser.group,
+      isAdmin: updatedUser.isAdmin,
       email: updatedUser.email,
     })
   } else {

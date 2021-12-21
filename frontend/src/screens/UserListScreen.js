@@ -10,7 +10,6 @@ import {
 } from 'react-icons/fa'
 import Pagination from '../components/Pagination'
 import { getUsers, updateUser, deleteUser, createUser } from '../api/users'
-import { getGroups } from '../api/groups'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 
 import { UnlockAccess } from '../components/UnlockAccess'
@@ -41,8 +40,6 @@ const UserListScreen = () => {
       retry: 0,
     }
   )
-
-  const { data: groupData } = useQuery('groups', () => getGroups())
 
   const {
     isLoading: isLoadingUpdateUser,
@@ -252,30 +249,6 @@ const UserListScreen = () => {
                     {errors.confirmPassword && (
                       <span className='text-danger'>
                         {errors.confirmPassword.message}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className='mb-3'>
-                    <label htmlFor='group'>Group</label>
-                    <select
-                      {...register('group', { required: 'Group is required' })}
-                      type='text'
-                      placeholder='Enter group'
-                      className='form-control'
-                      autoFocus
-                    >
-                      <option value=''>-------</option>
-                      {groupData &&
-                        groupData.map((group) => (
-                          <option key={group._id} value={group.name}>
-                            {group.name}
-                          </option>
-                        ))}
-                    </select>
-                    {errors.group && (
-                      <span className='text-danger'>
-                        {errors.group.message}
                       </span>
                     )}
                   </div>

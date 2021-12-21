@@ -30,7 +30,7 @@ const UserLogHistoryScreen = () => {
   }, [page, queryClient])
 
   return (
-    <>
+    <div className='container'>
       <div className='d-flex justify-content-between align-items-center'>
         <h3 className=''>Users Log</h3>
         <Pagination data={data} setPage={setPage} />
@@ -105,7 +105,7 @@ const UserLogHistoryScreen = () => {
           </div>
         </>
       )}
-    </>
+    </div>
   )
 }
 

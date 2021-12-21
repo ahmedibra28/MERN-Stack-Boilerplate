@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Redirect } from 'react-router-dom'
 
 const config = () => {
   return {
@@ -15,7 +14,10 @@ const config = () => {
 
 export const getUsersLog = async (page) => {
   try {
-    const { data } = await axios.get(`/api/users/logs?page=${page}`, config())
+    const { data } = await axios.get(
+      `http://localhost:4000/api/users/logs?page=${page}`,
+      config()
+    )
     return data
   } catch (error) {
     throw error.response.data.message
@@ -24,7 +26,10 @@ export const getUsersLog = async (page) => {
 
 export const getUsers = async (page) => {
   try {
-    const { data } = await axios.get(`/api/users?page=${page}`, config())
+    const { data } = await axios.get(
+      `http://localhost:4000/api/users?page=${page}`,
+      config()
+    )
     return data
   } catch (error) {
     throw error.response.data.message
@@ -33,7 +38,12 @@ export const getUsers = async (page) => {
 
 export const login = async (credentials) => {
   try {
-    const { data } = await axios.post(`/api/users/login`, credentials, config())
+    const { data } = await axios.post(
+      `http://localhost:4000/api/users/login`,
+      credentials,
+      config()
+    )
+
     localStorage.setItem('userInfo', JSON.stringify(data))
     return data
   } catch (error) {
@@ -42,13 +52,16 @@ export const login = async (credentials) => {
 }
 
 export const logout = () => {
-  Redirect('/login')
   return localStorage.removeItem('userInfo')
 }
 
 export const createUser = async (user) => {
   try {
-    const { data } = await axios.post(`/api/users`, user, config())
+    const { data } = await axios.post(
+      `http://localhost:4000/api/users`,
+      user,
+      config()
+    )
     return data
   } catch (error) {
     throw error.response.data.message
@@ -58,7 +71,7 @@ export const createUser = async (user) => {
 export const createGuestUser = async (user) => {
   try {
     const { data } = await axios.post(
-      `/api/users/register/guest`,
+      `http://localhost:4000/api/users/register/guest`,
       user,
       config()
     )
@@ -71,7 +84,11 @@ export const createGuestUser = async (user) => {
 
 export const updateUser = async (user) => {
   try {
-    const { data } = await axios.put(`/api/users/${user._id}`, user, config())
+    const { data } = await axios.put(
+      `http://localhost:4000/api/users/${user._id}`,
+      user,
+      config()
+    )
     return data
   } catch (error) {
     throw error.response.data.message
@@ -80,7 +97,10 @@ export const updateUser = async (user) => {
 
 export const deleteUser = async (id) => {
   try {
-    const { data } = await axios.delete(`/api/users/${id}`, config())
+    const { data } = await axios.delete(
+      `http://localhost:4000/api/users/${id}`,
+      config()
+    )
     return data
   } catch (error) {
     throw error.response.data.message
@@ -89,7 +109,10 @@ export const deleteUser = async (id) => {
 
 export const getUserDetails = async (id) => {
   try {
-    const { data } = await axios.get(`/api/users/${id}`, config())
+    const { data } = await axios.get(
+      `http://localhost:4000/api/users/${id}`,
+      config()
+    )
     return data
   } catch (error) {
     throw error.response.data.message
@@ -98,7 +121,11 @@ export const getUserDetails = async (id) => {
 
 export const updateUserProfile = async (user) => {
   try {
-    const { data } = await axios.put(`/api/users/profile`, user, config())
+    const { data } = await axios.put(
+      `http://localhost:4000/api/users/profile`,
+      user,
+      config()
+    )
     return data
   } catch (error) {
     throw error.response.data.message
@@ -108,7 +135,7 @@ export const updateUserProfile = async (user) => {
 export const forgotPassword = async (email) => {
   try {
     const { data } = await axios.post(
-      `/api/users/forgotpassword`,
+      `http://localhost:4000/api/users/forgotpassword`,
       email,
       config()
     )
@@ -121,7 +148,7 @@ export const forgotPassword = async (email) => {
 export const resetPassword = async (info) => {
   try {
     const { data } = await axios.put(
-      `/api/users/resetpassword/${info.resetToken}`,
+      `http://localhost:4000/api/users/resetpassword/${info.resetToken}`,
       info,
       config()
     )

@@ -1,81 +1,47 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Navigate, useRoutes } from 'react-router-dom'
 
-import HomeScreen from '../../screens/HomeScreen'
-import LoginScreen from '../../screens/LoginScreen'
 import ProfileScreen from '../../screens/ProfileScreen'
-import RegisterScreen from '../../screens/RegisterScreen'
+import HomeScreen from '../../screens/HomeScreen'
 import UserListScreen from '../../screens/UserListScreen'
-import NotFound from '../NotFound'
-
-import PrivateRoute from './PrivateRoute'
 import UserLogHistoryScreen from '../../screens/LogHistoryScreen'
+import NotFound from '../../components/NotFound'
+import LoginScreen from '../../screens/LoginScreen'
 import ForgotPasswordScreen from '../../screens/ForgotPasswordScreen'
+import RegisterScreen from '../../screens/RegisterScreen'
 import ResetPasswordScreen from '../../screens/ResetPasswordScreen'
-import GroupScreen from '../../screens/GroupScreen'
-import RouteScreen from '../../screens/RouteScreen'
 
-import { useQuery } from 'react-query'
-import { getGroups } from '../../api/groups'
-
-const Routes = () => {
-  const { data: groupData, isLoading } = useQuery('groups', () => getGroups(), {
-    retry: 0,
-  })
-
-  let group = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo')).group
+const AppRoutes = () => {
+  let userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
     : null
 
-  const switchRoutes = (component) => {
-    switch (component) {
-      case 'ProfileScreen':
-        return ProfileScreen
-      case 'UserListScreen':
-        return UserListScreen
-      case 'UserLogHistoryScreen':
-        return UserLogHistoryScreen
-      case 'GroupScreen':
-        return GroupScreen
-      case 'RouteScreen':
-        return RouteScreen
-      default:
-        return NotFound
-    }
-  }
+  let element = useRoutes([
+    {
+      path: '/',
+      element: userInfo ? <HomeScreen /> : <Navigate to='/login' />,
+    },
+    {
+      path: 'profile',
+      element: userInfo ? <ProfileScreen /> : <Navigate to='/login' />,
+    },
+    {
+      path: 'admin/users',
+      element: userInfo ? <UserListScreen /> : <Navigate to='/login' />,
+    },
+    {
+      path: 'admin/users/log',
+      element: userInfo ? <UserLogHistoryScreen /> : <Navigate to='/login' />,
+    },
 
-  return (
-    <section className='mx-auto'>
-      {isLoading ? (
-        'Loading...'
-      ) : (
-        <Switch>
-          <Route exact path='/' component={HomeScreen} />
-          <Route path='/login' component={LoginScreen} />
-          <Route path='/forgot' component={ForgotPasswordScreen} />
-          <Route path='/register' component={RegisterScreen} />
-          <Route path='/reset/:resetToken' component={ResetPasswordScreen} />
+    { path: 'login', element: <LoginScreen /> },
+    { path: 'forgot', element: <ForgotPasswordScreen /> },
+    { path: 'register', element: <RegisterScreen /> },
+    { path: 'reset/:resetToken', element: <ResetPasswordScreen /> },
 
-          {groupData &&
-            groupData.map(
-              (route) =>
-                route.name === group &&
-                route.isActive &&
-                route.route.map((r) => (
-                  <PrivateRoute
-                    exact
-                    path={r.path}
-                    component={switchRoutes(r.component)}
-                    role={[route.name]}
-                  />
-                ))
-            )}
-
-          <Route component={NotFound} />
-        </Switch>
-      )}
-    </section>
-  )
+    { path: '*', element: <NotFound /> },
+  ])
+  return element
 }
 
-export default Routes
+export default AppRoutes

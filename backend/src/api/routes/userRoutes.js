@@ -1,5 +1,4 @@
 import express from 'express'
-import { seeds } from '../controllers/seedsController.js'
 import {
   authUser,
   registerUser,
@@ -20,9 +19,9 @@ const router = express.Router()
 
 router
   .route('/')
-  .post(protect, admin, guestRegisterUser)
+  .post(protect, admin, registerUser)
   .get(protect, admin, getUsers)
-router.route('/register/guest').post(registerUser)
+router.route('/register/guest').post(guestRegisterUser)
 router.route('/forgotpassword').post(forgotPassword)
 router.route('/resetpassword/:resetToken').put(resetPassword)
 
@@ -34,7 +33,6 @@ router
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile)
 
-router.route('/insert/seeds').get(seeds)
 router
   .route('/:id')
   .delete(protect, admin, deleteUser)

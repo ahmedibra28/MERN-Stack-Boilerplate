@@ -5,8 +5,11 @@ import { useForm } from 'react-hook-form'
 
 import { forgotPassword } from '../api/users'
 import { useMutation } from 'react-query'
+import { useNavigate } from 'react-router-dom'
 
-const ForgotPasswordScreen = ({ history }) => {
+const ForgotPasswordScreen = () => {
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -27,9 +30,9 @@ const ForgotPasswordScreen = ({ history }) => {
 
   useEffect(() => {
     if (localStorage.getItem('userInfo')) {
-      history.push('/')
+      navigate('/')
     }
-  }, [history])
+  }, [navigate])
 
   const submitHandler = (data) => {
     mutateAsync(data)

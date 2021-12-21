@@ -5,9 +5,12 @@ import { useForm } from 'react-hook-form'
 
 import { resetPassword } from '../api/users'
 import { useMutation } from 'react-query'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const ResetPasswordScreen = ({ history, match }) => {
-  const resetToken = match.params.resetToken
+const ResetPasswordScreen = () => {
+  const navigate = useNavigate()
+  const params = useParams()
+  const { resetToken } = params
 
   const {
     register,
@@ -30,7 +33,7 @@ const ResetPasswordScreen = ({ history, match }) => {
       onSuccess: () => {
         reset()
         setTimeout(() => {
-          history.push('/login')
+          navigate('/login')
         }, 3000)
       },
     }
@@ -38,9 +41,9 @@ const ResetPasswordScreen = ({ history, match }) => {
 
   useEffect(() => {
     if (localStorage.getItem('userInfo')) {
-      history.push('/')
+      navigate('/')
     }
-  }, [history])
+  }, [navigate])
 
   const submitHandler = (data) => {
     const password = data.password

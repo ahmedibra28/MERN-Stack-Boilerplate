@@ -2,18 +2,18 @@ import path from 'path'
 import express from 'express'
 import dotenv from 'dotenv'
 import colors from 'colors'
+import cors from 'cors'
 import morgan from 'morgan'
 import { notFound, errorHandler } from './api/middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
 import userRoutes from './api/routes/userRoutes.js'
-import groupRoutes from './api/routes/groupRoutes.js'
-import routeRoutes from './api/routes/routeRoutes.js'
 
 dotenv.config()
 
 connectDB()
 
 const app = express()
+app.use(cors())
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -22,8 +22,6 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json())
 
 app.use('/api/users', userRoutes)
-app.use('/api/groups', groupRoutes)
-app.use('/api/routes', routeRoutes)
 
 const __dirname = path.resolve()
 app.use('./api/uploads', express.static(path.join(__dirname, '/uploads')))

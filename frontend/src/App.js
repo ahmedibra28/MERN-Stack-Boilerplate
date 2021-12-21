@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import jwt_decode from 'jwt-decode'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import Footer from './components/Footer'
-import Routes from './components/routes/Routes'
 import 'animate.css'
 
 import { logout } from './api/users'
 import { useMutation, useQuery } from 'react-query'
 
 import Navigation from './components/Navigation'
+import AppRoutes from './components/routes/Routes'
 
 const App = () => {
   const { mutateAsync } = useMutation(logout, () => {})
@@ -38,14 +38,11 @@ const App = () => {
   }, [mutateAsync, userInfo])
 
   return (
-    <Router>
+    <BrowserRouter>
       <Navigation />
-      <main className='container pt-2'>
-        <Route component={Routes} />
-      </main>
-
+      <AppRoutes />
       <Footer />
-    </Router>
+    </BrowserRouter>
   )
 }
 

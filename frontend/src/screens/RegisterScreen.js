@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 
@@ -8,7 +8,8 @@ import { useMutation } from 'react-query'
 
 import { useForm } from 'react-hook-form'
 
-const RegisterScreen = ({ history }) => {
+const RegisterScreen = () => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -29,16 +30,16 @@ const RegisterScreen = ({ history }) => {
       retry: 0,
       onSuccess: () => {
         reset()
-        history.push('/')
+        navigate('/')
       },
     }
   )
 
   useEffect(() => {
     if (localStorage.getItem('userInfo')) {
-      history.push('/')
+      navigate('/')
     }
-  }, [history])
+  }, [navigate])
 
   const submitHandler = (data) => {
     mutateAsync(data)
