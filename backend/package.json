@@ -1,8 +1,8 @@
 {
-  "name": "mern-stack-boilerplate",
-  "version": "2.0.0",
-  "description": "Complete MERN-Stack boilerplate",
-  "main": "server.js",
+  "name": "mern-boilerplate",
+  "version": "3.0.0",
+  "description": "Complete MERN-Stack Boilerplate With Authentications, Permissions, Roles and ...",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node ./src/server",
@@ -10,25 +10,38 @@
     "client": "npm start --prefix ../frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/git-repo"
+  },
+  "keywords": [
+    "mern-stack",
+    "mern-stack",
+    "boilerplate",
+    "mern",
+    "mongodb",
+    "reactjs",
+    "nodejs",
+    "express",
+    "mern",
+    "stack"
+  ],
   "author": "Ahmed Ibrahim",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
-    "concurrently": "^6.5.1",
-    "config": "^3.3.6",
+    "concurrently": "^7.1.0",
+    "config": "^3.3.7",
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.2",
-    "express-async-handler": "^1.2.0",
-    "gravatar": "^1.8.2",
-    "helmet": "^4.6.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-fileupload": "^1.3.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
-    "mongoose": "^6.1.2",
+    "mongoose": "^6.3.1",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.7.2",
-    "nodemon": "^2.0.15",
-    "npm": "^8.3.0"
+    "nodemailer": "^6.7.3",
+    "nodemon": "^2.0.15"
   }
 }

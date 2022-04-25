@@ -1,19 +1,20 @@
 import path from 'path'
 import express from 'express'
-import dotenv from 'dotenv'
-import colors from 'colors'
+import 'dotenv/config'
+import 'colors'
+import fileUpload from 'express-fileupload'
 import cors from 'cors'
 import morgan from 'morgan'
-import { notFound, errorHandler } from './api/middleware/errorMiddleware.js'
-import connectDB from './config/db.js'
-import userRoutes from './api/routes/userRoutes.js'
+import { notFound, errorHandler } from './api/middlewares/error.js'
+import db from './config/db.js'
+import authRoute from '../src/api/routers/auth.js'
+import uploadRoute from '../src/api/routers/upload.js'
 
-dotenv.config()
-
-connectDB()
+db()
 
 const app = express()
 app.use(cors())
+app.use(fileUpload())
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -21,7 +22,8 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(express.json())
 
-app.use('/api/users', userRoutes)
+app.use('/', uploadRoute)
+app.use('/', authRoute)
 
 const __dirname = path.resolve()
 app.use('./api/uploads', express.static(path.join(__dirname, '/uploads')))
@@ -34,7 +36,9 @@ if (process.env.NODE_ENV === 'production') {
   )
 } else {
   app.get('/', (req, res) => {
-    res.send('API is running....')
+    res.status(200).json({
+      status: `Server running ${process.env.NODE_ENV} mode on post ${PORT}`,
+    })
   })
 }
 

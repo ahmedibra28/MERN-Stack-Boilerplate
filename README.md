@@ -1,6 +1,6 @@
 # Complete MERN-Stack Boilerplate
 
-![Boilerplate Screenshots](./screenshot.png)
+![Boilerplate](./boilerplate.gif)
 
 ## Features
 
@@ -8,39 +8,36 @@
 - Signup
 - Forgot Password
 - Reset Password with Email
-- Welcome Page
-- Profile Page
-- Admin Page
 - Users Management
-- Users Group Management
-- Users Route Management based on groups
-- User Logs With React Query RealTime
+- Permissions Management
+- Roles Management
+- Users Role Management based on roles and permission\
+- User Profile
+- All Users Profile Page
+- Welcome Page
 - Pagination
+- Search
 
 ## Tech
 
 I used number of different technologies
 
-- Node.js
-- Express
 - Nodemailer
 - MongoDB
-- ReactJS
+- React.js
 - Moment.js
 - React Query
 - axios
 - react-confirm-alert
 - Bootstrap v5
 - React-Hook-Form
-- Zoho Mail
+- Yandex Mail
 - react-icons
-- react router dom v6
-- docker
 - and so on
 
 ## Installation
 
-This MERN Boilerplate requires these technologies to run:
+This NEXT.js boilerplate requires these technologies to run:
 
 - [Node.js](https://nodejs.org/) v12+
 - [MongoDB](https://mongodb.com/) ether local MongoDB or MongoDB Atlas
@@ -52,24 +49,23 @@ cd ../backend && npm install
 npm run dev
 ```
 
-To run inside a docker use:-
+### To insert default seed data
+
+Copy and paste the below url/route into your browser url bar.
 
 ```sh
-cd MERN-Stack-Boilerplate
-docker-compose -f docker-compose.prod.yml up --build -d
+http://localhost:5000/api/auth/seeds?secret=js
 ```
 
-## To insert default seed data
+Your can find the default `super admin` and `password` in the below directory
 
-copy and paste the below URL to your browser URL bar.
-
-```
-http://localhost:4000/api/users/insert/seeds
+```sh
+/backend/src/config/data.js
 ```
 
-### Default admin authentication is:
+### Default super admin authentication is:
 
-- Email: _ahmaat19@gmail.com_
+- Email: _ahmed@websom.dev_
 - Password: _123456_
 
-**_Free MERN Boilerplate, Hell Yeah!_**
+**_Free NEXT.js Boilerplate, Hell Yeah!_**

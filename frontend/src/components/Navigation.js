@@ -1,134 +1,165 @@
-import { Link } from 'react-router-dom'
-import {
-  FaPlusCircle,
-  FaSignInAlt,
-  FaUserPlus,
-  FaPowerOff,
-} from 'react-icons/fa'
-import {
-  FaCog,
-  FaFileContract,
-  FaUser,
-  FaUserCircle,
-  FaUsers,
-} from 'react-icons/fa'
-import { logout } from '../api/users'
-import { useMutation, useQuery } from 'react-query'
+import { Link, useNavigate } from 'react-router-dom'
+import { FaSignInAlt, FaUserPlus, FaPowerOff } from 'react-icons/fa'
+import useAuthHook from '../api/auth'
+import { useMutation } from 'react-query'
+import useAuth from '../hooks/useAuth'
 
 const Navigation = () => {
-  const { mutateAsync } = useMutation(logout, () => {})
-  useQuery('userInfo', () => {})
+  const navigate = useNavigate()
+  const { postLogout } = useAuthHook()
+  const { auth } = useAuth()
 
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
-    : null
+  const { mutateAsync } = useMutation(postLogout, {
+    onSuccess: () => navigate('/auth/login'),
+  })
 
   const logoutHandler = () => {
     mutateAsync({})
   }
 
-  return (
-    <>
-      <nav className='navbar navbar-expand-sm navbar-light  shadow-lg'>
-        <div className='container'>
-          <Link className='navbar-brand' to='/'>
-            Geeltech <FaPlusCircle className='mb-1' />
-          </Link>
-          <button
-            className='navbar-toggler'
-            type='button'
-            data-bs-toggle='collapse'
-            data-bs-target='#navbarSupportedContent'
-            aria-controls='navbarSupportedContent'
-            aria-expanded='false'
-            aria-label='Toggle navigation'
-          >
-            <span className='navbar-toggler-icon'></span>
-          </button>
-          <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-            <ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
-              {userInfo ? (
-                <>
-                  {userInfo && userInfo.isAdmin && (
-                    <li className='nav-item dropdown '>
-                      <span
-                        className='nav-link dropdown-toggle'
-                        id='navbarDropdown'
-                        role='button'
-                        data-bs-toggle='dropdown'
-                        aria-expanded='false'
-                      >
-                        <FaCog className='mb-1' /> Admin
-                      </span>
-                      <ul
-                        className='dropdown-menu '
-                        aria-labelledby='navbarDropdown'
-                      >
-                        <li className='nav-item'>
-                          <Link to='/admin/users' className='dropdown-item'>
-                            <FaUsers className='mb-1' /> Users
-                          </Link>
-                        </li>
+  const userInfo = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null
 
-                        <li className='nav-item'>
-                          <Link to='/admin/users/log' className='dropdown-item'>
-                            <FaFileContract className='mb-1' /> Logs
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
-                  )}
-                  <li className='nav-item dropdown'>
-                    <span
-                      className='nav-link dropdown-toggle'
-                      id='navbarDropdown'
-                      role='button'
-                      data-bs-toggle='dropdown'
-                      aria-expanded='false'
+  const guestItems = () => {
+    return (
+      <>
+        <ul className='navbar-nav ms-auto'>
+          <li className='nav-item'>
+            <Link to='/auth/register' className='nav-link' aria-current='page'>
+              <FaUserPlus className='mb-1' /> Register
+            </Link>
+          </li>
+          <li className='nav-item'>
+            <Link to='/auth/login' className='nav-link' aria-current='page'>
+              <FaSignInAlt className='mb-1' /> Login
+            </Link>
+          </li>
+        </ul>
+      </>
+    )
+  }
+
+  const user = () => {
+    const userInfo = auth?.userInfo
+
+    return userInfo
+  }
+
+  const menus = () => {
+    const dropdownItems = auth?.userRole?.clientPermission?.map(
+      (route) => route?.menu
+    )
+
+    const menuItems = auth?.userRole?.clientPermission?.map((route) => route)
+
+    const dropdownArray =
+      dropdownItems &&
+      dropdownItems.filter((item) => item !== 'hidden' && item !== 'normal')
+
+    const uniqueDropdowns = [...new Set(dropdownArray)]
+
+    return { uniqueDropdowns, menuItems }
+  }
+
+  const authItems = () => {
+    return (
+      <>
+        <ul className='navbar-nav ms-auto'>
+          {menus() &&
+            menus().menuItems.map(
+              (menu) =>
+                menu.menu === 'normal' &&
+                menu.auth === true && (
+                  <li key={menu._id} className='nav-item'>
+                    <Link
+                      to={menu.path}
+                      className='nav-link'
+                      aria-current='page'
                     >
-                      <FaUserCircle className='mb-1' />{' '}
-                      {userInfo && userInfo.name}
-                    </span>
-                    <ul
-                      className='dropdown-menu'
-                      aria-labelledby='navbarDropdown'
-                    >
-                      <li>
-                        <Link to='/profile' className='dropdown-item'>
-                          <FaUser className='mb-1' /> Profile
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to='/'
-                          onClick={logoutHandler}
-                          className='dropdown-item'
-                        >
-                          <FaPowerOff className='mb-1' /> Logout
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className='nav-item'>
-                    <Link to='/register' className='nav-link'>
-                      <FaUserPlus className='mb-1' /> Register
+                      {menu.name}
                     </Link>
                   </li>
-                  <li className='nav-item'>
-                    <Link to='/login' className='nav-link'>
-                      <FaSignInAlt className='mb-1' /> Login
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
+                )
+            )}
+
+          {menus() &&
+            menus().uniqueDropdowns.map((item) => (
+              <li key={item} className='nav-item dropdown'>
+                <a
+                  className='nav-link dropdown-toggle'
+                  id='navbarDropdownMenuLink'
+                  role='button'
+                  data-bs-toggle='dropdown'
+                  aria-expanded='false'
+                >
+                  {item === 'profile'
+                    ? user() && user().name
+                    : item.charAt(0).toUpperCase() + item.substring(1)}
+                </a>
+                <ul
+                  className='dropdown-menu border-0'
+                  aria-labelledby='navbarDropdownMenuLink'
+                >
+                  {menus() &&
+                    menus().menuItems.map(
+                      (menu) =>
+                        menu.menu === item && (
+                          <li key={menu._id}>
+                            <Link to={menu.path} className='dropdown-item'>
+                              {menu.name}
+                            </Link>
+                          </li>
+                        )
+                    )}
+                </ul>
+              </li>
+            ))}
+
+          <li className='nav-item'>
+            <Link
+              to='/auth/login'
+              className='nav-link'
+              aria-current='page'
+              onClick={logoutHandler}
+            >
+              <FaPowerOff className='mb-1' /> Logout
+            </Link>
+          </li>
+        </ul>
+      </>
+    )
+  }
+
+  return (
+    <nav className='navbar navbar-expand-md navbar-light bg-light'>
+      <div className='container'>
+        <Link to='/'>
+          <img
+            width='40'
+            height='40'
+            src='/favicon.png'
+            className='img-fluid brand-logos'
+            alt='logo'
+          />
+        </Link>
+
+        <button
+          className='navbar-toggler'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#navbarNav'
+          aria-controls='navbarNav'
+          aria-expanded='false'
+          aria-label='Toggle navigation'
+        >
+          <span className='navbar-toggler-icon'></span>
+        </button>
+        <div className='collapse navbar-collapse' id='navbarNav'>
+          {userInfo ? authItems() : guestItems()}
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   )
 }
 
