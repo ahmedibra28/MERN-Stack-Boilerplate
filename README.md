@@ -54,7 +54,7 @@ npm run dev
 Copy and paste the below url/route into your browser url bar.
 
 ```sh
-http://localhost:5000/api/auth/seeds?secret=js
+http://localhost:5000/api/auth/seed?secret=js
 ```
 
 Your can find the default `super admin` and `password` in the below directory
