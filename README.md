@@ -65,7 +65,7 @@ Your can find the default `super admin` and `password` in the below directory
 
 ### Default super admin authentication is:
 
-- Email: _ahmed@websom.dev_
+- Email: _info@ahmedibra.com_
 - Password: _123456_
 
 **_Free NEXT.js Boilerplate, Hell Yeah!_**

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { FaSignInAlt, FaUserPlus, FaPowerOff } from 'react-icons/fa'
+import { FaSignInAlt, FaPowerOff } from 'react-icons/fa'
 import useAuthHook from '../api/auth'
 import { useMutation } from 'react-query'
 import useAuth from '../hooks/useAuth'
@@ -25,11 +25,11 @@ const Navigation = () => {
     return (
       <>
         <ul className='navbar-nav ms-auto'>
-          <li className='nav-item'>
+          {/* <li className='nav-item'>
             <Link to='/auth/register' className='nav-link' aria-current='page'>
               <FaUserPlus className='mb-1' /> Register
             </Link>
-          </li>
+          </li> */}
           <li className='nav-item'>
             <Link to='/auth/login' className='nav-link' aria-current='page'>
               <FaSignInAlt className='mb-1' /> Login

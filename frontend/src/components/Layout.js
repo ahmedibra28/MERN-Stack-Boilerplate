@@ -9,7 +9,9 @@ export default function Layout({ children }) {
         <meta property='og:title' content='NEXT.js Boilerplate' key='title' />
       </Helmet> */}
       <Navigation />
-      <main className='container py-2'>{children}</main>
+      <main className='container py-2' style={{ minHeight: '70vh' }}>
+        {children}
+      </main>
       <Footer />
     </>
   )

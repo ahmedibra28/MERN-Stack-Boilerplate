@@ -1,15 +1,18 @@
 const Footer = () => {
-  const date = new Date()
-  const currentYear = date.getFullYear()
+  // const date = new Date()
+  // const currentYear = date.getFullYear()
 
   return (
-    <footer>
-      <div className='container text-primary'>
-        <div className='row'>
-          <div className='col text-center py-3 footer font-monospace'>
-            Copyright {currentYear} &copy; All Rights Reserved
-            <span id='watermark' className='ms-3' />
-          </div>
+    <footer className='text-primary container-fluid'>
+      <div className='row'>
+        <div className='col text-center py-1 footer font-monospace bg-light my-auto'>
+          {/* Copyright {currentYear} &copy; All Rights Reserved -  */}
+          Developed by{' '}
+          <a target='_blank' href='https://ahmedibra.com' rel='noreferrer'>
+            Ahmed Ibrahim
+          </a>
+          <br />
+          <img src='/logo.png' width='30' height='30' alt='logo' />
         </div>
       </div>
     </footer>

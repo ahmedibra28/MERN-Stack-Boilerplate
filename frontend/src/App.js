@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import Navigation from './components/Navigation'
 import RequireAuth from './components/RequireAuth'
 import ForgotPassword from './screens/auth/ForgotPassword'
 import Home from './screens/auth/Home'
@@ -13,12 +12,12 @@ import Roles from './screens/admin/auth/Roles'
 import UserRoles from './screens/admin/auth/UserRoles'
 import UserProfiles from './screens/admin/auth/UserProfiles'
 import Users from './screens/admin/auth/Users'
+import { Layout } from './components'
 
 const App = () => {
   return (
     <>
-      <Navigation />
-      <div className='py-1 container'>
+      <Layout>
         <Routes>
           <Route path='/auth/login' element={<Login />} />
           <Route path='/auth/forgot-password' element={<ForgotPassword />} />
@@ -46,7 +45,7 @@ const App = () => {
 
           <Route path='*' element={<NotFound />} />
         </Routes>
-      </div>
+      </Layout>
     </>
   )
 }

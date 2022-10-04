@@ -30,7 +30,7 @@ const roles = [
 
 const users = {
   name: 'Ahmed Ibrahim',
-  email: 'ahmed@websom.dev',
+  email: 'info@ahmedibra.com',
   password: '123456',
   confirmed: true,
   blocked: false,
